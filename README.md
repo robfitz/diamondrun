@@ -2,14 +2,15 @@ diamondrun
 ==========
 
 ### local setup
-git clone https://github.com/digitalfruit/limejs.git
 
-cd limejs
+`git clone https://github.com/digitalfruit/limejs.git`
 
-bin/lime.py init
+`cd limejs`
 
-git clone git@github.com:robftz/diamondrun.git
+`bin/lime.py init`
 
-python bin/lime.py update
+`git clone git@github.com:robftz/diamondrun.git`
 
-open diamondrun/diamondrun.html
+`python bin/lime.py update`
+
+`open diamondrun/diamondrun.html`
