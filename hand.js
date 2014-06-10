@@ -3,6 +3,7 @@ goog.provide('diamondrun.Deck');
 goog.provide('diamondrun.Card');
 goog.provide('diamondrun.Graveyard');
 goog.require('diamondrun.Unit');
+goog.require('diamondrun.PlayCardCommand');
 
 goog.require('lime.Sprite');
 goog.require('lime.Layer');
@@ -14,17 +15,14 @@ var CARD_SIZE = 100;
 var CARD_SPACING = 5;
 
 
-diamondrun.Card = function(friendly_board, enemy_board, graveyard) {
+diamondrun.Card = function(owner) {
 	goog.base(this);
-
-	this.friendly_board = friendly_board;
-	this.enemy_board = enemy_board;
-	this.graveyard = graveyard;
+	this.owner = owner;
 
 	this.setSize(CARD_SIZE, CARD_SIZE).setFill(255,150,150);
 
-    var card = this;
-    var graveyard = this.graveyard;
+	//local declaration for when 'this' is clobbered by event objects
+    var card = this; 
 
 	var makeDraggable = function(e){
 
@@ -44,11 +42,11 @@ diamondrun.Card = function(friendly_board, enemy_board, graveyard) {
 			
 			var tile = e.activeDropTarget;
 
-			// spawn a unit or effect
-			card.doAction(tile);
+			//create command
+			var cmd = new diamondrun.PlayCardCommand(owner, card, tile);
+			Commands.add(cmd);
 
-			// move this card to the graveyard
-			graveyard.takeCard(card);
+
 			//stop responding to drag events
 			goog.events.unlisten(card,['mousedown','touchstart'],makeDraggable);
 
@@ -60,11 +58,6 @@ diamondrun.Card = function(friendly_board, enemy_board, graveyard) {
 			//block card from automatically dropping itself onto the board
 			e.stopPropagation();
 
-			/*
-			e.moveEndedCallback = function(){
-			console.log('Called after animation has ended');
-			}
-			*/
     	});
 
         //listen for end event
@@ -80,23 +73,20 @@ diamondrun.Card = function(friendly_board, enemy_board, graveyard) {
 goog.inherits(diamondrun.Card, lime.Sprite);
 
 diamondrun.Card.prototype.getValidTargets = function() {
-	return this.friendly_board.getTiles();
-};
-diamondrun.Card.prototype.doAction = function(tile) {
-	var unit = new diamondrun.Unit(1, 1, 'melee');
-	tile.appendChild(unit);
+	return this.owner.getBoard().getTiles();
+	
 };
 
 
-diamondrun.Hand = function(deck) {
+diamondrun.Hand = function(owner) {
 	goog.base(this);
-	this.deck = deck;
+	this.owner = owner;
 	this.cards = [];
 }
 goog.inherits(diamondrun.Hand, lime.Layer);
 
-diamondrun.Hand.prototype.draw = function() {
-	var card = this.deck.draw();
+diamondrun.Hand.prototype.drawCard = function() {
+	var card = this.owner.getDeck().drawCard();
 	this.cards.push(card);
 	this.appendChild(card);
 
@@ -107,16 +97,14 @@ diamondrun.Hand.prototype.draw = function() {
 	}	
 };
 
-diamondrun.Deck = function(friendly_board, enemy_board, graveyard) {
+diamondrun.Deck = function(owner) {
 	goog.base(this);
-	this.friendly_board = friendly_board;
-	this.enemy_board = enemy_board;
-	this.graveyard = graveyard
+	this.owner = owner;
 }
 goog.inherits(diamondrun.Deck, lime.Layer);
 
-diamondrun.Deck.prototype.draw = function() {
-	return new diamondrun.Card(this.friendly_board, this.enemy_board, this.graveyard);
+diamondrun.Deck.prototype.drawCard = function() {
+	return new diamondrun.Card(this.owner);
 };
 
 
