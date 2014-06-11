@@ -53,6 +53,10 @@ diamondrun.Unit.prototype.doAttack = function(contexts, callbacks) {
 		duration += animations[i].getDuration();
 	}
 
+	//TODO: i'm sure i'm going to regret this callback chain
+	//sometime soon, but i haven't yet figured out a
+	//better way to get the animations and phase advance
+	//to happen sequentially
 	lime.scheduleManager.callAfter(function(dt) {
 		if (callbacks && callbacks.length > 0) {
 			var firstCall = callbacks.shift();
