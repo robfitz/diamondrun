@@ -1,4 +1,8 @@
 goog.provide('diamondrun.PlayCardCommand');
+goog.provide('diamondrun.DrawCardCommand');
+goog.provide('diamondrun.NextPhaseCommand');
+
+
 
 diamondrun.PlayCardCommand = function(player, card, target_tile) {
 	this.player = player;
@@ -13,3 +17,21 @@ diamondrun.PlayCardCommand.prototype.execute = function() {
 	var unit = new diamondrun.Unit(1, 1, 'melee');
 	this.target_tile.appendChild(unit);
 }
+
+
+diamondrun.DrawCardCommand = function(player, numCards) {
+	this.player = player;
+	this.numCards = numCards;
+}
+diamondrun.DrawCardCommand.prototype.execute = function() {
+	for (var i = 0; i < this.numCards; i ++) {
+		this.player.draw();
+	}
+}
+
+diamondrun.NextPhaseCommand = function() {
+}
+diamondrun.NextPhaseCommand.prototype.execute = function() {
+	Phases.next();
+}
+

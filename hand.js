@@ -42,10 +42,10 @@ diamondrun.Card = function(owner) {
 			
 			var tile = e.activeDropTarget;
 
-			//create command
-			var cmd = new diamondrun.PlayCardCommand(owner, card, tile);
-			Commands.add(cmd);
-
+			if (card.owner.getCanAct() == true) {
+				//create command
+				card.owner.playCard(card, tile);
+			}
 
 			//stop responding to drag events
 			goog.events.unlisten(card,['mousedown','touchstart'],makeDraggable);
@@ -62,7 +62,7 @@ diamondrun.Card = function(owner) {
 
         //listen for end event
         goog.events.listen(drag, lime.events.Drag.Event.CANCEL, function(e){
-            this.runAction(new lime.animation.MoveTo(start_loc).setDuration(0.2));
+            card.runAction(new lime.animation.MoveTo(start_loc).setDuration(0.2));
         });
     };
 
@@ -72,6 +72,9 @@ diamondrun.Card = function(owner) {
 
 goog.inherits(diamondrun.Card, lime.Sprite);
 
+diamondrun.Card.prototype.getOwner = function() {
+	return this.owner;
+}
 diamondrun.Card.prototype.getValidTargets = function() {
 	return this.owner.getBoard().getTiles();
 	
@@ -85,17 +88,30 @@ diamondrun.Hand = function(owner) {
 }
 goog.inherits(diamondrun.Hand, lime.Layer);
 
+diamondrun.Hand.prototype.removeCard = function(card) {
+	for (var i = 0; i < this.cards.length; i ++) {
+		if (this.cards[i] == card) {
+			this.cards.remove(i);
+			break;
+		}
+	}
+	this.refreshCardLocations();
+}
 diamondrun.Hand.prototype.drawCard = function() {
 	var card = this.owner.getDeck().drawCard();
 	this.cards.push(card);
 	this.appendChild(card);
 
-	//redraw cards
+	this.refreshCardLocations();
+};
+diamondrun.Hand.prototype.refreshCardLocations = function() {
 	var xoffset = - (this.cards.length - 1) * (CARD_SIZE + CARD_SPACING) / 2;
 	for (var i = 0; i < this.cards.length; i ++) {
-		this.cards[i].setPosition(xoffset + i * (CARD_SIZE + CARD_SPACING), 0);
+		this.cards[i].runAction(new lime.animation.MoveTo(xoffset + i * (CARD_SIZE + CARD_SPACING), 0).setDuration(0.2));
 	}	
 };
+
+
 
 diamondrun.Deck = function(owner) {
 	goog.base(this);
@@ -115,6 +131,10 @@ diamondrun.Graveyard = function() {
 }
 goog.inherits(diamondrun.Graveyard, lime.Sprite);
 diamondrun.Graveyard.prototype.takeCard = function(card) {
+	//remove from hand
+	card.getOwner().getHand().removeCard(card);
+
+	//add to graveyard
 	this.appendChild(card);
 	card.setPosition(0, 0);
 	card.runAction(new lime.animation.Sequence(
