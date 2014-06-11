@@ -44,9 +44,7 @@ var Phases = {
         if (this.current > Phases.p2_end) {
             this.current = 0;  
             game.turn ++;
-        } 
-        
-        console.log(this.current);
+        }
 
         switch (this.current) {
 
@@ -73,7 +71,24 @@ var Phases = {
 
             case Phases.p1_attack:
                 //TODO: combat
-                Commands.add(new diamondrun.NextPhaseCommand());
+                console.log('attack');
+
+                //run through all the units on my side and tell them to figure out their attack, which will cause them to add a bunch of animations and other stuff to the animation queue. once the animations are done, we can go ahead to the next phase
+                var callbacks = [];
+                var units = game.player1.getBoard().getUnits();
+                var contexts = [];
+                for (var i = units.length - 1; i >= 0; i --) {
+                    callbacks.push(units[i].doAttack);
+                    contexts.push(units[i]);
+                }   
+                //TODO: i'm sure i'm going to regret this callback chain
+                //sometime soon, but i haven't yet figured out a
+                //better way to get the animations and phase advance
+                //to happen sequentially
+                var firstCall = callbacks.shift();
+                var firstContext = contexts.shift();
+                firstCall.call(firstContext, contexts, callbacks);
+                
                 break;
 
             case Phases.p1_end:
@@ -103,7 +118,6 @@ var Commands = {
     },
     doNext: function() {
         if (this.queue.length > 0) {
-            console.log("do next with queue > 0");
             var cmd = this.queue.shift();
             cmd.execute();
             this.history.push(cmd);    
@@ -140,6 +154,8 @@ diamondrun.start = function(){
     //Commands.add(new diamondrun.NextPhaseCommand());
     Phases.next();
 
+    player.getBoard().connectAttackPaths(enemy_board);
+    enemy_board.connectAttackPaths(player.getBoard());
 }
 
 goog.exportSymbol('diamondrun.start', diamondrun.start);
