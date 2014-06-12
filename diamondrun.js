@@ -72,37 +72,31 @@ var Phases = {
                 break;
 
             case Phases.p1_attack:
-                //TODO: combat
-                console.log('attack');
-
-                //run through all the units on my side and tell them to figure out their attack, which will cause them to add a bunch of animations and other stuff to the animation queue. once the animations are done, we can go ahead to the next phase
-                var callbacks = [];
-                var units = game.player1.getBoard().getUnits();
-                var contexts = [];
-                for (var i = units.length - 1; i >= 0; i --) {
-                    callbacks.push(units[i].doAttack);
-                    contexts.push(units[i]);
-                }   
-                //TODO: i'm sure i'm going to regret this callback chain
-                //sometime soon, but i haven't yet figured out a
-                //better way to get the animations and phase advance
-                //to happen sequentially
-                var firstCall = callbacks.shift();
-                var firstContext = contexts.shift();
-                firstCall.call(firstContext, contexts, callbacks);
-                
+                game.player1.doAttack();
                 break;
 
             case Phases.p1_end:
                 Commands.add(new diamondrun.NextPhaseCommand());
                 break;
 
+            case Phases.p2_play1:
+            case Phases.p2_play2:
+                
+                var dummyCard = new diamondrun.Card(game.player2);
+                var targets = game.player2.board.getValidTargets(dummyCard);
+                var dummyTarget = targets[Math.floor(Math.random()*targets.length)];
+                Commands.add(new diamondrun.PlayCardCommand(game.player2, dummyCard, dummyTarget));
+                
+                Commands.add(new diamondrun.NextPhaseCommand());
+                break;
+            
+            case Phases.p2_attack:
+                game.player2.doAttack();
+                break;
 
             case Phases.p2_start:
             case Phases.p2_draw:
-            case Phases.p2_play1:
-            case Phases.p2_attack:
-            case Phases.p2_play2:
+
             case Phases.p2_end:
                 Commands.add(new diamondrun.NextPhaseCommand());
                 break;
@@ -131,15 +125,17 @@ var Commands = {
 diamondrun.start = function(){
 
     var director = new lime.Director(document.body,IPHONE_4_W,IPHONE_4_H),
-        scene = new lime.Scene(),
-        enemy_board = new diamondrun.Board(false).setPosition(IPHONE_4_W / 2, IPHONE_4_H / 2 - 265);
+        scene = new lime.Scene();
 
-    var player = new diamondrun.Player();
+    var player = new diamondrun.Player(true);
     game.player1 = player;
 
     game.unitLayer = new lime.Layer();
 
-    scene.appendChild(player.getBoard()).appendChild(enemy_board).appendChild(player.getGraveyard()).appendChild(player.getHand()).appendChild(game.unitLayer);
+    game.player2 = new diamondrun.Player(false);
+    game.player2.getBoard().setPosition(IPHONE_4_W / 2, IPHONE_4_H / 2 - 265);
+
+    scene.appendChild(player.getBoard()).appendChild(game.player2.getBoard()).appendChild(player.getGraveyard()).appendChild(player.getHand()).appendChild(game.unitLayer);
 
     var phase_label = new lime.Label().setText('P').setPosition(50, 50);
     scene.appendChild(phase_label);
@@ -158,8 +154,8 @@ diamondrun.start = function(){
     //Commands.add(new diamondrun.NextPhaseCommand());
     Phases.next();
 
-    player.getBoard().connectAttackPaths(enemy_board);
-    enemy_board.connectAttackPaths(player.getBoard());
+    player.getBoard().connectAttackPaths(game.player2.getBoard());
+    game.player2.getBoard().connectAttackPaths(player.getBoard());
 }
 
 goog.exportSymbol('diamondrun.start', diamondrun.start);

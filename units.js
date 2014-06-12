@@ -57,7 +57,6 @@ diamondrun.Unit.prototype.doAttack = function(contexts, callbacks) {
 			//enemy? hit it and head home
 			else {
 				console.log('TODO: damage');
-
 			}
 		}
 	}
