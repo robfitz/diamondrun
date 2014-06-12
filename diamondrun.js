@@ -4,6 +4,7 @@ goog.provide('diamondrun');
 //get requirements
 goog.require('lime.Director');
 goog.require('lime.Scene');
+goog.require('lime.Layer');
 
 goog.require('diamondrun.Tile');
 goog.require('diamondrun.Hand');
@@ -17,7 +18,8 @@ var IPHONE_4_H = 960;
 var game = {
     player1: null, //friendly
     player2: null, //enemy
-    turn: 0
+    turn: 0,
+    unitLayer: null
 }
 
 var Phases = {
@@ -135,7 +137,9 @@ diamondrun.start = function(){
     var player = new diamondrun.Player();
     game.player1 = player;
 
-    scene.appendChild(player.getBoard()).appendChild(enemy_board).appendChild(player.getGraveyard()).appendChild(player.getHand());
+    game.unitLayer = new lime.Layer();
+
+    scene.appendChild(player.getBoard()).appendChild(enemy_board).appendChild(player.getGraveyard()).appendChild(player.getHand()).appendChild(game.unitLayer);
 
     var phase_label = new lime.Label().setText('P').setPosition(50, 50);
     scene.appendChild(phase_label);

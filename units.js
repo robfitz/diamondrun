@@ -16,6 +16,9 @@ diamondrun.Unit = function(tile, movement, attack, hp) {
 
 	this.movement = movement;
 	this.type = "unit";
+
+	game.unitLayer.appendChild(this);
+
 }
 
 goog.inherits(diamondrun.Unit, lime.Sprite);
@@ -31,7 +34,7 @@ diamondrun.Unit.prototype.doAttack = function(contexts, callbacks) {
 	//step through path looking for obstruction)
 	for (var i = 0; i < path.length; i ++) {
 		var screenPosition = path[i].getParent().localToScreen(path[i].getPosition());
-		var localPosition = this.tile.screenToLocal(screenPosition);
+		var localPosition = this.getParent().screenToLocal(screenPosition);
 
 		animations.push(new lime.animation.MoveTo(localPosition).setDuration(.3));
 
@@ -42,7 +45,7 @@ diamondrun.Unit.prototype.doAttack = function(contexts, callbacks) {
 	//if still alive, step backwards to return to start point
 	for (i = path.length - 1; i >= 0; i --) {
 		var screenPosition = path[i].getParent().localToScreen(path[i].getPosition());
-		var localPosition = this.tile.screenToLocal(screenPosition);
+		var localPosition = this.getParent().screenToLocal(screenPosition);
 
 		animations.push(new lime.animation.MoveTo(localPosition).setDuration(.2));
 	}

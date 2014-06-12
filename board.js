@@ -34,7 +34,9 @@ diamondrun.Tile.prototype.addUnit = function(unit) {
 	if (this.contents) return false;
 
 	this.contents = unit;
-	this.appendChild(unit);
+	var tilePos = this.getParent().localToScreen(this.getPosition());
+	var unitPos = unit.getParent().screenToLocal(tilePos);
+	unit.setPosition(unitPos);
 
 	return true;
 };
