@@ -4,9 +4,10 @@ goog.require('lime.Sprite');
 goog.require('lime.animation.Sequence');
 goog.require('lime.animation.MoveTo');
 
-diamondrun.Unit = function(tile, movement, attack, hp) {
+diamondrun.Unit = function(owner, tile, movement, attack, hp) {
 	goog.base(this);
 	
+	this.owner = owner;
 	this.tile = tile;
 	this.attack = attack;
 	this.hp = hp;
@@ -24,26 +25,44 @@ diamondrun.Unit = function(tile, movement, attack, hp) {
 goog.inherits(diamondrun.Unit, lime.Sprite);
 
 diamondrun.Unit.prototype.doAttack = function(contexts, callbacks) {
-	console.log('attacking ' + this);
-	//get my walky path
 	var path = this.tile.getAttackPath();
 
 	var animations = [];
 	var startPosition = this.getPosition();
+	var localPosition = this.getPosition();
 
 	//step through path looking for obstruction)
 	for (var i = 0; i < path.length; i ++) {
+
+		lastPosition = localPosition;
+
 		var screenPosition = path[i].getParent().localToScreen(path[i].getPosition());
 		var localPosition = this.getParent().screenToLocal(screenPosition);
 
-		animations.push(new lime.animation.MoveTo(localPosition).setDuration(.3));
-
+		var contents = path[i].contents;
 		//nothing blocking? add move
-		//something blocking? fight it
-			//break
+		if (!contents) {
+			animations.push(new lime.animation.MoveTo(localPosition).setDuration(.3));
+		}
+		//something blocking?
+		else if (contents.type == 'unit') {
+			
+			//friendly? bump into it and head home
+			if (contents.owner == this.owner) {
+				console.log('bumped friendly');
+				var bumpY = (lastPosition.y + localPosition.y) / 2;
+				animations.push(new lime.animation.MoveTo(lastPosition.x, bumpY).setDuration(.1));
+				break;
+			}
+			//enemy? hit it and head home
+			else {
+				console.log('TODO: damage');
+
+			}
+		}
 	}
 	//if still alive, step backwards to return to start point
-	for (i = path.length - 1; i >= 0; i --) {
+	for (i = i - 1; i >= 0; i --) {
 		var screenPosition = path[i].getParent().localToScreen(path[i].getPosition());
 		var localPosition = this.getParent().screenToLocal(screenPosition);
 
