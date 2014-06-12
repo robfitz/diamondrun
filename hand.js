@@ -11,6 +11,8 @@ goog.require('lime.animation.Sequence');
 goog.require('lime.animation.MoveTo');
 goog.require('lime.animation.ScaleTo');
 
+goog.require('goog.events.Event');
+
 var CARD_SIZE = 100;
 var CARD_SPACING = 5;
 
@@ -38,6 +40,10 @@ diamondrun.Card = function(owner) {
         	drag.addDropTarget(drop_targets[i]);
         }
 
+        goog.events.listen(drag, lime.events.Drag.Event.MOVE, function(e) {
+
+        });
+
       	goog.events.listen(drag, lime.events.Drag.Event.DROP, function(e){
 			
 			var tile = e.activeDropTarget;
@@ -45,18 +51,22 @@ diamondrun.Card = function(owner) {
 			if (card.owner.getCanAct() == true) {
 				//create command
 				card.owner.playCard(card, tile);
+
+				//stop responding to drag events
+				goog.events.unlisten(card,['mousedown','touchstart'], makeDraggable);
+
+				tile.runAction(new lime.animation.Sequence(
+					new lime.animation.ScaleTo(1.2).setDuration(.3),
+					new lime.animation.ScaleTo(1).setDuration(.3)
+				));
+
+				//block card from automatically dropping itself onto the board
+				e.stopPropagation();
+			}
+			else {
+				card.runAction(new lime.animation.MoveTo(start_loc).setDuration(0.2));
 			}
 
-			//stop responding to drag events
-			goog.events.unlisten(card,['mousedown','touchstart'],makeDraggable);
-
-			tile.runAction(new lime.animation.Sequence(
-				new lime.animation.ScaleTo(1.2).setDuration(.3),
-				new lime.animation.ScaleTo(1).setDuration(.3)
-			));
-
-			//block card from automatically dropping itself onto the board
-			e.stopPropagation();
 
     	});
 
@@ -77,7 +87,6 @@ diamondrun.Card.prototype.getOwner = function() {
 }
 diamondrun.Card.prototype.getValidTargets = function() {
 	return this.owner.getBoard().getTiles();
-	
 };
 
 

@@ -12,8 +12,17 @@ diamondrun.Player = function(board, hand, deck, graveyard) {
 }
 
 diamondrun.Player.prototype.playCard = function(card, tile) {
+	
 	var cmd = new diamondrun.PlayCardCommand(this, card, tile);
 	Commands.add(cmd);
+
+	this.endPlayPhase();
+	
+}
+diamondrun.Player.prototype.endPlayPhase = function() {
+	for (var i = 0; i < this.hand.cards.length; i ++) {
+	//	this.hands.cards[i].disableDragging();
+	}
 	this.canActThisPhase = false;
 	if (this.actionCallback) {
 		this.actionCallback();
@@ -21,8 +30,13 @@ diamondrun.Player.prototype.playCard = function(card, tile) {
 	}
 }
 diamondrun.Player.prototype.beginPlayPhase = function(callback) {
+	
 	this.canActThisPhase = true;
 	this.actionCallback = callback;
+
+	for (var i = 0; i < this.hand.cards.length; i ++) {
+	//	this.hand.cards[i].enableDragging();
+	}
 }
 
 diamondrun.Player.prototype.getCanAct = function() {
