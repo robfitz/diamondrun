@@ -12,7 +12,7 @@ diamondrun.Unit = function(tile, movement, attack, hp) {
 	this.hp = hp;
 	this.maxHp = hp;
 
-	this.setSize(CARD_SIZE, CARD_SIZE).setFill(0,255,150);
+	this.setSize(CARD_SIZE - CARD_SPACING * 1, CARD_SIZE - CARD_SPACING * 1).setFill(0,255,150);
 
 	this.movement = movement;
 	this.type = "unit";
