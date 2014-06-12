@@ -35,14 +35,13 @@ diamondrun.Card = function(owner) {
         e.event.stopPropagation();
 
         //add valid drop targets
-        var drop_targets = card.getValidTargets();
+        console.log(card.owner);
+        console.log(card.owner.board);
+        console.log(card.owner.board.getValidTargets(card));
+        var drop_targets = card.owner.getBoard().getValidTargets(card);
         for (var i = 0; i < drop_targets.length; i ++) {
         	drag.addDropTarget(drop_targets[i]);
         }
-
-        goog.events.listen(drag, lime.events.Drag.Event.MOVE, function(e) {
-
-        });
 
       	goog.events.listen(drag, lime.events.Drag.Event.DROP, function(e){
 			
@@ -85,9 +84,6 @@ goog.inherits(diamondrun.Card, lime.Sprite);
 diamondrun.Card.prototype.getOwner = function() {
 	return this.owner;
 }
-diamondrun.Card.prototype.getValidTargets = function() {
-	return this.owner.getBoard().getTiles();
-};
 
 
 diamondrun.Hand = function(owner) {

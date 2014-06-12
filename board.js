@@ -68,6 +68,14 @@ diamondrun.Board = function(is_friendly) {
 
 }
 goog.inherits(diamondrun.Board, lime.Layer);
+
+diamondrun.Board.prototype.getValidTargets = function(card) {
+	var targets = [];
+	for (var i = 0; i < this.tiles.length; i ++) {
+		if (this.tiles[i].contents == null) targets.push(this.tiles[i]);
+	}
+	return targets;
+};
 diamondrun.Board.prototype.getTiles = function() {
 	return this.tiles;
 };
