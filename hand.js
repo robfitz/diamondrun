@@ -35,9 +35,6 @@ diamondrun.Card = function(owner) {
         e.event.stopPropagation();
 
         //add valid drop targets
-        console.log(card.owner);
-        console.log(card.owner.board);
-        console.log(card.owner.board.getValidTargets(card));
         var drop_targets = card.owner.getBoard().getValidTargets(card);
         for (var i = 0; i < drop_targets.length; i ++) {
         	drag.addDropTarget(drop_targets[i]);
@@ -63,6 +60,8 @@ diamondrun.Card = function(owner) {
 				e.stopPropagation();
 			}
 			else {
+				//if we aren't allowed to play a card right now, just go back to
+				//the stating location in the hand
 				card.runAction(new lime.animation.MoveTo(start_loc).setDuration(0.2));
 			}
 
