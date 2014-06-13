@@ -81,6 +81,11 @@ var Phases = {
                 break;
 
             case Phases.p1_end:
+				// Remove summoning sickness from units on the board
+				var units = game.player1.board.getUnits();
+                for (var i = 0; i < units.length; i ++) {
+                    units[i].isSSick = false;
+                }
                 Commands.add(new diamondrun.NextPhaseCommand());
                 break;
 

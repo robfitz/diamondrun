@@ -19,7 +19,7 @@ diamondrun.Player.prototype.doAttack = function() {
 	for (var i = units.length - 1; i >= 0; i --) {
 	    callbacks.push(units[i].doAttack);
 	    contexts.push(units[i]);
-	}   
+	}
 	//TODO: i'm sure i'm going to regret this callback chain
 	//sometime soon, but i haven't yet figured out a
 	//better way to get the animations and phase advance
