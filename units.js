@@ -9,7 +9,7 @@ goog.require('lime.animation.RotateBy');
 goog.require('lime.animation.ScaleTo');
 goog.require('lime.animation.FadeTo');
 
-diamondrun.Unit = function(owner, tile, movement, attack, hp, isSSick) {
+diamondrun.Unit = function(owner, tile, movement, attack, hp) {
 	goog.base(this);
 	
 	this.owner = owner;
@@ -22,7 +22,7 @@ diamondrun.Unit = function(owner, tile, movement, attack, hp, isSSick) {
 
 	this.movement = movement;
 	this.type = "unit";
-	this.isSSick = isSSick;
+	this.isSSick = true;
 
 	this.redraw();
 	game.unitLayer.appendChild(this);

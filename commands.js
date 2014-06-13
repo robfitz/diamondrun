@@ -12,7 +12,7 @@ diamondrun.PlayCardCommand = function(player, card, targetTile) {
 diamondrun.PlayCardCommand.prototype.execute = function() {
 	
 	// apply effect to board
-	var unit = new diamondrun.Unit(this.player, this.targetTile, 'melee', 1, 2, true);
+	var unit = new diamondrun.Unit(this.player, this.targetTile, 'melee', 1, 2);
 	
 	if (this.targetTile.addUnit(unit)) {
 		// move from hand to graveyard
