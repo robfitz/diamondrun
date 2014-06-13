@@ -40,6 +40,11 @@ diamondrun.Tile.prototype.addUnit = function(unit) {
 
 	return true;
 };
+diamondrun.Tile.prototype.removeUnit = function(unit) {
+	if (this.contents == unit) {
+		this.contents = null;
+	}
+}
 diamondrun.Tile.prototype.getAttackPath = function() {
 	return this.path;
 }

@@ -1,8 +1,13 @@
 goog.provide('diamondrun.Unit');
 
 goog.require('lime.Sprite');
+goog.require('lime.Label');
+goog.require('lime.animation.Spawn');
 goog.require('lime.animation.Sequence');
 goog.require('lime.animation.MoveTo');
+goog.require('lime.animation.RotateBy');
+goog.require('lime.animation.ScaleTo');
+goog.require('lime.animation.FadeTo');
 
 diamondrun.Unit = function(owner, tile, movement, attack, hp) {
 	goog.base(this);
@@ -18,18 +23,55 @@ diamondrun.Unit = function(owner, tile, movement, attack, hp) {
 	this.movement = movement;
 	this.type = "unit";
 
+	this.redraw();
 	game.unitLayer.appendChild(this);
-
 }
 
-goog.inherits(diamondrun.Unit, lime.Sprite);
 
+goog.inherits(diamondrun.Unit, lime.Label);
+
+diamondrun.Unit.prototype.redraw = function() {
+	if (this.hp == this.maxHp) this.setText(this.attack + '/' + this.maxHp);
+	else {
+		var missing = this.maxHp - this.hp;
+		this.setText(this.attack + '/' + this.maxHp + ' - ' + missing);
+	}
+}
+
+diamondrun.Unit.prototype.takeDamage = function(damage) {
+	this.hp -= damage;
+	if (this.hp <= 0) {
+		this.die();
+	}
+	this.redraw();
+}
+diamondrun.Unit.prototype.die = function() {
+	//death effect
+	var dieEffect = new lime.animation.Spawn(
+	    new lime.animation.ScaleTo(5),
+	    new lime.animation.FadeTo(0),
+		new lime.animation.RotateBy(90)
+	).setDuration(0.4);
+	this.runAction(dieEffect);
+	var self = this;
+	goog.events.listen(dieEffect,lime.animation.Event.STOP,function(){
+    	//remove from board
+		self.tile.removeUnit(self);
+		self.getParent().removeChild(self);
+	});
+
+	
+
+}
 diamondrun.Unit.prototype.doAttack = function(contexts, callbacks) {
 	var path = this.tile.getAttackPath();
 
 	var animations = [];
 	var startPosition = this.getPosition();
 	var localPosition = this.getPosition();
+
+	var duration = 0;
+	var self = this;
 
 	//step through path looking for obstruction)
 	for (var i = 0; i < path.length; i ++) {
@@ -43,6 +85,7 @@ diamondrun.Unit.prototype.doAttack = function(contexts, callbacks) {
 		//nothing blocking? add move
 		if (!contents) {
 			animations.push(new lime.animation.MoveTo(localPosition).setDuration(.3));
+			duration += 0.3;
 		}
 		//something blocking?
 		else if (contents.type == 'unit') {
@@ -52,14 +95,22 @@ diamondrun.Unit.prototype.doAttack = function(contexts, callbacks) {
 				console.log('bumped friendly');
 				var bumpY = (lastPosition.y + localPosition.y) / 2;
 				animations.push(new lime.animation.MoveTo(lastPosition.x, bumpY).setDuration(.1));
+				duration += 0.1;
 				break;
 			}
 			//enemy? hit it and head home
 			else {
 				console.log('TODO: damage');
+				
 				var bumpY = (lastPosition.y + localPosition.y) / 2;
 				var bumpX = (lastPosition.x + localPosition.x) / 2;
 				animations.push(new lime.animation.MoveTo(bumpX, bumpY).setDuration(.1));
+				
+				lime.scheduleManager.callAfter(function(dt) {	
+					contents.takeDamage(self.attack);
+				}, null, duration*1000);
+				duration += 0.1;
+
 				break;
 			}
 		}
@@ -70,14 +121,12 @@ diamondrun.Unit.prototype.doAttack = function(contexts, callbacks) {
 		var localPosition = this.getParent().screenToLocal(screenPosition);
 
 		animations.push(new lime.animation.MoveTo(localPosition).setDuration(.2));
+		duration += 0.2;
 	}
 	animations.push(new lime.animation.MoveTo(startPosition).setDuration(.2));
+	duration += 0.2;
 
-	var duration = 0;
-	for (i = 0; i < animations.length; i ++) {
-		duration += animations[i].getDuration();
-	}
-
+	
 	//TODO: i'm sure i'm going to regret this callback chain
 	//sometime soon, but i haven't yet figured out a
 	//better way to get the animations and phase advance
