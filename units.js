@@ -30,6 +30,10 @@ diamondrun.Unit = function(owner, tile, movement, attack, hp) {
 
 goog.inherits(diamondrun.Unit, lime.Label);
 
+diamondrun.Unit.prototype.heal = function() {
+	this.hp = this.maxHp;
+	this.redraw();
+}
 diamondrun.Unit.prototype.redraw = function() {
 	if (this.hp == this.maxHp) this.setText(this.attack + '/' + this.maxHp);
 	else {

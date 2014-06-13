@@ -51,6 +51,11 @@ var Phases = {
         switch (this.current) {
 
             case Phases.p1_start:
+                //heal p1 units
+                var units = game.player1.board.getUnits();
+                for (var i = 0; i < units.length; i ++) {
+                    units[i].heal();
+                }
                 Commands.add(new diamondrun.NextPhaseCommand());
                 break;
 
@@ -79,6 +84,15 @@ var Phases = {
                 Commands.add(new diamondrun.NextPhaseCommand());
                 break;
 
+            case Phases.p2_start:
+                //heal p2 units
+                var units = game.player2.board.getUnits();
+                for (var i = 0; i < units.length; i ++) {
+                    units[i].heal();
+                }
+                Commands.add(new diamondrun.NextPhaseCommand());
+                break;
+
             case Phases.p2_play1:
             case Phases.p2_play2:
                 
@@ -94,7 +108,6 @@ var Phases = {
                 game.player2.doAttack();
                 break;
 
-            case Phases.p2_start:
             case Phases.p2_draw:
 
             case Phases.p2_end:
