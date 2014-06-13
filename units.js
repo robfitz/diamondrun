@@ -36,7 +36,10 @@ diamondrun.Unit.prototype.heal = function() {
 	this.redraw();
 }
 diamondrun.Unit.prototype.redraw = function() {
-	if (this.hp == this.maxHp) this.setText(this.attack + '/' + this.maxHp);
+	// TODO: Create animations for summoning sickness to replace this
+	if (this.isSSick) this.setText(this.attack + '/' + this.hp + ' : Sick');
+
+	else if (this.hp == this.maxHp) this.setText(this.attack + '/' + this.maxHp);
 	else {
 		var missing = this.maxHp - this.hp;
 		this.setText(this.attack + '/' + this.maxHp + ' - ' + missing);
