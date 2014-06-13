@@ -57,6 +57,10 @@ diamondrun.Unit.prototype.doAttack = function(contexts, callbacks) {
 			//enemy? hit it and head home
 			else {
 				console.log('TODO: damage');
+				var bumpY = (lastPosition.y + localPosition.y) / 2;
+				var bumpX = (lastPosition.x + localPosition.x) / 2;
+				animations.push(new lime.animation.MoveTo(bumpX, bumpY).setDuration(.1));
+				break;
 			}
 		}
 	}

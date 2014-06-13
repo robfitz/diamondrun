@@ -26,7 +26,7 @@ diamondrun.Player.prototype.doAttack = function() {
 	//to happen sequentially
 	var firstCall = callbacks.shift();
 	var firstContext = contexts.shift();
-            firstCall.call(firstContext, contexts, callbacks);
+    firstCall.call(firstContext, contexts, callbacks);
 
 }
 
