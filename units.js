@@ -109,7 +109,7 @@ diamondrun.Unit.prototype.doAttack = function(contexts, callbacks) {
 
 		var contents = path[i].contents;
 		//nothing blocking? add move
-		if (!contents) {
+		if (!contents || contents.type == 'rubble') {
 			animations.push(new lime.animation.MoveTo(localPosition).setDuration(.3));
 			duration += 0.3;
 		}
