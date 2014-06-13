@@ -54,21 +54,26 @@ diamondrun.Unit.prototype.takeDamage = function(damage) {
 	this.redraw();
 }
 diamondrun.Unit.prototype.die = function() {
+
 	//death effect
 	var dieEffect = new lime.animation.Spawn(
 	    new lime.animation.ScaleTo(5),
 	    new lime.animation.FadeTo(0),
 		new lime.animation.RotateBy(90)
 	).setDuration(0.4);
+	
 	this.runAction(dieEffect);
+	
 	var self = this;
+	var rubbleTile = this.tile
+	
 	goog.events.listen(dieEffect,lime.animation.Event.STOP,function(){
     	//remove from board
 		self.tile.removeUnit(self);
 		self.getParent().removeChild(self);
+		var rubble = new diamondrun.Rubble(rubbleTile, 1);
+		rubbleTile.addRubble(rubble)
 	});
-
-	
 
 }
 diamondrun.Unit.prototype.doAttack = function(contexts, callbacks) {
@@ -83,7 +88,6 @@ diamondrun.Unit.prototype.doAttack = function(contexts, callbacks) {
 
 	// Check to see if the unit has Summoning Sickness
 	if (this.isSSick) {
-		this.isSSick = false; // Remove Summoning sickness now
 		if (callbacks && callbacks.length > 0) {
 			var firstCall = callbacks.shift();
 			var firstContext = contexts.shift();
