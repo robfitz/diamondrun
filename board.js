@@ -45,6 +45,20 @@ diamondrun.Tile.prototype.removeUnit = function(unit) {
 		this.contents = null;
 	}
 }
+
+diamondrun.Tile.prototype.addRubble = function(rubble) {
+	
+	this.contents = rubble;
+	var tilePos = this.getParent().localToScreen(this.getPosition());
+	var rubblePos = rubble.getParent().screenToLocal(tilePos);
+	rubble.setPosition(rubblePos);
+}
+diamondrun.Tile.prototype.removeRubble = function(rubble) {
+	if (this.contents == rubble) {
+		this.contents = null;
+	}
+}
+
 diamondrun.Tile.prototype.getAttackPath = function() {
 	return this.path;
 }
@@ -95,6 +109,15 @@ diamondrun.Board.prototype.getUnits = function() {
 	}
 	console.log(units);
 	return units;
+};
+diamondrun.Board.prototype.getRubble = function() {
+	var rubble = [];
+	for (var i = 0; i < this.tiles.length; i ++) {
+		if (this.tiles[i].contents && this.tiles[i].contents.type == 'rubble') {
+		 	rubble.push(this.tiles[i].contents);
+		}
+	}
+	return rubble;
 };
 diamondrun.Board.prototype.connectAttackPaths = function(enemyBoard) {
 

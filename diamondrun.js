@@ -11,6 +11,7 @@ goog.require('diamondrun.Hand');
 goog.require('diamondrun.Deck');
 goog.require('diamondrun.Graveyard');
 goog.require('diamondrun.Player');
+goog.require('diamondrun.Rubble');
 
 var IPHONE_4_W = 640;
 var IPHONE_4_H = 960;
@@ -81,6 +82,19 @@ var Phases = {
                 break;
 
             case Phases.p1_end:
+				// Remove summoning sickness from units on Player1's board
+				var units = game.player1.board.getUnits();
+                for (var i = 0; i < units.length; i ++) {
+                    units[i].isSSick = false;
+					units[i].redraw();
+                }
+				
+				// Chip away rubble from Player 1's board
+				var rubble = game.player1.board.getRubble();
+                for (var i = 0; i < rubble.length; i ++) {
+                    rubble[i].breakdown();
+                }
+				
                 Commands.add(new diamondrun.NextPhaseCommand());
                 break;
 
@@ -109,8 +123,23 @@ var Phases = {
                 break;
 
             case Phases.p2_draw:
+				console.log("Player 2 draw");
+				Commands.add(new diamondrun.NextPhaseCommand());
+				break;
 
             case Phases.p2_end:
+				// Remove summoning sickness from units on Player2's board
+				var units = game.player2.board.getUnits();
+                for (var i = 0; i < units.length; i ++) {
+                    units[i].isSSick = false;
+					units[i].redraw();
+                }
+				
+				// Chip away rubble from Player 2's board
+				var rubble = game.player2.board.getRubble();
+                for (var i = 0; i < rubble.length; i ++) {
+                    rubble[i].breakdown();
+                }
                 Commands.add(new diamondrun.NextPhaseCommand());
                 break;
         }
@@ -144,11 +173,12 @@ diamondrun.start = function(){
     game.player1 = player;
 
     game.unitLayer = new lime.Layer();
+	game.rubbleLayer = new lime.Layer();
 
     game.player2 = new diamondrun.Player(false);
     game.player2.getBoard().setPosition(IPHONE_4_W / 2, IPHONE_4_H / 2 - 265);
 
-    scene.appendChild(player.getBoard()).appendChild(game.player2.getBoard()).appendChild(player.getGraveyard()).appendChild(player.getHand()).appendChild(game.unitLayer);
+    scene.appendChild(player.getBoard()).appendChild(game.player2.getBoard()).appendChild(player.getGraveyard()).appendChild(player.getHand()).appendChild(game.unitLayer).appendChild(game.rubbleLayer);
 
     var phase_label = new lime.Label().setText('P').setPosition(50, 50);
     scene.appendChild(phase_label);

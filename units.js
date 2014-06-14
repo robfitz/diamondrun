@@ -22,6 +22,7 @@ diamondrun.Unit = function(owner, tile, movement, attack, hp) {
 
 	this.movement = movement;
 	this.type = "unit";
+	this.isSSick = true;
 
 	this.redraw();
 	game.unitLayer.appendChild(this);
@@ -35,7 +36,10 @@ diamondrun.Unit.prototype.heal = function() {
 	this.redraw();
 }
 diamondrun.Unit.prototype.redraw = function() {
-	if (this.hp == this.maxHp) this.setText(this.attack + '/' + this.maxHp);
+	// TODO: Create animations for summoning sickness to replace this
+	if (this.isSSick) this.setText(this.attack + '/' + this.hp + ' : Sick');
+
+	else if (this.hp == this.maxHp) this.setText(this.attack + '/' + this.maxHp);
 	else {
 		var missing = this.maxHp - this.hp;
 		this.setText(this.attack + '/' + this.maxHp + ' - ' + missing);
@@ -50,18 +54,25 @@ diamondrun.Unit.prototype.takeDamage = function(damage) {
 	this.redraw();
 }
 diamondrun.Unit.prototype.die = function() {
+
 	//death effect
 	var dieEffect = new lime.animation.Spawn(
 	    new lime.animation.ScaleTo(5),
 	    new lime.animation.FadeTo(0),
 		new lime.animation.RotateBy(90)
 	).setDuration(0.4);
+	
 	this.runAction(dieEffect);
+	
 	var self = this;
+	var rubbleTile = this.tile
+	
 	goog.events.listen(dieEffect,lime.animation.Event.STOP,function(){
     	//remove from board
 		self.tile.removeUnit(self);
 		self.getParent().removeChild(self);
+		var rubble = new diamondrun.Rubble(rubbleTile, 1);
+		rubbleTile.addRubble(rubble)
 	});
 }
 diamondrun.Unit.prototype.doAttack = function(contexts, callbacks) {
@@ -74,6 +85,19 @@ diamondrun.Unit.prototype.doAttack = function(contexts, callbacks) {
 	var duration = 0;
 	var self = this;
 
+	// Check to see if the unit has Summoning Sickness
+	if (this.isSSick) {
+		if (callbacks && callbacks.length > 0) {
+			var firstCall = callbacks.shift();
+			var firstContext = contexts.shift();
+			firstCall.call(firstContext, contexts, callbacks);
+		}
+		else {
+			Commands.add(new diamondrun.NextPhaseCommand());
+		}
+		return;
+	}
+	
 	//step through path looking for obstruction)
 	for (var i = 0; i < path.length; i ++) {
 
@@ -84,7 +108,7 @@ diamondrun.Unit.prototype.doAttack = function(contexts, callbacks) {
 
 		var contents = path[i].contents;
 		//nothing blocking? add move
-		if (!contents) {
+		if (!contents || contents.type == 'rubble') {
 			animations.push(new lime.animation.MoveTo(localPosition).setDuration(.3));
 			duration += 0.3;
 		}
@@ -116,6 +140,7 @@ diamondrun.Unit.prototype.doAttack = function(contexts, callbacks) {
 			}
 		}
 	}
+
 	//if still alive, step backwards to return to start point
 	for (i = i - 1; i >= 0; i --) {
 		var screenPosition = path[i].getParent().localToScreen(path[i].getPosition());
@@ -127,7 +152,6 @@ diamondrun.Unit.prototype.doAttack = function(contexts, callbacks) {
 	animations.push(new lime.animation.MoveTo(startPosition).setDuration(.2));
 	duration += 0.2;
 
-	
 	//TODO: i'm sure i'm going to regret this callback chain
 	//sometime soon, but i haven't yet figured out a
 	//better way to get the animations and phase advance
@@ -135,13 +159,13 @@ diamondrun.Unit.prototype.doAttack = function(contexts, callbacks) {
 	lime.scheduleManager.callAfter(function(dt) {
 		if (callbacks && callbacks.length > 0) {
 			var firstCall = callbacks.shift();
-            var firstContext = contexts.shift();
-            firstCall.call(firstContext, contexts, callbacks);
+			var firstContext = contexts.shift();
+			firstCall.call(firstContext, contexts, callbacks);
 		}
 		else {
-        	Commands.add(new diamondrun.NextPhaseCommand());
-    	}
-    }, null, duration*1000);
+			Commands.add(new diamondrun.NextPhaseCommand());
+		}
+	}, null, duration*1000);
 
 	this.runAction(new lime.animation.Sequence(animations));
 

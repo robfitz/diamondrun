@@ -36,4 +36,3 @@ diamondrun.NextPhaseCommand = function() {
 diamondrun.NextPhaseCommand.prototype.execute = function() {
 	Phases.next();
 }
-
