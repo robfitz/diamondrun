@@ -176,7 +176,7 @@ diamondrun.start = function(){
     game.player2 = new diamondrun.Player(false);
     game.player2.getBoard().setPosition(IPHONE_4_W / 2, IPHONE_4_H / 2 - 265);
 
-    scene.appendChild(player.getBoard()).appendChild(game.player2.getBoard()).appendChild(player.getGraveyard()).appendChild(player.getHand()).appendChild(game.unitLayer).appendChild(game.rubbleLayer);
+    scene.appendChild(player.getBoard()).appendChild(game.player2.getBoard()).appendChild(player.getHand()).appendChild(game.unitLayer).appendChild(game.rubbleLayer);
 
     var phase_label = new lime.Label().setText('P').setPosition(50, 50);
     scene.appendChild(phase_label);

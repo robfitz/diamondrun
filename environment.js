@@ -36,7 +36,7 @@ diamondrun.Rubble.prototype.breakdown = function() {
 	this.redraw();
 	if (this.turnsActive == 0) {
 		var dieEffect = new lime.animation.Spawn(
-			new lime.animation.ScaleTo(5),
+			
 			new lime.animation.FadeTo(0),
 			new lime.animation.RotateBy(90)
 		).setDuration(0.4);
