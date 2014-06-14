@@ -7,6 +7,7 @@ goog.require('diamondrun.PlayCardCommand');
 
 goog.require('lime.Sprite');
 goog.require('lime.Layer');
+goog.require('lime.Label');
 goog.require('lime.animation.Sequence');
 goog.require('lime.animation.MoveTo');
 goog.require('lime.animation.ScaleTo');
@@ -26,6 +27,8 @@ diamondrun.Card = function(owner, movement, attack, hp) {
 	this.movement = movement;
 	this.attack = attack;
 	this.hp = hp;
+
+	this.setText(this.attack + '/' + this.hp + ' ' + this.movement)
 
 	this.setSize(CARD_SIZE, CARD_SIZE).setFill(255,150,150);
 
@@ -82,7 +85,7 @@ diamondrun.Card = function(owner, movement, attack, hp) {
 
 }
 
-goog.inherits(diamondrun.Card, lime.Sprite);
+goog.inherits(diamondrun.Card, lime.Label);
 
 diamondrun.Card.prototype.getOwner = function() {
 	return this.owner;
