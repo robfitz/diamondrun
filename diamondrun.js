@@ -71,7 +71,6 @@ var Phases = {
             case Phases.p1_play1:
             case Phases.p1_play2:
                 //wait for user action
-                //TODO: add turn timer
                 game.player1.beginPlayPhase(function() {
                     Commands.add(new diamondrun.NextPhaseCommand());
                 });
@@ -123,7 +122,6 @@ var Phases = {
                 break;
 
             case Phases.p2_draw:
-				console.log("Player 2 draw");
 				Commands.add(new diamondrun.NextPhaseCommand());
 				break;
 

@@ -36,14 +36,14 @@ diamondrun.Unit.prototype.heal = function() {
 	this.redraw();
 }
 diamondrun.Unit.prototype.redraw = function() {
-	// TODO: Create animations for summoning sickness to replace this
-	if (this.isSSick) this.setText(this.attack + '/' + this.hp + ' : Sick');
-
-	else if (this.hp == this.maxHp) this.setText(this.attack + '/' + this.maxHp);
-	else {
+	var label = this.attack + '/' + this.maxHp
+	if (this.hp < this.maxHp) {
 		var missing = this.maxHp - this.hp;
-		this.setText(this.attack + '/' + this.maxHp + ' - ' + missing);
+		label += ' - ' + missing;
 	}
+	if (this.isSSick) label += ' (' + this.movement + ')';
+	else label += ' ' + this.movement;
+	this.setText(label);
 }
 
 diamondrun.Unit.prototype.takeDamage = function(damage) {
@@ -75,7 +75,17 @@ diamondrun.Unit.prototype.die = function() {
 		rubbleTile.addRubble(rubble)
 	});
 }
+
+diamondrun.Unit.prototype.doMeleeAttack = function(contexts, callbacks) {
+
+}
+
+diamondrun.Unit.prototype.doRangedAttack = function(contexts, callbacks) {
+
+
+}
 diamondrun.Unit.prototype.doAttack = function(contexts, callbacks) {
+	
 	var path = this.tile.getAttackPath();
 
 	var animations = [];
@@ -97,8 +107,10 @@ diamondrun.Unit.prototype.doAttack = function(contexts, callbacks) {
 		}
 		return;
 	}
-	
+
+		
 	//step through path looking for obstruction)
+	var turnBack = false;
 	for (var i = 0; i < path.length; i ++) {
 
 		lastPosition = localPosition;
@@ -106,27 +118,17 @@ diamondrun.Unit.prototype.doAttack = function(contexts, callbacks) {
 		var screenPosition = path[i].getParent().localToScreen(path[i].getPosition());
 		var localPosition = this.getParent().screenToLocal(screenPosition);
 
-		var contents = path[i].contents;
+		var action = this.canMoveToTile(i, path[i]);
+
 		//nothing blocking? add move
-		if (!contents || contents.type == 'rubble') {
-			animations.push(new lime.animation.MoveTo(localPosition).setDuration(.3));
-			duration += 0.3;
-		}
-		//something blocking?
-		else if (contents.type == 'unit') {
-			
-			//friendly? bump into it and head home
-			if (contents.owner == this.owner) {
-				console.log('bumped friendly');
-				var bumpY = (lastPosition.y + localPosition.y) / 2;
-				animations.push(new lime.animation.MoveTo(lastPosition.x, bumpY).setDuration(.1));
-				duration += 0.1;
+		switch (action) {
+			case 'move':
+				animations.push(new lime.animation.MoveTo(localPosition).setDuration(.3));
+				duration += 0.3;
 				break;
-			}
-			//enemy? hit it and head home
-			else {
-				console.log('TODO: damage');
-				
+			case 'fight':
+				var contents = path[i].contents;
+		
 				var bumpY = (lastPosition.y + localPosition.y) / 2;
 				var bumpX = (lastPosition.x + localPosition.x) / 2;
 				animations.push(new lime.animation.MoveTo(bumpX, bumpY).setDuration(.1));
@@ -135,10 +137,16 @@ diamondrun.Unit.prototype.doAttack = function(contexts, callbacks) {
 					contents.takeDamage(self.attack);
 				}, null, duration*1000);
 				duration += 0.1;
-
+				turnBack = true;
 				break;
-			}
+			case 'collide':
+				var bumpY = (lastPosition.y + localPosition.y) / 2;
+				animations.push(new lime.animation.MoveTo(lastPosition.x, bumpY).setDuration(.1));
+				duration += 0.1;
+				turnBack = true;
+				break;
 		}
+		if (turnBack) break;
 	}
 
 	//if still alive, step backwards to return to start point
@@ -169,4 +177,33 @@ diamondrun.Unit.prototype.doAttack = function(contexts, callbacks) {
 
 	this.runAction(new lime.animation.Sequence(animations));
 
+}
+
+//returns 'move', 'collide', or 'fight'
+diamondrun.Unit.prototype.canMoveToTile = function(stepNum, tile) {
+	var contents = tile.contents;
+
+	switch(this.movement) {
+		case 'melee':
+			if (!contents || contents.type == 'rubble') {
+				return 'move';
+			}
+			else if (contents.type == 'unit') {
+				if (contents.owner == this.owner) return 'collide';
+				else return 'fight';
+			}
+			break;
+		case 'shooter':
+			if (!contents || contents.type == 'rubble') {
+				return 'move';
+			}
+			else if (contents.type == 'unit') {
+				if (contents.owner == this.owner) return 'move';
+				else return 'fight';
+			}
+			break;
+		default:
+			console.log('WARNING: unknown movement type in Unit.canMoveToTile');
+			return 'collide';
+	}	
 }
