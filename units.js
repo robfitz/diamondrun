@@ -63,9 +63,6 @@ diamondrun.Unit.prototype.die = function() {
 		self.tile.removeUnit(self);
 		self.getParent().removeChild(self);
 	});
-
-	
-
 }
 diamondrun.Unit.prototype.doAttack = function(contexts, callbacks) {
 	var path = this.tile.getAttackPath();
