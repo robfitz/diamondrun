@@ -110,7 +110,7 @@ var Phases = {
             case Phases.p2_play1:
             case Phases.p2_play2:
                 
-                var dummyCard = new diamondrun.Card(game.player2);
+                var dummyCard = new diamondrun.Card(game.player2, 'melee', 1, 2);
                 var targets = game.player2.board.getValidTargets(dummyCard);
                 var dummyTarget = targets[Math.floor(Math.random()*targets.length)];
                 Commands.add(new diamondrun.PlayCardCommand(game.player2, dummyCard, dummyTarget));
@@ -208,4 +208,19 @@ Array.prototype.remove = function(from, to) {
   var rest = this.slice((to || from) + 1 || this.length);
   this.length = from < 0 ? this.length + from : from;
   return this.push.apply(this, rest);
+};
+
+Array.prototype.shuffle = function() {
+    var counter = this.length, temp, index;
+
+    // While there are elements in the array
+    while (counter > 0) {
+        // Pick a random index
+        index = (Math.random() * counter--) | 0;
+
+        // And swap the last element with it
+        temp = this[counter];
+        this[counter] = this[index];
+        this[index] = temp;
+    }
 };

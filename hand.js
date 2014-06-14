@@ -17,9 +17,15 @@ var CARD_SIZE = 100;
 var CARD_SPACING = 5;
 
 
-diamondrun.Card = function(owner) {
+diamondrun.Card = function(owner, movement, attack, hp) {
 	goog.base(this);
 	this.owner = owner;
+
+	// TODO: unit info should probably be in a database
+	// 	or data file somewhere
+	this.movement = movement;
+	this.attack = attack;
+	this.hp = hp;
 
 	this.setSize(CARD_SIZE, CARD_SIZE).setFill(255,150,150);
 
@@ -64,8 +70,6 @@ diamondrun.Card = function(owner) {
 				//the stating location in the hand
 				card.runAction(new lime.animation.MoveTo(start_loc).setDuration(0.2));
 			}
-
-
     	});
 
         //listen for end event
@@ -101,6 +105,7 @@ diamondrun.Hand.prototype.removeCard = function(card) {
 	}
 	this.refreshCardLocations();
 }
+
 diamondrun.Hand.prototype.drawCard = function() {
 	var card = this.owner.getDeck().drawCard();
 	this.cards.push(card);
@@ -120,11 +125,19 @@ diamondrun.Hand.prototype.refreshCardLocations = function() {
 diamondrun.Deck = function(owner) {
 	goog.base(this);
 	this.owner = owner;
+
+	this.cards = [];
+	for (var i = 0; i < 5; i ++) {
+		this.cards.push(new diamondrun.Card(owner, 'melee', 1, 1));
+		this.cards.push(new diamondrun.Card(owner, 'melee', 2, 1));
+		this.cards.push(new diamondrun.Card(owner, 'melee', 1, 2));
+		this.cards.push(new diamondrun.Card(owner, 'melee', 2, 2));
+	}
 }
 goog.inherits(diamondrun.Deck, lime.Layer);
 
 diamondrun.Deck.prototype.drawCard = function() {
-	return new diamondrun.Card(this.owner);
+	return this.cards.pop();
 };
 
 
