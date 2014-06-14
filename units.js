@@ -76,14 +76,6 @@ diamondrun.Unit.prototype.die = function() {
 	});
 }
 
-diamondrun.Unit.prototype.doMeleeAttack = function(contexts, callbacks) {
-
-}
-
-diamondrun.Unit.prototype.doRangedAttack = function(contexts, callbacks) {
-
-
-}
 diamondrun.Unit.prototype.doAttack = function(contexts, callbacks) {
 	
 	var path = this.tile.getAttackPath();
