@@ -199,3 +199,12 @@ diamondrun.Unit.prototype.canMoveToTile = function(stepNum, tile) {
 			return 'collide';
 	}	
 }
+
+diamondrun.Unit.prototype.startTurn = function() {
+	this.heal();
+}
+
+diamondrun.Unit.prototype.endTurn = function() {
+	this.isSSick = false;
+	this.redraw();
+}

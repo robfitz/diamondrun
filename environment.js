@@ -10,42 +10,50 @@ goog.require('lime.animation.ScaleTo');
 goog.require('lime.animation.FadeTo');
 
 diamondrun.Rubble = function(tile, turnsActive) {
-	goog.base(this);
+    goog.base(this);
 	
-	this.tile = tile;
-	this.turnsActive = turnsActive;
+    this.tile = tile;
+    this.turnsActive = turnsActive;
 
-	this.setSize(CARD_SIZE - CARD_SPACING * 1, CARD_SIZE - CARD_SPACING * 1).setFill(200,200,200);
-	this.redraw();
+    this.setSize(CARD_SIZE - CARD_SPACING * 1, CARD_SIZE - CARD_SPACING * 1).setFill(200,200,200);
+    this.redraw();
 	
-	this.type = "rubble";
+    this.type = "rubble";
 	
-	game.rubbleLayer.appendChild(this);
+    game.rubbleLayer.appendChild(this);
 }
 
 goog.inherits(diamondrun.Rubble, lime.Label);
 
 diamondrun.Rubble.prototype.redraw = function() {
-	this.setText('Rubble: ' + this.turnsActive + " turns left");
+    this.setText('Rubble: ' + this.turnsActive + " turns left");
 }
 
 diamondrun.Rubble.prototype.breakdown = function() {
-	console.log(this);
-	//removal effect
-	this.turnsActive--;
-	this.redraw();
-	if (this.turnsActive == 0) {
-		var dieEffect = new lime.animation.Spawn(
-			
-			new lime.animation.FadeTo(0),
-			new lime.animation.RotateBy(90)
-		).setDuration(0.4);
-		this.runAction(dieEffect);
-		var self = this;
-		goog.events.listen(dieEffect,lime.animation.Event.STOP,function(){
-			//remove from board
-			self.tile.removeRubble(self);
-			self.getParent().removeChild(self);
-		});
-	}
+    //removal effect
+    this.redraw();
+    
+    var dieEffect = new lime.animation.Spawn(
+        new lime.animation.FadeTo(0),
+        new lime.animation.RotateBy(90)
+    ).setDuration(0.4);
+    this.runAction(dieEffect);
+    
+    var self = this;
+    goog.events.listen(dieEffect,lime.animation.Event.STOP,function(){
+        //remove from board
+        self.tile.removeRubble(self);
+        self.getParent().removeChild(self);
+    });
+}
+
+diamondrun.Rubble.prototype.startTurn = function() {
+
+}
+
+diamondrun.Rubble.prototype.endTurn = function() {
+    console.log(this);
+    console.log(!this.turnsActive);
+    if(!--this.turnsActive) this.breakdown(); // Breakdown rubble if it is no longer active
+    console.log(this.turnsActive);
 }

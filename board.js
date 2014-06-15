@@ -98,7 +98,7 @@ diamondrun.Board.prototype.getValidTargets = function(card) {
 diamondrun.Board.prototype.getTiles = function() {
 	return this.tiles;
 };
-diamondrun.Board.prototype.getUnits = function() {
+diamondrun.Board.prototype.getUnits = function() { // Not used currently, Should probably keep in for spells/abilities that target all creatures.
 	var units = [];
 	for (var i = 0; i < this.tiles.length; i ++) {
 		if (this.tiles[i].contents && this.tiles[i].contents.type == 'unit') {
@@ -188,3 +188,16 @@ diamondrun.Board.prototype.connectAttackPaths = function(enemyBoard) {
 
 };
 
+diamondrun.Board.prototype.startTurn = function() {
+	for (var i = 0; i < this.tiles.length; i ++) {
+        // Tell contents that turn has started
+        if (this.tiles[i].contents) this.tiles[i].contents.startTurn();
+    }
+}
+
+diamondrun.Board.prototype.endTurn = function() {
+	for (var i = 0; i < this.tiles.length; i ++) {
+        // Tell contents that turn is ending
+        if (this.tiles[i].contents) this.tiles[i].contents.endTurn();
+    }
+}

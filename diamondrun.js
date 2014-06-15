@@ -52,11 +52,8 @@ var Phases = {
         switch (this.current) {
 
             case Phases.p1_start:
-                //heal p1 units
-                var units = game.player1.board.getUnits();
-                for (var i = 0; i < units.length; i ++) {
-                    units[i].heal();
-                }
+				// Signal P1 board that turn is starting
+				game.player1.board.startTurn();
                 Commands.add(new diamondrun.NextPhaseCommand());
                 break;
 
@@ -81,28 +78,14 @@ var Phases = {
                 break;
 
             case Phases.p1_end:
-				// Remove summoning sickness from units on Player1's board
-				var units = game.player1.board.getUnits();
-                for (var i = 0; i < units.length; i ++) {
-                    units[i].isSSick = false;
-					units[i].redraw();
-                }
-				
-				// Chip away rubble from Player 1's board
-				var rubble = game.player1.board.getRubble();
-                for (var i = 0; i < rubble.length; i ++) {
-                    rubble[i].breakdown();
-                }
-				
+				// Signal P2 board that turn is ending
+				game.player1.board.endTurn();
                 Commands.add(new diamondrun.NextPhaseCommand());
                 break;
 
             case Phases.p2_start:
-                //heal p2 units
-                var units = game.player2.board.getUnits();
-                for (var i = 0; i < units.length; i ++) {
-                    units[i].heal();
-                }
+				// Signal P1 board that turn is starting
+				game.player2.board.startTurn();
                 Commands.add(new diamondrun.NextPhaseCommand());
                 break;
 
@@ -126,18 +109,8 @@ var Phases = {
 				break;
 
             case Phases.p2_end:
-				// Remove summoning sickness from units on Player2's board
-				var units = game.player2.board.getUnits();
-                for (var i = 0; i < units.length; i ++) {
-                    units[i].isSSick = false;
-					units[i].redraw();
-                }
-				
-				// Chip away rubble from Player 2's board
-				var rubble = game.player2.board.getRubble();
-                for (var i = 0; i < rubble.length; i ++) {
-                    rubble[i].breakdown();
-                }
+				// Signal P2 board that turn is ending
+				game.player2.board.endTurn();
                 Commands.add(new diamondrun.NextPhaseCommand());
                 break;
         }
@@ -176,7 +149,7 @@ diamondrun.start = function(){
     game.player2 = new diamondrun.Player(false);
     game.player2.getBoard().setPosition(IPHONE_4_W / 2, IPHONE_4_H / 2 - 265);
 
-    scene.appendChild(player.getBoard()).appendChild(game.player2.getBoard()).appendChild(player.getHand()).appendChild(game.unitLayer).appendChild(game.rubbleLayer);
+    scene.appendChild(player.getBoard()).appendChild(game.player2.getBoard()).appendChild(player.getHand()).appendChild(game.rubbleLayer).appendChild(game.unitLayer);
 
     var phase_label = new lime.Label().setText('P').setPosition(50, 50);
     scene.appendChild(phase_label);
