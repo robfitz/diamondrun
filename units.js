@@ -9,6 +9,7 @@ goog.require('lime.animation.RotateBy');
 goog.require('lime.animation.ScaleTo');
 goog.require('lime.animation.FadeTo');
 
+
 diamondrun.Unit = function(owner, tile, movement, attack, hp) {
 	goog.base(this);
 	
@@ -28,13 +29,13 @@ diamondrun.Unit = function(owner, tile, movement, attack, hp) {
 	game.unitLayer.appendChild(this);
 }
 
-
 goog.inherits(diamondrun.Unit, lime.Label);
 
 diamondrun.Unit.prototype.heal = function() {
 	this.hp = this.maxHp;
 	this.redraw();
 }
+
 diamondrun.Unit.prototype.redraw = function() {
 	var label = this.attack + '/' + this.maxHp
 	if (this.hp < this.maxHp) {
@@ -53,6 +54,7 @@ diamondrun.Unit.prototype.takeDamage = function(damage) {
 	}
 	this.redraw();
 }
+
 diamondrun.Unit.prototype.die = function() {
 
 	//death effect

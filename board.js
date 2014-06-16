@@ -8,6 +8,7 @@ goog.require('lime.animation.FadeTo');
 var TILE_SIZE = 100;
 var TILE_SPACING = 5;
 
+
 diamondrun.Tile = function(row, col, is_friendly) {
 	goog.base(this);
 	this.defending = null;
@@ -27,6 +28,7 @@ diamondrun.Tile = function(row, col, is_friendly) {
 		this.runAction(new lime.animation.FadeTo(1).setDuration(.1));
 	};
 }
+
 goog.inherits(diamondrun.Tile, lime.Sprite);
 
 diamondrun.Tile.prototype.addUnit = function(unit) {
@@ -39,7 +41,8 @@ diamondrun.Tile.prototype.addUnit = function(unit) {
 	unit.setPosition(unitPos);
 
 	return true;
-};
+}
+
 diamondrun.Tile.prototype.removeUnit = function(unit) {
 	if (this.contents == unit) {
 		this.contents = null;
@@ -53,6 +56,7 @@ diamondrun.Tile.prototype.addRubble = function(rubble) {
 	var rubblePos = rubble.getParent().screenToLocal(tilePos);
 	rubble.setPosition(rubblePos);
 }
+
 diamondrun.Tile.prototype.removeRubble = function(rubble) {
 	if (this.contents == rubble) {
 		this.contents = null;
@@ -63,6 +67,7 @@ diamondrun.Tile.prototype.getAttackPath = function() {
 	return this.path;
 }
 
+// --------------------------------------------------------------------------------------------------------------------------- Class Seperator
 
 diamondrun.Board = function(is_friendly) {
 	goog.base(this);
@@ -86,6 +91,7 @@ diamondrun.Board = function(is_friendly) {
 	this.tiles[8].defending = this.tiles[3];
 
 }
+
 goog.inherits(diamondrun.Board, lime.Layer);
 
 diamondrun.Board.prototype.getValidTargets = function(card) {
@@ -94,10 +100,12 @@ diamondrun.Board.prototype.getValidTargets = function(card) {
 		if (this.tiles[i].contents == null) targets.push(this.tiles[i]);
 	}
 	return targets;
-};
+}
+
 diamondrun.Board.prototype.getTiles = function() {
 	return this.tiles;
-};
+}
+
 diamondrun.Board.prototype.getUnits = function() { // Not used currently, Should probably keep in for spells/abilities that target all creatures.
 	var units = [];
 	for (var i = 0; i < this.tiles.length; i ++) {
@@ -109,7 +117,8 @@ diamondrun.Board.prototype.getUnits = function() { // Not used currently, Should
 	}
 	console.log(units);
 	return units;
-};
+}
+
 diamondrun.Board.prototype.getRubble = function() {
 	var rubble = [];
 	for (var i = 0; i < this.tiles.length; i ++) {
@@ -118,7 +127,8 @@ diamondrun.Board.prototype.getRubble = function() {
 		}
 	}
 	return rubble;
-};
+}
+
 diamondrun.Board.prototype.connectAttackPaths = function(enemyBoard) {
 
 	this.tiles[0].attacking = this.tiles[2];
@@ -186,7 +196,7 @@ diamondrun.Board.prototype.connectAttackPaths = function(enemyBoard) {
 		eb.tiles[0]
 	];
 
-};
+}
 
 diamondrun.Board.prototype.startTurn = function() {
 	for (var i = 0; i < this.tiles.length; i ++) {

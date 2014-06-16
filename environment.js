@@ -9,6 +9,7 @@ goog.require('lime.animation.RotateBy');
 goog.require('lime.animation.ScaleTo');
 goog.require('lime.animation.FadeTo');
 
+
 diamondrun.Rubble = function(tile, turnsActive) {
     goog.base(this);
 	

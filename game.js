@@ -65,15 +65,19 @@ diamondrun.Player.prototype.getCanAct = function() {
 diamondrun.Player.prototype.draw = function() {
 	this.hand.drawCard();
 }
+
 diamondrun.Player.prototype.getBoard = function() {
 	return this.board;
 }
+
 diamondrun.Player.prototype.getHand = function() {
 	return this.hand;
 }
+
 diamondrun.Player.prototype.getDeck = function() {
 	return this.deck;
 }
+
 diamondrun.Player.prototype.getGraveyard = function() {
 	return this.graveyard;
 }
