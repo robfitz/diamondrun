@@ -143,7 +143,7 @@ diamondrun.Unit.prototype.doAttack = function(contexts, callbacks) {
 		}
 		if (turnBack) break;
 	}
-
+    
 	//if still alive, step backwards to return to start point
 	for (i = i - 1; i >= 0; i --) {
 		var screenPosition = path[i].getParent().localToScreen(path[i].getPosition());
@@ -198,15 +198,13 @@ diamondrun.Unit.prototype.canMoveToTile = function(stepNum, tile) {
 			}
 			break;
         case 'jumper':
-            console.log(this.jumps);
-            if (this.jumps--) { //Have to positive check because neg. ints are eval. true as well
+            if (this.jumps-- > 0) { //Have to positive check because neg. ints are evaluated true as well
                 return 'move';
             }
             else if (!contents || contents.type == 'rubble') {
 				return 'move';
 			}
 			else if (contents.type == 'unit') {
-                this.jumps = 2;
 				if (contents.owner == this.owner) return 'collide';
 				else return 'fight';
 			}
@@ -224,4 +222,7 @@ diamondrun.Unit.prototype.startTurn = function() {
 diamondrun.Unit.prototype.endTurn = function() {
 	this.isSSick = false;
 	this.redraw();
+    
+    // Reset Movement variables
+    if (this.movement == 'jumper') this.jumps = 2;
 }
