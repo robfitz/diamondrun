@@ -22,6 +22,7 @@ diamondrun.Unit = function(owner, tile, movement, attack, hp) {
 	this.setSize(CARD_SIZE - CARD_SPACING * 1, CARD_SIZE - CARD_SPACING * 1).setFill(0,255,150);
 
 	this.movement = movement;
+    if (this.movement == 'jumper') this.jumps = 2;    
 	this.type = "unit";
 	this.isSSick = true;
 
@@ -193,6 +194,20 @@ diamondrun.Unit.prototype.canMoveToTile = function(stepNum, tile) {
 			}
 			else if (contents.type == 'unit') {
 				if (contents.owner == this.owner) return 'move';
+				else return 'fight';
+			}
+			break;
+        case 'jumper':
+            console.log(this.jumps);
+            if (this.jumps--) { //Have to positive check because neg. ints are eval. true as well
+                return 'move';
+            }
+            else if (!contents || contents.type == 'rubble') {
+				return 'move';
+			}
+			else if (contents.type == 'unit') {
+                this.jumps = 2;
+				if (contents.owner == this.owner) return 'collide';
 				else return 'fight';
 			}
 			break;

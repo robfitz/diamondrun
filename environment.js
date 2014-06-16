@@ -53,8 +53,5 @@ diamondrun.Rubble.prototype.startTurn = function() {
 }
 
 diamondrun.Rubble.prototype.endTurn = function() {
-    console.log(this);
-    console.log(!this.turnsActive);
     if(!--this.turnsActive) this.breakdown(); // Breakdown rubble if it is no longer active
-    console.log(this.turnsActive);
 }
