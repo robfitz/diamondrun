@@ -38,15 +38,16 @@ diamondrun.Effect.prototype.draw = function() {
     this.setText(label);
 };
 
-diamondrun.Effect.prototype.activate = function(contexts, callbacks) {
+diamondrun.Effect.prototype.activate = function() {
+    // Deal Damage
     this.damage(this.tile.contents);
     
-    //Activate Effect
+    // Activate Effect animation
     var actEffect = new lime.animation.Spawn(
         new lime.animation.ScaleTo(.1),
         new lime.animation.FadeTo(0),
         new lime.animation.RotateBy(0)
-    ).setDuration(0.4);
+    ).setDuration(0.5);
     
     this.runAction(actEffect);
     
@@ -55,16 +56,8 @@ diamondrun.Effect.prototype.activate = function(contexts, callbacks) {
     // once the animation is complete.
     goog.events.listen(actEffect,lime.animation.Event.STOP,function(){
         // remove from board
-        self.getParent().removeChild(self);;
-    
-        // Resume callback chain
-        if (callbacks && callbacks.length > 0) {
-            var firstCall = callbacks.shift();
-            var firstContext = contexts.shift();
-            firstCall.call(firstContext, contexts, callbacks);
-        }
-        else {
-            Commands.add(new diamondrun.NextPhaseCommand());
-        }
+        self.getParent().removeChild(self);
+        
+        Commands.add(new diamondrun.NextPhaseCommand());
     });
 };

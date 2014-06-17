@@ -14,18 +14,11 @@ diamondrun.Player = function(isPlayer1, board, hand, deck, graveyard) {
 };
 
 diamondrun.Player.prototype.doAttack = function() {
-    // run through all the effects then units on my side and tell them to figure out their attack, which will cause them to add a bunch of animations 
+    // run through all the units on my side and tell them to figure out their attack, which will cause them to add a bunch of animations 
     // and other stuff to the animation queue. once the animations are done, we can go ahead to the next phase
     var callbacks = [];
     var units = this.board.getUnits();
     var contexts = [];
-    
-    // Run through active effects
-    for (var i = 0; i < this.activeEffects.length; i++) {
-        callbacks.push(this.activeEffects[i].activate);
-        contexts.push(this.activeEffects[i]);
-    }
-    this.activeEffects = [];
     
     // Run through units
     for (var i = units.length - 1; i >= 0; i --) {
@@ -44,11 +37,15 @@ diamondrun.Player.prototype.doAttack = function() {
 };
 
 diamondrun.Player.prototype.playCard = function(card, tile) {
-    
-    var cmd = new diamondrun.PlayCardCommand(this, card, tile);
+    if (card.type == 'unitCard') var cmd = new diamondrun.PlayCardCommand(this, card, tile);
+    else if (card.type == 'burnCard') var cmd = new diamondrun.PlaySpellCommand(this, card, tile);
+    else {
+        console.log("ERROR: Card type not recognized.");
+        this.endPlayPhase();
+    }
     Commands.add(cmd);
 
-    this.endPlayPhase();
+    if (card.type == 'unitCard') this.endPlayPhase(); // End phase needs to wait for animation if spell. Probably going use callbacks to accomplish this on cleanup
     
 };
 
