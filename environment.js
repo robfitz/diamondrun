@@ -10,15 +10,15 @@ goog.require('lime.animation.FadeTo');
 
 diamondrun.Rubble = function(tile, turnsActive) {
     goog.base(this);
-	
+    
     this.tile = tile;
     this.turnsActive = turnsActive;
 
     this.setSize(CARD_SIZE - CARD_SPACING * 1, CARD_SIZE - CARD_SPACING * 1).setFill(200,200,200);
     this.redraw();
-	
+    
     this.type = "rubble";
-	
+    
     game.rubbleLayer.appendChild(this);
 }
 

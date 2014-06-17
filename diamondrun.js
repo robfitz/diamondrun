@@ -53,8 +53,8 @@ var Phases = {
         switch (this.current) {
 
             case Phases.p1_start:
-				// Signal P1 board that turn is starting
-				game.player1.board.startTurn();
+                // Signal P1 board that turn is starting
+                game.player1.board.startTurn();
                 Commands.add(new diamondrun.NextPhaseCommand());
                 break;
 
@@ -79,14 +79,14 @@ var Phases = {
                 break;
 
             case Phases.p1_end:
-				// Signal P2 board that turn is ending
-				game.player1.board.endTurn();
+                // Signal P2 board that turn is ending
+                game.player1.board.endTurn();
                 Commands.add(new diamondrun.NextPhaseCommand());
                 break;
 
             case Phases.p2_start:
-				// Signal P1 board that turn is starting
-				game.player2.board.startTurn();
+                // Signal P1 board that turn is starting
+                game.player2.board.startTurn();
                 Commands.add(new diamondrun.NextPhaseCommand());
                 break;
 
@@ -106,12 +106,12 @@ var Phases = {
                 break;
 
             case Phases.p2_draw:
-				Commands.add(new diamondrun.NextPhaseCommand());
-				break;
+                Commands.add(new diamondrun.NextPhaseCommand());
+                break;
 
             case Phases.p2_end:
-				// Signal P2 board that turn is ending
-				game.player2.board.endTurn();
+                // Signal P2 board that turn is ending
+                game.player2.board.endTurn();
                 Commands.add(new diamondrun.NextPhaseCommand());
                 break;
         }
@@ -146,7 +146,7 @@ diamondrun.start = function(){
 
     game.effectLayer = new lime.Layer();
     game.unitLayer = new lime.Layer();
-	game.rubbleLayer = new lime.Layer();
+    game.rubbleLayer = new lime.Layer();
 
     game.player2 = new diamondrun.Player(false);
     game.player2.getBoard().setPosition(IPHONE_4_W / 2, IPHONE_4_H / 2 - 265);
