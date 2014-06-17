@@ -12,6 +12,7 @@ goog.require('diamondrun.Deck');
 goog.require('diamondrun.Graveyard');
 goog.require('diamondrun.Player');
 goog.require('diamondrun.Rubble');
+goog.require('diamondrun.Effect');
 
 var IPHONE_4_W = 640;
 var IPHONE_4_H = 960;
@@ -92,7 +93,7 @@ var Phases = {
             case Phases.p2_play1:
             case Phases.p2_play2:
                 
-                var dummyCard = new diamondrun.Card(game.player2, 'melee', 1, 2);
+                var dummyCard = new diamondrun.Card(game.player2, 'melee', 1, 2, 'unitCard');
                 var targets = game.player2.board.getValidTargets(dummyCard);
                 var dummyTarget = targets[Math.floor(Math.random()*targets.length)];
                 Commands.add(new diamondrun.PlayCardCommand(game.player2, dummyCard, dummyTarget));
@@ -143,13 +144,14 @@ diamondrun.start = function(){
     var player = new diamondrun.Player(true);
     game.player1 = player;
 
+    game.effectLayer = new lime.Layer();
     game.unitLayer = new lime.Layer();
 	game.rubbleLayer = new lime.Layer();
 
     game.player2 = new diamondrun.Player(false);
     game.player2.getBoard().setPosition(IPHONE_4_W / 2, IPHONE_4_H / 2 - 265);
 
-    scene.appendChild(player.getBoard()).appendChild(game.player2.getBoard()).appendChild(player.getHand()).appendChild(game.rubbleLayer).appendChild(game.unitLayer);
+    scene.appendChild(player.getBoard()).appendChild(game.player2.getBoard()).appendChild(player.getHand()).appendChild(game.rubbleLayer).appendChild(game.unitLayer).appendChild(game.effectLayer);
 
     var phase_label = new lime.Label().setText('P').setPosition(50, 50);
     scene.appendChild(phase_label);

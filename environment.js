@@ -3,8 +3,6 @@ goog.provide('diamondrun.Rubble');
 goog.require('lime.Sprite');
 goog.require('lime.Label');
 goog.require('lime.animation.Spawn');
-goog.require('lime.animation.Sequence');
-goog.require('lime.animation.MoveTo');
 goog.require('lime.animation.RotateBy');
 goog.require('lime.animation.ScaleTo');
 goog.require('lime.animation.FadeTo');

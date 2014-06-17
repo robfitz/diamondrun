@@ -63,6 +63,12 @@ diamondrun.Tile.prototype.removeRubble = function(rubble) {
 	}
 }
 
+diamondrun.Tile.prototype.addEffect = function(effect) {
+	var tilePos = this.getParent().localToScreen(this.getPosition());
+	var effectPos = effect.getParent().screenToLocal(tilePos);
+	effect.setPosition(effectPos);
+}
+
 diamondrun.Tile.prototype.getAttackPath = function() {
 	return this.path;
 }
@@ -95,11 +101,22 @@ diamondrun.Board = function(is_friendly) {
 goog.inherits(diamondrun.Board, lime.Layer);
 
 diamondrun.Board.prototype.getValidTargets = function(card) {
-	var targets = [];
-	for (var i = 0; i < this.tiles.length; i ++) {
-		if (this.tiles[i].contents == null) targets.push(this.tiles[i]);
-	}
-	return targets;
+    if (card.type == 'unitCard') {
+        var targets = [];
+        for (var i = 0; i < this.tiles.length; i++) {
+            if (this.tiles[i].contents == null) targets.push(this.tiles[i]);
+        }
+        return targets;
+    }
+    else if (card.type == 'burnCard') {
+        var targets = [];
+        var tartiles = card.owner.getEnemyBoard().getTiles();
+        console.log(card.owner.getEnemyBoard().getTiles());
+        for (var i = 0; i < tartiles.length; i++) {
+            if (tartiles[i].contents && tartiles[i].contents.type == 'unit') targets.push(tartiles[i]);
+        }
+        return targets;
+    }
 }
 
 diamondrun.Board.prototype.getTiles = function() {

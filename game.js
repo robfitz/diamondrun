@@ -6,20 +6,32 @@ diamondrun.Player = function(isPlayer1, board, hand, deck, graveyard) {
     this.graveyard = new diamondrun.Graveyard().setPosition(IPHONE_4_W - 110, IPHONE_4_H - 110);
     this.hand = new diamondrun.Hand(this).setPosition(IPHONE_4_W / 2, IPHONE_4_H - 50 - 5);
 	this.deck = new diamondrun.Deck(this);
+    this.activeEffects = [];
 
 	this.canActThisPhase = false;
 	this.actionCallback = null;
+    this.isPlayer1 = isPlayer1;
 }
 
 diamondrun.Player.prototype.doAttack = function() {
-	//run through all the units on my side and tell them to figure out their attack, which will cause them to add a bunch of animations and other stuff to the animation queue. once the animations are done, we can go ahead to the next phase
-	var callbacks = [];
+	// run through all the effects then units on my side and tell them to figure out their attack, which will cause them to add a bunch of animations 
+    // and other stuff to the animation queue. once the animations are done, we can go ahead to the next phase
+    var callbacks = [];
 	var units = this.board.getUnits();
 	var contexts = [];
+    
+    // Run through active effects
+    for (var i = 0; i < this.activeEffects.length; i++) {
+        this.activeEffects[i].activate();
+    }
+    this.activeEffects = [];
+    
+    // Run through units
 	for (var i = units.length - 1; i >= 0; i --) {
 	    callbacks.push(units[i].doAttack);
 	    contexts.push(units[i]);
 	}
+    
 	//TODO: i'm sure i'm going to regret this callback chain
 	//sometime soon, but i haven't yet figured out a
 	//better way to get the animations and phase advance
@@ -68,6 +80,11 @@ diamondrun.Player.prototype.draw = function() {
 
 diamondrun.Player.prototype.getBoard = function() {
 	return this.board;
+}
+
+diamondrun.Player.prototype.getEnemyBoard = function() {
+    if (this.isPlayer1) return game.player2.getBoard();
+    else return game.player1.getBoard();
 }
 
 diamondrun.Player.prototype.getHand = function() {

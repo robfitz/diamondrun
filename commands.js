@@ -12,12 +12,20 @@ diamondrun.PlayCardCommand = function(player, card, targetTile) {
 diamondrun.PlayCardCommand.prototype.execute = function() {
 	
 	// apply effect to board
-	var unit = new diamondrun.Unit(this.player, this.targetTile, this.card.movement, this.card.attack, this.card.hp);
-	
-	if (this.targetTile.addUnit(unit)) {
-		// move from hand to graveyard
-		this.player.getGraveyard().takeCard(this.card);
-	}
+    if (this.card.type == 'unitCard') {
+        var unit = new diamondrun.Unit(this.player, this.targetTile, this.card.movement, this.card.attack, this.card.hp);	
+        if (this.targetTile.addUnit(unit)) {
+            // move from hand to graveyard
+            this.player.getGraveyard().takeCard(this.card);
+        }
+    }
+	else if (this.card.type == 'burnCard') {
+        var effect = new diamondrun.Effect(this.player, this.targetTile, this.card.type, this.card.attack);
+        this.targetTile.addEffect(effect)
+        this.player.activeEffects.push(effect);
+        this.player.getGraveyard().takeCard(this.card);
+    }
+    else console.log('WARNING: unknown card type in PlayCardCommand');
 }
 
 // --------------------------------------------------------------------------------------------------------------------------- Class Seperator

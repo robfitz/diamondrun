@@ -18,9 +18,10 @@ var CARD_SIZE = 100;
 var CARD_SPACING = 5;
 
 
-diamondrun.Card = function(owner, movement, attack, hp) {
+diamondrun.Card = function(owner, movement, attack, hp, type) {
 	goog.base(this);
 	this.owner = owner;
+    this.type = type;
 
 	// TODO: unit info should probably be in a database
 	// 	or data file somewhere
@@ -28,9 +29,14 @@ diamondrun.Card = function(owner, movement, attack, hp) {
 	this.attack = attack;
 	this.hp = hp;
 
-	this.setText(this.attack + '/' + this.hp + ' ' + this.movement)
-
-	this.setSize(CARD_SIZE, CARD_SIZE).setFill(255,150,150);
+	if (this.type == 'unitCard') {
+        this.setText(this.attack + '/' + this.hp + ' ' + this.movement);
+        this.setSize(CARD_SIZE, CARD_SIZE).setFill(255,150,150);
+    }
+    else if (this.type == 'burnCard') {
+        this.setText("Direct Damage: " + this.attack);
+        this.setSize(CARD_SIZE, CARD_SIZE).setFill(250,50,0);
+    }
 
 	//local declaration for when 'this' is clobbered by event objects
     var card = this; 
@@ -134,12 +140,14 @@ diamondrun.Deck = function(owner) {
 
 	this.cards = [];
 	for (var i = 0; i < 5; i ++) {
-		this.cards.push(new diamondrun.Card(owner, 'melee', 2, 1));
-		this.cards.push(new diamondrun.Card(owner, 'melee', 1, 2));
-		this.cards.push(new diamondrun.Card(owner, 'jumper', 2, 2));
+		this.cards.push(new diamondrun.Card(owner, 'melee', 2, 1, 'unitCard'));
+		this.cards.push(new diamondrun.Card(owner, 'melee', 1, 2, 'unitCard'));
+        
+		this.cards.push(new diamondrun.Card(owner, 'jumper', 2, 2, 'unitCard'));
 
-		this.cards.push(new diamondrun.Card(owner, 'shooter', 1, 1));
-		this.cards.push(new diamondrun.Card(owner, 'shooter', 2, 1));
+		this.cards.push(new diamondrun.Card(owner, 'shooter', 1, 1, 'unitCard'));
+        
+		this.cards.push(new diamondrun.Card(owner, 'sadf', 3, 0, 'burnCard'));
 
 	}
 }

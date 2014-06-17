@@ -38,7 +38,7 @@ diamondrun.Unit.prototype.heal = function() {
 }
 
 diamondrun.Unit.prototype.redraw = function() {
-	var label = this.attack + '/' + this.maxHp
+	var label = this.attack + '/' + this.maxHp;
 	if (this.hp < this.maxHp) {
 		var missing = this.maxHp - this.hp;
 		label += ' - ' + missing;
