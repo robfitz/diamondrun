@@ -23,7 +23,7 @@ diamondrun.Effect = function(owner, tile, type, strength) {
 
     this.draw();
     game.effectLayer.appendChild(this);
-}
+};
 
 goog.inherits(diamondrun.Effect, lime.Label);
 
@@ -31,12 +31,12 @@ diamondrun.Effect.prototype.damage = function(unit) {
     if (unit && unit.type == 'unit') {
         unit.takeDamage(this.strength);
     }
-}
+};
 
 diamondrun.Effect.prototype.draw = function() {
     var label = this.strength;
     this.setText(label);
-}
+};
 
 diamondrun.Effect.prototype.activate = function(contexts, callbacks) {
     this.damage(this.tile.contents);
@@ -67,4 +67,4 @@ diamondrun.Effect.prototype.activate = function(contexts, callbacks) {
             Commands.add(new diamondrun.NextPhaseCommand());
         }
     });
-}
+};

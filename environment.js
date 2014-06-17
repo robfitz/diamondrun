@@ -20,13 +20,13 @@ diamondrun.Rubble = function(tile, turnsActive) {
     this.type = "rubble";
     
     game.rubbleLayer.appendChild(this);
-}
+};
 
 goog.inherits(diamondrun.Rubble, lime.Label);
 
 diamondrun.Rubble.prototype.redraw = function() {
     this.setText('Rubble: ' + this.turnsActive + " turns left");
-}
+};
 
 diamondrun.Rubble.prototype.breakdown = function() {
     //removal effect
@@ -44,12 +44,12 @@ diamondrun.Rubble.prototype.breakdown = function() {
         self.tile.removeRubble(self);
         self.getParent().removeChild(self);
     });
-}
+};
 
 diamondrun.Rubble.prototype.startTurn = function() {
 
-}
+};
 
 diamondrun.Rubble.prototype.endTurn = function() {
     if(!--this.turnsActive) this.breakdown(); // Breakdown rubble if it is no longer active
-}
+};

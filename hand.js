@@ -89,13 +89,13 @@ diamondrun.Card = function(owner, movement, attack, hp, type) {
 
     goog.events.listen(this,['mousedown','touchstart'],makeDraggable);
 
-}
+};
 
 goog.inherits(diamondrun.Card, lime.Label);
 
 diamondrun.Card.prototype.getOwner = function() {
     return this.owner;
-}
+};
 
 // --------------------------------------------------------------------------------------------------------------------------- Class Seperator
 
@@ -103,7 +103,7 @@ diamondrun.Hand = function(owner) {
     goog.base(this);
     this.owner = owner;
     this.cards = [];
-}
+};
 
 goog.inherits(diamondrun.Hand, lime.Layer);
 
@@ -115,7 +115,7 @@ diamondrun.Hand.prototype.removeCard = function(card) {
         }
     }
     this.refreshCardLocations();
-}
+};
 
 diamondrun.Hand.prototype.drawCard = function() {
     var card = this.owner.getDeck().drawCard();
@@ -123,14 +123,14 @@ diamondrun.Hand.prototype.drawCard = function() {
     this.appendChild(card);
 
     this.refreshCardLocations();
-}
+};
 
 diamondrun.Hand.prototype.refreshCardLocations = function() {
     var xoffset = - (this.cards.length - 1) * (CARD_SIZE + CARD_SPACING) / 2;
     for (var i = 0; i < this.cards.length; i ++) {
         this.cards[i].runAction(new lime.animation.MoveTo(xoffset + i * (CARD_SIZE + CARD_SPACING), 0).setDuration(0.2));
     }    
-}
+};
 
 // --------------------------------------------------------------------------------------------------------------------------- Class Seperator
 
@@ -150,13 +150,13 @@ diamondrun.Deck = function(owner) {
         this.cards.push(new diamondrun.Card(owner, 'sadf', 3, 0, 'burnCard'));
 
     }
-}
+};
 
 goog.inherits(diamondrun.Deck, lime.Layer);
 
 diamondrun.Deck.prototype.drawCard = function() {
     return this.cards.pop();
-}
+};
 
 // --------------------------------------------------------------------------------------------------------------------------- Class Seperator
 
@@ -164,7 +164,7 @@ diamondrun.Graveyard = function() {
     goog.base(this);
     this.setSize(CARD_SIZE + CARD_SPACING * 2, CARD_SIZE + CARD_SPACING * 2);
     this.setFill(200, 200, 200);
-}
+};
 
 goog.inherits(diamondrun.Graveyard, lime.Sprite);
 
@@ -179,4 +179,4 @@ diamondrun.Graveyard.prototype.takeCard = function(card) {
         new lime.animation.ScaleTo(1.2).setDuration(.3),
         new lime.animation.ScaleTo(1).setDuration(.3)
     ));
-}
+};

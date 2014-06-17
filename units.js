@@ -28,14 +28,14 @@ diamondrun.Unit = function(owner, tile, movement, attack, hp) {
 
     this.redraw();
     game.unitLayer.appendChild(this);
-}
+};
 
 goog.inherits(diamondrun.Unit, lime.Label);
 
 diamondrun.Unit.prototype.heal = function() {
     this.hp = this.maxHp;
     this.redraw();
-}
+};
 
 diamondrun.Unit.prototype.redraw = function() {
     var label = this.attack + '/' + this.maxHp;
@@ -46,7 +46,7 @@ diamondrun.Unit.prototype.redraw = function() {
     if (this.isSSick) label += ' (' + this.movement + ')';
     else label += ' ' + this.movement;
     this.setText(label);
-}
+};
 
 diamondrun.Unit.prototype.takeDamage = function(damage) {
     this.hp -= damage;
@@ -54,7 +54,7 @@ diamondrun.Unit.prototype.takeDamage = function(damage) {
         this.die();
     }
     this.redraw();
-}
+};
 
 diamondrun.Unit.prototype.die = function() {
 
@@ -77,7 +77,7 @@ diamondrun.Unit.prototype.die = function() {
         var rubble = new diamondrun.Rubble(rubbleTile, 1);
         rubbleTile.addRubble(rubble)
     });
-}
+};
 
 diamondrun.Unit.prototype.doAttack = function(contexts, callbacks) {
     
@@ -172,7 +172,7 @@ diamondrun.Unit.prototype.doAttack = function(contexts, callbacks) {
 
     this.runAction(new lime.animation.Sequence(animations));
 
-}
+};
 
 //returns 'move', 'collide', or 'fight'
 diamondrun.Unit.prototype.canMoveToTile = function(stepNum, tile) {
@@ -214,11 +214,11 @@ diamondrun.Unit.prototype.canMoveToTile = function(stepNum, tile) {
             console.log('WARNING: unknown movement type in Unit.canMoveToTile');
             return 'collide';
     }    
-}
+};
 
 diamondrun.Unit.prototype.startTurn = function() {
     this.heal();
-}
+};
 
 diamondrun.Unit.prototype.endTurn = function() {
     this.isSSick = false;
@@ -226,4 +226,4 @@ diamondrun.Unit.prototype.endTurn = function() {
     
     // Reset Movement variables
     if (this.movement == 'jumper') this.jumps = 2;
-}
+};

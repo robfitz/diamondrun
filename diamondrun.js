@@ -172,7 +172,7 @@ diamondrun.start = function(){
 
     player.getBoard().connectAttackPaths(game.player2.getBoard());
     game.player2.getBoard().connectAttackPaths(player.getBoard());
-}
+};
 
 goog.exportSymbol('diamondrun.start', diamondrun.start);
 

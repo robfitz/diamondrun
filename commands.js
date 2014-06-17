@@ -7,7 +7,7 @@ diamondrun.PlayCardCommand = function(player, card, targetTile) {
     this.player = player;
     this.card = card;
     this.targetTile = targetTile;
-}
+};
 
 diamondrun.PlayCardCommand.prototype.execute = function() {
     
@@ -28,26 +28,26 @@ diamondrun.PlayCardCommand.prototype.execute = function() {
         this.player.getGraveyard().takeCard(this.card);
     }
     else console.log('WARNING: unknown card type in PlayCardCommand');
-}
+};
 
 // --------------------------------------------------------------------------------------------------------------------------- Class Seperator
 
 diamondrun.DrawCardCommand = function(player, numCards) {
     this.player = player;
     this.numCards = numCards;
-}
+};
 
 diamondrun.DrawCardCommand.prototype.execute = function() {
     for (var i = 0; i < this.numCards; i ++) {
         this.player.draw();
     }
-}
+};
 
 // --------------------------------------------------------------------------------------------------------------------------- Class Seperator
 
 diamondrun.NextPhaseCommand = function() {
-}
+};
 
 diamondrun.NextPhaseCommand.prototype.execute = function() {
     Phases.next();
-}
+};

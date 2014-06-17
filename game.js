@@ -11,7 +11,7 @@ diamondrun.Player = function(isPlayer1, board, hand, deck, graveyard) {
     this.canActThisPhase = false;
     this.actionCallback = null;
     this.isPlayer1 = isPlayer1;
-}
+};
 
 diamondrun.Player.prototype.doAttack = function() {
     // run through all the effects then units on my side and tell them to figure out their attack, which will cause them to add a bunch of animations 
@@ -41,7 +41,7 @@ diamondrun.Player.prototype.doAttack = function() {
     var firstContext = contexts.shift();
     firstCall.call(firstContext, contexts, callbacks);
 
-}
+};
 
 diamondrun.Player.prototype.playCard = function(card, tile) {
     
@@ -50,7 +50,8 @@ diamondrun.Player.prototype.playCard = function(card, tile) {
 
     this.endPlayPhase();
     
-}
+};
+
 diamondrun.Player.prototype.endPlayPhase = function() {
     for (var i = 0; i < this.hand.cards.length; i ++) {
     // this.hands.cards[i].disableDragging();
@@ -60,7 +61,8 @@ diamondrun.Player.prototype.endPlayPhase = function() {
         this.actionCallback();
         this.actionCallback = null;
     }
-}
+};
+
 diamondrun.Player.prototype.beginPlayPhase = function(callback) {
     
     this.canActThisPhase = true;
@@ -69,33 +71,33 @@ diamondrun.Player.prototype.beginPlayPhase = function(callback) {
     for (var i = 0; i < this.hand.cards.length; i ++) {
     // this.hand.cards[i].enableDragging();
     }
-}
+};
 
 diamondrun.Player.prototype.getCanAct = function() {
     return this.canActThisPhase;
-}
+};
 
 diamondrun.Player.prototype.draw = function() {
     this.hand.drawCard();
-}
+};
 
 diamondrun.Player.prototype.getBoard = function() {
     return this.board;
-}
+};
 
 diamondrun.Player.prototype.getEnemyBoard = function() {
     if (this.isPlayer1) return game.player2.getBoard();
     else return game.player1.getBoard();
-}
+};
 
 diamondrun.Player.prototype.getHand = function() {
     return this.hand;
-}
+};
 
 diamondrun.Player.prototype.getDeck = function() {
     return this.deck;
-}
+};
 
 diamondrun.Player.prototype.getGraveyard = function() {
     return this.graveyard;
-}
+};
