@@ -141,7 +141,7 @@ diamondrun.Deck = function(owner) {
     this.cards = [];
     for (var i = 0; i < 5; i ++) {
         this.cards.push(new diamondrun.Card(owner, 'melee', 2, 1, 'unitCard'));
-        this.cards.push(new diamondrun.Card(owner, 'melee', 1, 2, 'unitCard'));
+        this.cards.push(new diamondrun.Card(owner, 'sitter', 1, 2, 'unitCard'));
         
         this.cards.push(new diamondrun.Card(owner, 'jumper', 2, 2, 'unitCard'));
 

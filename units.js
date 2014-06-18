@@ -127,9 +127,12 @@ diamondrun.Unit.prototype.doAttack = function(contexts, callbacks) {
                 var bumpY = (lastPosition.y + localPosition.y) / 2;
                 var bumpX = (lastPosition.x + localPosition.x) / 2;
                 animations.push(new lime.animation.MoveTo(bumpX, bumpY).setDuration(.1));
+                var self = this;
                 
                 lime.scheduleManager.callAfter(function(dt) {    
                     contents.takeDamage(self.attack);
+                    console.log(self.takeDamage);
+                    if (contents.movement == 'sitter') self.takeDamage(contents.attack);
                 }, null, duration*1000);
                 duration += 0.1;
                 turnBack = true;
@@ -209,6 +212,10 @@ diamondrun.Unit.prototype.canMoveToTile = function(stepNum, tile) {
                 if (contents.owner == this.owner) return 'collide';
                 else return 'fight';
             }
+            break;
+        case 'sitter':
+            // Jump over first two tiles in attack path
+            return 'collide';
             break;
         default:
             console.log('WARNING: unknown movement type in Unit.canMoveToTile');

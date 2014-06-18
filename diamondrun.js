@@ -92,7 +92,7 @@ var Phases = {
 
             case Phases.p2_play1:
             case Phases.p2_play2:
-                
+            
                 var dummyCard = new diamondrun.Card(game.player2, 'melee', 1, 2, 'unitCard');
                 var targets = game.player2.board.getValidTargets(dummyCard);
                 var dummyTarget = targets[Math.floor(Math.random()*targets.length)];
