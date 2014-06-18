@@ -48,15 +48,15 @@ diamondrun.Unit.prototype.redraw = function() {
     this.setText(label);
 };
 
-diamondrun.Unit.prototype.takeDamage = function(damage) {
+diamondrun.Unit.prototype.takeDamage = function(damage, generateRubble) {
     this.hp -= damage;
     if (this.hp <= 0) {
-        this.die();
+        this.die(generateRubble);
     }
     this.redraw();
 };
 
-diamondrun.Unit.prototype.die = function() {
+diamondrun.Unit.prototype.die = function(generateRubble) {
 
     //death effect
     var dieEffect = new lime.animation.Spawn(
@@ -74,8 +74,8 @@ diamondrun.Unit.prototype.die = function() {
         //remove from board
         self.tile.removeUnit(self);
         self.getParent().removeChild(self);
-        var rubble = new diamondrun.Rubble(rubbleTile, 1);
-        rubbleTile.addRubble(rubble)
+        
+        if (generateRubble) rubbleTile.addRubble(new diamondrun.Rubble(rubbleTile, 1));
     });
 };
 
@@ -90,8 +90,8 @@ diamondrun.Unit.prototype.doAttack = function(contexts, callbacks) {
     var duration = 0;
     var self = this;
 
-    // Check to see if the unit has Summoning Sickness
-    if (this.isSSick) {
+    // Check to see if the unit has Summoning Sickness or is a sitter.
+    if (this.isSSick || this.movement == 'sitter') {
         if (callbacks && callbacks.length > 0) {
             var firstCall = callbacks.shift();
             var firstContext = contexts.shift();
@@ -130,9 +130,8 @@ diamondrun.Unit.prototype.doAttack = function(contexts, callbacks) {
                 var self = this;
                 
                 lime.scheduleManager.callAfter(function(dt) {    
-                    contents.takeDamage(self.attack);
-                    console.log(self.takeDamage);
-                    if (contents.movement == 'sitter') self.takeDamage(contents.attack);
+                    contents.takeDamage(self.attack, true);
+                    if (contents.movement == 'sitter') contents.counterAttack(self);
                 }, null, duration*1000);
                 duration += 0.1;
                 turnBack = true;
@@ -214,13 +213,17 @@ diamondrun.Unit.prototype.canMoveToTile = function(stepNum, tile) {
             }
             break;
         case 'sitter':
-            // Jump over first two tiles in attack path
+            // Shouldn't ever be called. Leaving in case we want special case actions/animations for sitters on where their movement would be.
             return 'collide';
             break;
         default:
             console.log('WARNING: unknown movement type in Unit.canMoveToTile');
             return 'collide';
     }    
+};
+
+diamondrun.Unit.prototype.counterAttack = function(target) {
+    target.takeDamage(this.attack, false);
 };
 
 diamondrun.Unit.prototype.startTurn = function() {

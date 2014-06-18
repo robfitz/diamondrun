@@ -29,7 +29,7 @@ goog.inherits(diamondrun.Effect, lime.Label);
 
 diamondrun.Effect.prototype.damage = function(unit) {
     if (unit && unit.type == 'unit') {
-        unit.takeDamage(this.strength);
+        unit.takeDamage(this.strength, true);
     }
 };
 
