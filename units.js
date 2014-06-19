@@ -129,6 +129,7 @@ diamondrun.Unit.prototype.doAttack = function(contexts, callbacks) {
                 animations.push(new lime.animation.MoveTo(bumpX, bumpY).setDuration(.1));
                 var self = this;
                 
+                
                 lime.scheduleManager.callAfter(function(dt) {    
                     contents.takeDamage(self.attack, true);
                     if (contents.movement == 'sitter') contents.counterAttack(self);
@@ -142,8 +143,19 @@ diamondrun.Unit.prototype.doAttack = function(contexts, callbacks) {
                 duration += 0.1;
                 turnBack = true;
                 break;
-        }
+        }        
         if (turnBack) break;
+        else if (i==path.length-1) { // If the unit reaches the end of its attack path, deal damage to the opponent.
+            if (this.owner.isPlayer1) {
+                game.player2.life -= this.attack;
+                game.player2.drawLife();
+            }
+            else {
+                game.player1.life -= this.attack;
+                game.player1.drawLife();
+            }
+            notHitOnce = false; // Make sure the unit only deals damage once.
+        }
     }
     
     //if still alive, step backwards to return to start point

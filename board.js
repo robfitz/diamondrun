@@ -154,7 +154,6 @@ diamondrun.Board.prototype.getValidTargets = function(card) {
     else if (card.type == 'burnCard') {
         var targets = [];
         var tartiles = card.owner.getEnemyBoard().getTiles();
-        console.log(card.owner.getEnemyBoard().getTiles());
         for (var i = 0; i < tartiles.length; i++) {
             if (tartiles[i].contents && tartiles[i].contents.type == 'unit') targets.push(tartiles[i]);
         }
@@ -174,11 +173,11 @@ diamondrun.Board.prototype.getUnits = function() {
     for (var i = 0; i < this.tiles.length; i ++) {
         if (this.tiles[i].contents && this.tiles[i].contents.type == 'unit') {
 
-            console.log('get units + 1');
-             units.push(this.tiles[i].contents);
+            // console.log('get units + 1'); Not sure if we still need these so I'm leaving them in commented.
+            units.push(this.tiles[i].contents);
         }
     }
-    console.log(units);
+    // console.log(units);
     return units;
 };
 

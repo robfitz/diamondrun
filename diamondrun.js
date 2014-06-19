@@ -51,7 +51,6 @@ var Phases = {
         }
 
         switch (this.current) {
-
             case Phases.p1_start:
                 // Signal P1 board that turn is starting
                 game.player1.board.startTurn();
@@ -141,12 +140,12 @@ diamondrun.start = function(){
     var director = new lime.Director(document.body,IPHONE_4_W,IPHONE_4_H),
         scene = new lime.Scene();
 
-    var player = new diamondrun.Player(true);
-    game.player1 = player;
-
     game.effectLayer = new lime.Layer();
     game.unitLayer = new lime.Layer();
     game.rubbleLayer = new lime.Layer();
+    
+    var player = new diamondrun.Player(true);
+    game.player1 = player;
 
     game.player2 = new diamondrun.Player(false);
     game.player2.getBoard().setPosition(IPHONE_4_W / 2, IPHONE_4_H / 2 - 265);

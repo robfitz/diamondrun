@@ -7,7 +7,13 @@ diamondrun.Player = function(isPlayer1, board, hand, deck, graveyard) {
     this.hand = new diamondrun.Hand(this).setPosition(IPHONE_4_W / 2, IPHONE_4_H - 50 - 5);
     this.deck = new diamondrun.Deck(this);
     this.activeEffects = [];
+    
     this.techLevel = 1;
+    this.life = 10;
+    
+    if(isPlayer1) this.lifeLabel = new lime.Label(this.life).setFontSize(100).setPosition(250 * 1, 0).setAlign("center");
+    else this.lifeLabel = new lime.Label(this.life).setFontSize(100).setPosition( 250 * -1, 0).setAlign("center");
+    this.board.appendChild(this.lifeLabel);
 
     this.canActThisPhase = false;
     this.actionCallback = null;
@@ -68,6 +74,9 @@ diamondrun.Player.prototype.endPlayPhase = function() {
 };
 
 diamondrun.Player.prototype.beginPlayPhase = function(callback) {
+    if (this.isPlayer1) console.log("Player1: " + this.life);
+    else console.log("Player2: " + this.life);
+    
     this.techLevel = this.board.techTile.techLevel; // Update current tech level
     
     this.canActThisPhase = true;
@@ -76,6 +85,10 @@ diamondrun.Player.prototype.beginPlayPhase = function(callback) {
     for (var i = 0; i < this.hand.cards.length; i ++) {
     // this.hand.cards[i].enableDragging();
     }
+};
+
+diamondrun.Player.prototype.drawLife = function() {
+    this.lifeLabel.setText(this.life);
 };
 
 diamondrun.Player.prototype.getCanAct = function() {
