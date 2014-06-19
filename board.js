@@ -80,7 +80,7 @@ diamondrun.TechTile = function(is_friendly) {
     goog.base(this);
     
     this.techLevel = 1;
-    this.label = new lime.Label(this.techLevel);
+    this.label = new lime.Label(this.techLevel).setFontSize(36).setFontColor("White");
     this.appendChild(this.label);
 
     var y_factor = 1;

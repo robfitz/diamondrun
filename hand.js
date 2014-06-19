@@ -29,13 +29,14 @@ diamondrun.Card = function(owner, movement, attack, hp, type, castCost) {
     this.attack = attack;
     this.hp = hp;
     this.castCost = castCost;
+    
 
     if (this.type == 'unitCard') {
-        this.setText(this.attack + '/' + this.hp + ' ' + this.movement + ' Cost: ' + this.castCost);
+        this.setText(this.attack + '/' + this.hp + ' ' + this.movement + " Cost:" + castCost);
         this.setSize(CARD_SIZE, CARD_SIZE).setFill(255,150,150);
     }
     else if (this.type == 'burnCard') {
-        this.setText("Direct Damage: " + this.attack + ' Cost: ' + this.castCost);
+        this.setText("Direct Damage: " + this.attack + " Cost:" + castCost);
         this.setSize(CARD_SIZE, CARD_SIZE).setFill(250,50,0);
     }
 
@@ -59,7 +60,8 @@ diamondrun.Card = function(owner, movement, attack, hp, type, castCost) {
           goog.events.listen(drag, lime.events.Drag.Event.DROP, function(e){
             
             var tile = e.activeDropTarget;
-
+            
+            // Before playing a card check: Is it the players turn AND (either the player has sufficient tech level OR is sacrificing for tech level)
             if (card.owner.getCanAct() == true && (card.owner.techLevel >= card.castCost || tile == card.owner.board.techTile)) {
                 //create command
                 card.owner.playCard(card, tile);
