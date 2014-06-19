@@ -73,10 +73,7 @@ diamondrun.Player.prototype.endPlayPhase = function() {
     }
 };
 
-diamondrun.Player.prototype.beginPlayPhase = function(callback) {
-    if (this.isPlayer1) console.log("Player1: " + this.life);
-    else console.log("Player2: " + this.life);
-    
+diamondrun.Player.prototype.beginPlayPhase = function(callback) {    
     this.techLevel = this.board.techTile.techLevel; // Update current tech level
     
     this.canActThisPhase = true;
@@ -87,7 +84,8 @@ diamondrun.Player.prototype.beginPlayPhase = function(callback) {
     }
 };
 
-diamondrun.Player.prototype.drawLife = function() {
+diamondrun.Player.prototype.takeDamage = function(damage) {
+    this.life -= damage;
     this.lifeLabel.setText(this.life);
 };
 
