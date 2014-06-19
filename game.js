@@ -11,8 +11,9 @@ diamondrun.Player = function(isPlayer1, board, hand, deck, graveyard) {
     this.techLevel = 1;
     this.life = 10;
     
-    if(isPlayer1) this.lifeLabel = new lime.Label(this.life).setFontSize(100).setPosition(250 * 1, 0).setAlign("center");
-    else this.lifeLabel = new lime.Label(this.life).setFontSize(100).setPosition( 250 * -1, 0).setAlign("center");
+    if(isPlayer1) this.lifeLabel = new lime.Label(this.life).setFontSize(100).setPosition(250 * 1, 0).setAlign("center"); // Start of just UI stuff
+    else this.lifeLabel = new lime.Label(this.life).setFontSize(100).setPosition( 250 * -1, 0).setAlign("center");        // TODO: Eventually seperate into its own class
+    
     this.board.appendChild(this.lifeLabel);
 
     this.canActThisPhase = false;
@@ -58,7 +59,7 @@ diamondrun.Player.prototype.playCard = function(card, tile) {
     }
     Commands.add(cmd);
 
-    if (card.type == 'unitCard') this.endPlayPhase(); // End phase needs to wait for animation if spell. Probably going use callbacks to accomplish this on cleanup
+    if (card.type == 'unitCard') this.endPlayPhase(); // End phase needs to wait for animation if spell. TODO: Possibly use callbacks to accomplish.
     
 };
 

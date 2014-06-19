@@ -61,7 +61,7 @@ diamondrun.Card = function(owner, movement, attack, hp, type, castCost) {
             
             var tile = e.activeDropTarget;
             
-            // Before playing a card check: Is it the players turn AND (either the player has sufficient tech level OR is sacrificing for tech level)
+            // Before playing a card, check: 1) Is it the players turn AND  2) [either a) the player has sufficient tech level OR b) is sacrificing for tech level]
             if (card.owner.getCanAct() == true && (card.owner.techLevel >= card.castCost || tile == card.owner.board.techTile)) {
                 //create command
                 card.owner.playCard(card, tile);
@@ -150,7 +150,7 @@ diamondrun.Deck = function(owner) {
 
         this.cards.push(new diamondrun.Card(owner, 'shooter', 1, 1, 'unitCard', 2));
         
-        this.cards.push(new diamondrun.Card(owner, 'sadf', 3, 0, 'burnCard', 3));
+        this.cards.push(new diamondrun.Card(owner, 'fireball', 3, 0, 'burnCard', 3));
 
     }
 };

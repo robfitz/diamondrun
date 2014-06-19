@@ -209,7 +209,7 @@ diamondrun.Unit.prototype.canMoveToTile = function(stepNum, tile) {
             break;
         case 'jumper':
             // Jump over first two tiles in attack path
-            if (this.jumps-- > 0) { // Have to positive check because neg. ints are evaluated true as well
+            if (this.jumps-- > 0) {
                 return 'move';
             }
             else if (!contents || contents.type == 'rubble') {
@@ -221,7 +221,7 @@ diamondrun.Unit.prototype.canMoveToTile = function(stepNum, tile) {
             }
             break;
         case 'sitter':
-            // Shouldn't ever be called. Leaving in case we want special case actions/animations for sitters on where their movement would be.
+            // Shouldn't ever be called. Leaving in case we want special case actions/animations for sitters where/when their movement would be.
             return 'collide';
             break;
         default:
