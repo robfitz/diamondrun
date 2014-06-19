@@ -2,6 +2,7 @@ goog.provide('diamondrun.Tile');
 goog.provide('diamondrun.Board');
 
 goog.require('lime.Sprite');
+goog.require('lime.Label');
 goog.require('lime.Layer');
 goog.require('lime.animation.FadeTo');
 
@@ -75,6 +76,48 @@ diamondrun.Tile.prototype.getAttackPath = function() {
 
 // --------------------------------------------------------------------------------------------------------------------------- Class Seperator
 
+diamondrun.TechTile = function(row, col, is_friendly) {
+    goog.base(this);
+    
+    this.techLevel = 0;
+    this.label = new lime.Label(this.techLevel);
+    this.appendChild(this.label);
+
+    var y_factor = 1;
+    if (is_friendly) { y_factor = -1 };
+    
+    this.setPosition(250 * y_factor, 0).setSize(100, 100).setFill(50,100,100); // Get rid of magic numbers later
+
+    this.showDropHighlight = function(){
+        this.runAction(new lime.animation.FadeTo(.6).setDuration(.3));
+    };
+    this.hideDropHighlight = function(){
+        this.runAction(new lime.animation.FadeTo(1).setDuration(.1));
+    };
+};
+
+goog.inherits(diamondrun.TechTile, diamondrun.Tile);
+
+diamondrun.TechTile.prototype.addUnit = function(unit) {
+    //unit.die()
+    unit.setSize(0,0).setFill(255,255,255);
+    unit.setText("");
+    //unit = null;
+    console.log(++this.techLevel);
+    this.label.setText(this.techLevel);
+    return true;
+};
+
+diamondrun.TechTile.prototype.addEffect = function(effect) {
+    effect.setSize(0,0).setFill(255,255,255);
+    unit = null;
+    console.log(++this.techLevel);
+    this.label.setText(this.techLevel);
+    return true;
+};
+
+// --------------------------------------------------------------------------------------------------------------------------- Class Seperator
+
 diamondrun.Board = function(is_friendly) {
     goog.base(this);
     this.tiles = [];
@@ -95,6 +138,11 @@ diamondrun.Board = function(is_friendly) {
     this.tiles[6].defending = this.tiles[2];
     this.tiles[7].defending = this.tiles[3];
     this.tiles[8].defending = this.tiles[3];
+    
+    // add tech tile
+    this.techTile = new diamondrun.TechTile(0, 0, is_friendly);
+    this.tiles.push(this.techTile);
+    this.appendChild(this.techTile);
 
 };
 
@@ -115,6 +163,9 @@ diamondrun.Board.prototype.getValidTargets = function(card) {
         for (var i = 0; i < tartiles.length; i++) {
             if (tartiles[i].contents && tartiles[i].contents.type == 'unit') targets.push(tartiles[i]);
         }
+        
+        targets.push(this.techTile);
+        
         return targets;
     }
 }
@@ -123,7 +174,7 @@ diamondrun.Board.prototype.getTiles = function() {
     return this.tiles;
 };
 
-diamondrun.Board.prototype.getUnits = function() { // Not used currently, Should probably keep in for spells/abilities that target all creatures.
+diamondrun.Board.prototype.getUnits = function() {
     var units = [];
     for (var i = 0; i < this.tiles.length; i ++) {
         if (this.tiles[i].contents && this.tiles[i].contents.type == 'unit') {

@@ -20,6 +20,12 @@ diamondrun.Player.prototype.doAttack = function() {
     var units = this.board.getUnits();
     var contexts = [];
     
+    // Next Phase if player has no units
+    if (units.length == 0) {
+        Commands.add(new diamondrun.NextPhaseCommand());
+        return;
+    }
+    
     // Run through units
     for (var i = units.length - 1; i >= 0; i --) {
         callbacks.push(units[i].doAttack);
