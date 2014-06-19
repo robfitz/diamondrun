@@ -18,7 +18,7 @@ var CARD_SIZE = 100;
 var CARD_SPACING = 5;
 
 
-diamondrun.Card = function(owner, movement, attack, hp, type) {
+diamondrun.Card = function(owner, movement, attack, hp, type, castCost) {
     goog.base(this);
     this.owner = owner;
     this.type = type;
@@ -28,13 +28,14 @@ diamondrun.Card = function(owner, movement, attack, hp, type) {
     this.movement = movement;
     this.attack = attack;
     this.hp = hp;
+    this.castCost = castCost;
 
     if (this.type == 'unitCard') {
-        this.setText(this.attack + '/' + this.hp + ' ' + this.movement);
+        this.setText(this.attack + '/' + this.hp + ' ' + this.movement + ' Cost: ' + this.castCost);
         this.setSize(CARD_SIZE, CARD_SIZE).setFill(255,150,150);
     }
     else if (this.type == 'burnCard') {
-        this.setText("Direct Damage: " + this.attack);
+        this.setText("Direct Damage: " + this.attack + ' Cost: ' + this.castCost);
         this.setSize(CARD_SIZE, CARD_SIZE).setFill(250,50,0);
     }
 
@@ -59,7 +60,7 @@ diamondrun.Card = function(owner, movement, attack, hp, type) {
             
             var tile = e.activeDropTarget;
 
-            if (card.owner.getCanAct() == true) {
+            if (card.owner.getCanAct() == true && (card.owner.techLevel >= card.castCost || tile == card.owner.board.techTile)) {
                 //create command
                 card.owner.playCard(card, tile);
 
@@ -140,14 +141,14 @@ diamondrun.Deck = function(owner) {
 
     this.cards = [];
     for (var i = 0; i < 5; i ++) {
-        this.cards.push(new diamondrun.Card(owner, 'melee', 2, 1, 'unitCard'));
-        this.cards.push(new diamondrun.Card(owner, 'sitter', 1, 2, 'unitCard'));
+        this.cards.push(new diamondrun.Card(owner, 'melee', 2, 1, 'unitCard', 1));
+        this.cards.push(new diamondrun.Card(owner, 'sitter', 1, 2, 'unitCard', 1));
         
-        this.cards.push(new diamondrun.Card(owner, 'jumper', 2, 2, 'unitCard'));
+        this.cards.push(new diamondrun.Card(owner, 'jumper', 2, 2, 'unitCard', 2));
 
-        this.cards.push(new diamondrun.Card(owner, 'shooter', 1, 1, 'unitCard'));
+        this.cards.push(new diamondrun.Card(owner, 'shooter', 1, 1, 'unitCard', 2));
         
-        this.cards.push(new diamondrun.Card(owner, 'sadf', 3, 0, 'burnCard'));
+        this.cards.push(new diamondrun.Card(owner, 'sadf', 3, 0, 'burnCard', 3));
 
     }
 };

@@ -79,7 +79,7 @@ diamondrun.Tile.prototype.getAttackPath = function() {
 diamondrun.TechTile = function(is_friendly) {
     goog.base(this);
     
-    this.techLevel = 0;
+    this.techLevel = 1;
     this.label = new lime.Label(this.techLevel);
     this.appendChild(this.label);
 

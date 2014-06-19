@@ -7,6 +7,7 @@ diamondrun.Player = function(isPlayer1, board, hand, deck, graveyard) {
     this.hand = new diamondrun.Hand(this).setPosition(IPHONE_4_W / 2, IPHONE_4_H - 50 - 5);
     this.deck = new diamondrun.Deck(this);
     this.activeEffects = [];
+    this.techLevel = 1;
 
     this.canActThisPhase = false;
     this.actionCallback = null;
@@ -67,6 +68,7 @@ diamondrun.Player.prototype.endPlayPhase = function() {
 };
 
 diamondrun.Player.prototype.beginPlayPhase = function(callback) {
+    this.techLevel = this.board.techTile.techLevel; // Update current tech level
     
     this.canActThisPhase = true;
     this.actionCallback = callback;
