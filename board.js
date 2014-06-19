@@ -8,7 +8,7 @@ goog.require('lime.animation.FadeTo');
 
 var TILE_SIZE = 100;
 var TILE_SPACING = 5;
-
+var TECH_TILE_POS = 250;
 
 diamondrun.Tile = function(row, col, is_friendly) {
     goog.base(this);
@@ -76,7 +76,7 @@ diamondrun.Tile.prototype.getAttackPath = function() {
 
 // --------------------------------------------------------------------------------------------------------------------------- Class Seperator
 
-diamondrun.TechTile = function(row, col, is_friendly) {
+diamondrun.TechTile = function(is_friendly) {
     goog.base(this);
     
     this.techLevel = 0;
@@ -86,7 +86,7 @@ diamondrun.TechTile = function(row, col, is_friendly) {
     var y_factor = 1;
     if (is_friendly) { y_factor = -1 };
     
-    this.setPosition(250 * y_factor, 0).setSize(100, 100).setFill(50,100,100); // Get rid of magic numbers later
+    this.setPosition(TECH_TILE_POS * y_factor, 0).setSize(TILE_SIZE, TILE_SIZE).setFill(50,100,100);
 
     this.showDropHighlight = function(){
         this.runAction(new lime.animation.FadeTo(.6).setDuration(.3));
@@ -99,20 +99,16 @@ diamondrun.TechTile = function(row, col, is_friendly) {
 goog.inherits(diamondrun.TechTile, diamondrun.Tile);
 
 diamondrun.TechTile.prototype.addUnit = function(unit) {
-    //unit.die()
     unit.setSize(0,0).setFill(255,255,255);
     unit.setText("");
-    //unit = null;
-    console.log(++this.techLevel);
-    this.label.setText(this.techLevel);
+    this.label.setText(++this.techLevel);
     return true;
 };
 
 diamondrun.TechTile.prototype.addEffect = function(effect) {
     effect.setSize(0,0).setFill(255,255,255);
     unit = null;
-    console.log(++this.techLevel);
-    this.label.setText(this.techLevel);
+    this.label.setText(++this.techLevel);
     return true;
 };
 
@@ -140,10 +136,9 @@ diamondrun.Board = function(is_friendly) {
     this.tiles[8].defending = this.tiles[3];
     
     // add tech tile
-    this.techTile = new diamondrun.TechTile(0, 0, is_friendly);
+    this.techTile = new diamondrun.TechTile(is_friendly);
     this.tiles.push(this.techTile);
     this.appendChild(this.techTile);
-
 };
 
 goog.inherits(diamondrun.Board, lime.Layer);
