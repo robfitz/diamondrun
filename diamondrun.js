@@ -11,6 +11,7 @@ goog.require('diamondrun.Hand');
 goog.require('diamondrun.Deck');
 goog.require('diamondrun.Graveyard');
 goog.require('diamondrun.Player');
+goog.require('diamondrun.AIPlayer');
 goog.require('diamondrun.Rubble');
 goog.require('diamondrun.Effect');
 
@@ -51,6 +52,7 @@ var Phases = {
         }
 
         switch (this.current) {
+
             case Phases.p1_start:
                 // Signal P1 board that turn is starting
                 game.player1.board.startTurn();
@@ -84,20 +86,16 @@ var Phases = {
                 break;
 
             case Phases.p2_start:
-                // Signal P1 board that turn is starting
+                // Signal P2 board that turn is starting
                 game.player2.board.startTurn();
                 Commands.add(new diamondrun.NextPhaseCommand());
                 break;
 
             case Phases.p2_play1:
             case Phases.p2_play2:
-            
-                var dummyCard = new diamondrun.Card(game.player2, 'melee', 1, 1, 'unitCard', 1);
-                var targets = game.player2.board.getValidTargets(dummyCard);
-                var dummyTarget = targets[Math.floor(Math.random()*targets.length)];
-                Commands.add(new diamondrun.PlayCardCommand(game.player2, dummyCard, dummyTarget));
-                
-                Commands.add(new diamondrun.NextPhaseCommand());
+                game.player2.beginPlayPhase(function() {
+                    Commands.add(new diamondrun.NextPhaseCommand());
+                });
                 break;
             
             case Phases.p2_attack:
@@ -105,6 +103,10 @@ var Phases = {
                 break;
 
             case Phases.p2_draw:
+                var drawNum = 2;
+                if (game.turn == 0) drawNum = 5;
+                
+                Commands.add(new diamondrun.DrawCardCommand(game.player2, drawNum));
                 Commands.add(new diamondrun.NextPhaseCommand());
                 break;
 
@@ -140,15 +142,15 @@ diamondrun.start = function(){
     var director = new lime.Director(document.body,IPHONE_4_W,IPHONE_4_H),
         scene = new lime.Scene();
 
+    var player = new diamondrun.Player(true);
+    game.player1 = player;
+    
+    game.player2 = new diamondrun.AIPlayer(false);
+    game.player2.getBoard().setPosition(IPHONE_4_W / 2, IPHONE_4_H / 2 - 265);
+
     game.effectLayer = new lime.Layer();
     game.unitLayer = new lime.Layer();
     game.rubbleLayer = new lime.Layer();
-    
-    var player = new diamondrun.Player(true);
-    game.player1 = player;
-
-    game.player2 = new diamondrun.Player(false);
-    game.player2.getBoard().setPosition(IPHONE_4_W / 2, IPHONE_4_H / 2 - 265);
 
     scene.appendChild(player.getBoard()).appendChild(game.player2.getBoard()).appendChild(player.getHand()).appendChild(game.rubbleLayer).appendChild(game.unitLayer).appendChild(game.effectLayer);
 
