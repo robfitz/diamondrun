@@ -41,7 +41,7 @@ diamondrun.AIPlayer.prototype.beginPlayPhase = function(callback) {
         }
     }
     
-    // Find legal move with highest utility value
+    // Find legal move with highest utility value; might be prettier to do functionally.
     var curMax = Number.NEGATIVE_INFINITY;
     var curTar = null;
     var curCard = null;
@@ -60,12 +60,13 @@ diamondrun.AIPlayer.prototype.beginPlayPhase = function(callback) {
 diamondrun.AIPlayer.prototype.utility = function(card, target) {
     // AI utility values
     var OPEN_ATK_VALUE = 2;
-    var OPEN_DEF_VALUE = 2;
+    var OPEN_DEF_VALUE = 6;
     
-    var TECH_UP_VALUE = 1;
+    var TECH_UP_VALUE = .5;
     
     var RANGED_MISUSE_VALUE = 3;
     var DEFENDER_MISUSE_VALUE= 3;
+    var MELEE_MISUSE_VALUE= 3;
     
     var KILLSHOT_VALUE = 4;
     // End of utility values
@@ -83,7 +84,6 @@ diamondrun.AIPlayer.prototype.utility = function(card, target) {
         else {
             // If the path ahead is clear add OPEN_ATK_VALUE
             var attackPath = target.getAttackPath();
-            console.log(target);
             var clear = true;
             for (var i = 0; i < attackPath.length; i ++) {
                 if (attackPath[i].contents) clear = false;
@@ -91,26 +91,60 @@ diamondrun.AIPlayer.prototype.utility = function(card, target) {
             if (clear) utility += OPEN_ATK_VALUE;
             
             // TODO: add value to blocking an enemy attack path
+            enemyUnits = this.getEnemyBoard().getUnits();
+            var needsBlocker = false;
+            unitloop:
+            for (var i = 0; i < enemyUnits.length; i ++) {
+                var atkPath = enemyUnits[i].tile.getAttackPath();
+                for (var a = 0; a < atkPath.length; a ++) {
+                    if (atkPath[a] == this.target) {
+                        needsBlocker = true;
+                        for (var b = 0; b < atkPath.length; b ++) {
+                            if (atkPath[b].contents && atkPath.contents.owner == this) needsBlocker = false;
+                        }
+                        break unitloop;
+                    }
+                }
+            }
+            if (needsBlocker) utility += OPEN_DEF_VALUE;
+            for (var i = 0; i < enemyUnits.length; i ++) {
+                var atkPath = enemyUnits[i].tile.getAttackPath();
+                if (enemyUnits[i].movement == 'jumper' && atkPath.length == 3 && target == this.board.getTiles()[0])  utility += OPEN_DEF_VALUE;
+            }
             
             // If you place a shooter in the open subtract RANGED_MISUSE_VALUE
             if (card.movement == 'shooter') {
-                var attackPath = target.getAttackPath();
-                var clear = true;
-                for (var i = 0; i < attackPath.length; i ++) {
-                    if (attackPath[i].contents && attackPath[i].contents.owner == this) clear = false;
+                var defenseSpaces = target.defendedBy;
+                var open = false;
+                if (defenseSpaces == null) open = true;
+                else {
+                    for (var i = 0; i < defenseSpaces.length; i ++) {
+                        if (defenseSpaces[i].contents == null) open = true;
+                    }
                 }
-                if (clear) utility -= RANGED_MISUSE_VALUE;
+                if (open) utility -= RANGED_MISUSE_VALUE;
             }
             
             // If you place a sitter behind units subtract DEFENDER_MISUSE_VALUE
-            // TODO: account for flanking
+            if (card.movement == 'sitter') {
+                var defenseSpaces = target.defendedBy;
+                var clear = false;
+                if (defenseSpaces != null) {
+                    for (var i = 0; i < defenseSpaces.length; i ++) {
+                        if (defenseSpaces[i].contents == null) clear = true;
+                    }
+                }
+                if (clear || defenseSpaces != null) utility -= DEFENDER_MISUSE_VALUE;
+            }
+            
+            // If you place a melee unit to where it will collide subtract MELEE_MISUSE_VALUE
             if (card.movement == 'sitter') {
                 var attackPath = target.getAttackPath();
                 var clear = true;
                 for (var i = 0; i < attackPath.length; i ++) {
                     if (attackPath[i].contents && attackPath[i].contents.owner == this) clear = false;
                 }
-                if (!clear) utility -= DEFENDER_MISUSE_VALUE;
+                if (clear) utility -= MELEE_MISUSE_VALUE;
             }
         }
     }

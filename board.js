@@ -135,6 +135,11 @@ diamondrun.Board = function(is_friendly) {
     this.tiles[7].defending = this.tiles[3];
     this.tiles[8].defending = this.tiles[3];
     
+    this.tiles[0].defendedBy = [this.tiles[1], this.tiles[2], this.tiles[3]];
+    this.tiles[1].defendedBy = [this.tiles[4], this.tiles[5]];
+    this.tiles[2].defendedBy = [this.tiles[6]];
+    this.tiles[3].defendedBy = [this.tiles[7], this.tiles[8]];
+    
     // add tech tile
     this.techTile = new diamondrun.TechTile(is_friendly);
     this.tiles.push(this.techTile);
