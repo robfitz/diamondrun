@@ -25,41 +25,35 @@ diamondrun.AIPlayer = function(isPlayer1, board, hand, deck, graveyard) {
 goog.inherits(diamondrun.AIPlayer, diamondrun.Player);
 
 diamondrun.AIPlayer.prototype.beginPlayPhase = function(callback) {    
-    console.log("play phase begun");
     this.techLevel = this.board.techTile.techLevel; // Update current tech level
     
     this.canActThisPhase = true;
     this.actionCallback = callback;
-
-    for (var i = 0; i < this.hand.cards.length; i ++) {
-    // this.hand.cards[i].enableDragging();
-    }
     
-    var pMU = [];
-    console.log(this.hand.cards.length);
-        
+    // List of possible moves with the format [card, target, utility]
+    var possible = [];
     for (var c = 0; c < this.hand.cards.length; c ++) {
-        console.log(this.hand.cards[c]);
-        var targets = this.board.getValidTargets(this.hand.cards[c]);
         var card = this.hand.cards[c];
+        var targets = this.board.getValidTargets(card);
         for (var t = 0; t < targets.length; t ++) {
             var target = targets[t];
-            pMU.push([card, target, this.utility(card, target)]);
+            possible.push([card, target, this.utility(card, target)]);
         }
     }
     
+    // Find legal move with highest utility value
     var curMax = Number.NEGATIVE_INFINITY;
     var curTar = null;
     var curCard = null;
-    
-    for (var i = 0; i < pMU.length; i ++) {
-        if (curMax < pMU[i][2] && (this.techLevel >= pMU[i][0].castCost || pMU[i][1] == this.board.techTile)) {
-            curMax = pMU[i][2];
-            curTar = pMU[i][1];
-            curCard = pMU[i][0];
+    for (var i = 0; i < possible.length; i ++) {
+        if (curMax < possible[i][2] && (this.techLevel >= possible[i][0].castCost || possible[i][1] == this.board.techTile)) {
+            curMax = possible[i][2];
+            curTar = possible[i][1];
+            curCard = possible[i][0];
         }
     }
     
+    // Play found move
     if (curCard != null) this.playCard(curCard, curTar);
 };
 
@@ -77,18 +71,17 @@ diamondrun.AIPlayer.prototype.utility = function(card, target) {
     // End of utility values
     
     var utility = 0 + card.castCost;
-    
     if (card.type == 'unitCard') {
-        
-        
         if (target == this.board.techTile) {
+            // If sacrificing card subtract card cost * 2 to devalue sacrificing good cards.
             utility -= card.castCost * 2;
-            var newTechVal = this.techLevel + 1;
+            // Then add TECH_UP_VALUE for every card in hand that would be unlocked by the sacrifice
             for (var c = 0; c < this.hand.cards.length; c ++) {
-                if (this.hand.cards[c] != card && this.hand.cards[c].techLevel == this.techLevel) utility += TECH_UP_VALUE;
+                if (this.hand.cards[c] != card && this.hand.cards[c].techLevel == this.techLevel + 1) utility += TECH_UP_VALUE;
             }
         }
         else {
+            // If the path ahead is clear add OPEN_ATK_VALUE
             var attackPath = target.getAttackPath();
             console.log(target);
             var clear = true;
@@ -97,6 +90,9 @@ diamondrun.AIPlayer.prototype.utility = function(card, target) {
             }
             if (clear) utility += OPEN_ATK_VALUE;
             
+            // TODO: add value to blocking an enemy attack path
+            
+            // If you place a shooter in the open subtract RANGED_MISUSE_VALUE
             if (card.movement == 'shooter') {
                 var attackPath = target.getAttackPath();
                 var clear = true;
@@ -106,6 +102,8 @@ diamondrun.AIPlayer.prototype.utility = function(card, target) {
                 if (clear) utility -= RANGED_MISUSE_VALUE;
             }
             
+            // If you place a sitter behind units subtract DEFENDER_MISUSE_VALUE
+            // TODO: account for flanking
             if (card.movement == 'sitter') {
                 var attackPath = target.getAttackPath();
                 var clear = true;
@@ -117,6 +115,7 @@ diamondrun.AIPlayer.prototype.utility = function(card, target) {
         }
     }
     else if (card.type == 'burnCard') {
+        // If a spell would kill a target add KILLSHOT_VALUE
         if (target.contents && target.contents.hP - card.attack <= 0) utility += KILLSHOT_VALUE;
     }
     
