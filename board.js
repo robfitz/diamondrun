@@ -157,7 +157,7 @@ diamondrun.Board = function(is_friendly) {
 goog.inherits(diamondrun.Board, lime.Layer);
 
 diamondrun.Board.prototype.getValidTargets = function(card) {
-    if (card.type == 'unitCard') {
+    if (card.type == CardTypes.UNIT_CARD) {
         var targets = [];
         for (var i = 0; i < this.tiles.length; i++) {
             if (this.tiles[i].contents == null) targets.push(this.tiles[i]);
@@ -167,7 +167,7 @@ diamondrun.Board.prototype.getValidTargets = function(card) {
 
         return targets;
     }
-    else if (card.type == 'burnCard') {
+    else if (card.type == CardTypes.TARGET_SPELL_CARD) {
         var targets = [];
         var tartiles = card.owner.getEnemyBoard().getTiles();
         for (var i = 0; i < tartiles.length; i++) {

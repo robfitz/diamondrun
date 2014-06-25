@@ -35,10 +35,10 @@ diamondrun.Card = function(owner, movement, attack, hp, type, castCost) {
     this.g = 150;
     this.b = 150;
 
-    if (this.type == 'unitCard') {
+    if (this.type == CardTypes.UNIT_CARD) {
         this.setText(this.attack + '/' + this.hp + ' ' + this.movement + " Cost:" + castCost);
     }
-    else if (this.type == 'burnCard') {
+    else if (this.type == CardTypes.TARGET_SPELL_CARD) {
         this.setText("Direct Damage: " + this.attack + " Cost:" + castCost);
         this.g = 100;
         this.b = 100;
@@ -104,6 +104,9 @@ goog.inherits(diamondrun.Card, lime.Label);
 diamondrun.Card.prototype.getOwner = function() {
     return this.owner;
 };
+// --------------------------------------------------------------------------------------------------------------------------- Class Seperator
+
+var CardTypes = Object.freeze({UNIT_CARD: 'unitCard', TARGET_SPELL_CARD: 'targetCard'});
 
 // --------------------------------------------------------------------------------------------------------------------------- Class Seperator
 
@@ -157,14 +160,14 @@ diamondrun.Deck = function(owner) {
 
     this.cards = [];
     for (var i = 0; i < 5; i ++) {
-        this.cards.push(new diamondrun.Card(owner, 'melee', 2, 1, 'unitCard', 1));
-        this.cards.push(new diamondrun.Card(owner, 'sitter', 1, 2, 'unitCard', 1));
+        this.cards.push(new diamondrun.Card(owner, UnitMovement.MELEE, 2, 1, CardTypes.UNIT_CARD, 1));
+        this.cards.push(new diamondrun.Card(owner, UnitMovement.SITTER, 1, 2, CardTypes.UNIT_CARD, 1));
         
-        this.cards.push(new diamondrun.Card(owner, 'jumper', 2, 2, 'unitCard', 2));
+        this.cards.push(new diamondrun.Card(owner, UnitMovement.JUMPER, 2, 2, CardTypes.UNIT_CARD, 2));
 
-        this.cards.push(new diamondrun.Card(owner, 'shooter', 1, 1, 'unitCard', 2));
+        this.cards.push(new diamondrun.Card(owner, UnitMovement.SHOOTER, 1, 1, CardTypes.UNIT_CARD, 2));
         
-        this.cards.push(new diamondrun.Card(owner, 'fireball', 3, 0, 'burnCard', 3));
+        this.cards.push(new diamondrun.Card(owner, 'fireball', 3, 0, CardTypes.TARGET_SPELL_CARD, 3));
 
     }
 };

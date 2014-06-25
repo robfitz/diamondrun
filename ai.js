@@ -71,7 +71,7 @@ diamondrun.AIPlayer.prototype.utility = function(card, target) {
     // End of utility values
     
     var utility = 0 + card.castCost;
-    if (card.type == 'unitCard') {
+    if (card.type == CardTypes.UNIT_CARD) {
         if (target == this.board.techTile) {
             // If sacrificing card subtract card cost * 2 to devalue sacrificing good cards.
             utility -= card.castCost * 2;
@@ -106,16 +106,16 @@ diamondrun.AIPlayer.prototype.utility = function(card, target) {
                 }
             }
             if (needsBlocker) utility += OPEN_DEF_VALUE;
-            if (needsBlocker && card.movement == 'sitter') utility += OPEN_DEF_VALUE;
+            if (needsBlocker && card.movement == UnitMovement.SITTER) utility += OPEN_DEF_VALUE;
             else {
                 for (var i = 0; i < enemyUnits.length; i ++) {
                     var atkPath = enemyUnits[i].tile.getAttackPath();
-                    if (enemyUnits[i].movement == 'jumper' && atkPath.length == 3 && target == this.board.getTiles()[0])  utility += OPEN_DEF_VALUE;
+                    if (enemyUnits[i].movement == UnitMovement.JUMPER && atkPath.length == 3 && target == this.board.getTiles()[0])  utility += OPEN_DEF_VALUE;
                 }
             }
             
             // If you place a shooter in the open subtract RANGED_MISUSE_VALUE
-            if (card.movement == 'shooter') {
+            if (card.movement == UnitMovement.SHOOTER) {
                 var defenseSpaces = target.defendedBy;
                 var open = false;
                 if (defenseSpaces == null) open = true;
@@ -128,7 +128,7 @@ diamondrun.AIPlayer.prototype.utility = function(card, target) {
             }
             
             // If you place a sitter behind units subtract DEFENDER_MISUSE_VALUE
-            if (card.movement == 'sitter') {
+            if (card.movement == UnitMovement.SITTER) {
                 var defenseSpaces = target.defendedBy;
                 var clear = false;
                 if (defenseSpaces != null) {
@@ -139,18 +139,18 @@ diamondrun.AIPlayer.prototype.utility = function(card, target) {
                 if (clear || defenseSpaces != null) utility -= DEFENDER_MISUSE_VALUE;
             }
             
-            // If you place a melee unit to where it will collide subtract MELEE_MISUSE_VALUE
-            if (card.movement == 'sitter') {
+            // If you place a UnitMovement.MELEE unit to where it will collide subtract UnitMovement.MELEE_MISUSE_VALUE
+            if (card.movement == UnitMovement.SITTER) {
                 var attackPath = target.getAttackPath();
                 var clear = true;
                 for (var i = 0; i < attackPath.length; i ++) {
                     if (attackPath[i].contents && attackPath[i].contents.owner == this) clear = false;
                 }
-                if (clear) utility -= MELEE_MISUSE_VALUE;
+                if (clear) utility -= UnitMovement.MELEE_MISUSE_VALUE;
             }
         }
     }
-    else if (card.type == 'burnCard') {
+    else if (card.type == CardTypes.TARGET_SPELL_CARD) {
         // If a spell would kill a target add KILLSHOT_VALUE
         if (target.contents && target.contents.hP - card.attack <= 0) utility += KILLSHOT_VALUE;
     }

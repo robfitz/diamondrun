@@ -52,15 +52,15 @@ diamondrun.Player.prototype.doAttack = function() {
 };
 
 diamondrun.Player.prototype.playCard = function(card, tile) {
-    if (card.type == 'unitCard') var cmd = new diamondrun.PlayCardCommand(this, card, tile);
-    else if (card.type == 'burnCard') var cmd = new diamondrun.PlaySpellCommand(this, card, tile);
+    if (card.type == CardTypes.UNIT_CARD) var cmd = new diamondrun.PlayCardCommand(this, card, tile);
+    else if (card.type == CardTypes.TARGET_SPELL_CARD) var cmd = new diamondrun.PlaySpellCommand(this, card, tile);
     else {
         console.log("ERROR: Card type not recognized.");
         this.endPlayPhase();
     }
     Commands.add(cmd);
 
-    if (card.type == 'unitCard') this.endPlayPhase(); // End phase needs to wait for animation if spell. TODO: Possibly use callbacks to accomplish.
+    if (card.type == CardTypes.UNIT_CARD) this.endPlayPhase(); // End phase needs to wait for animation if spell. TODO: Possibly use callbacks to accomplish.
     
 };
 

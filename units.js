@@ -27,7 +27,7 @@ diamondrun.Unit = function(owner, tile, movement, attack, hp) {
     this.label = new lime.Label().setSize(CARD_SIZE - CARD_SPACING * 1, CARD_SIZE - CARD_SPACING * 1);
 
     this.movement = movement;
-    if (this.movement == 'jumper') this.jumps = 2;    
+    if (this.movement == UnitMovement.JUMPER) this.jumps = 2;    
     this.type = "unit";
     this.isSSick = true;
 
@@ -100,7 +100,7 @@ diamondrun.Unit.prototype.doAttack = function(contexts, callbacks) {
     var self = this;
 
     // Check to see if the unit has Summoning Sickness or is a sitter.
-    if (this.isSSick || this.movement == 'sitter') {
+    if (this.isSSick || this.movement == UnitMovement.SITTER) {
         if (callbacks && callbacks.length > 0) {
             var firstCall = callbacks.shift();
             var firstContext = contexts.shift();
@@ -141,7 +141,7 @@ diamondrun.Unit.prototype.doAttack = function(contexts, callbacks) {
                 
                 lime.scheduleManager.callAfter(function(dt) {    
                     contents.takeDamage(self.attack, true);
-                    if (contents.movement == 'sitter') contents.counterAttack(self);
+                    if (contents.movement == UnitMovement.SITTER) contents.counterAttack(self);
                 }, null, duration*1000);
                 duration += 0.1;
                 turnBack = true;
@@ -198,7 +198,7 @@ diamondrun.Unit.prototype.canMoveToTile = function(stepNum, tile) {
     var contents = tile.contents;
 
     switch(this.movement) {
-        case 'melee':
+        case UnitMovement.MELEE:
             if (!contents || contents.type == 'rubble') {
                 return 'move';
             }
@@ -207,7 +207,7 @@ diamondrun.Unit.prototype.canMoveToTile = function(stepNum, tile) {
                 else return 'fight';
             }
             break;
-        case 'shooter':
+        case UnitMovement.SHOOTER:
             if (!contents || contents.type == 'rubble') {
                 return 'move';
             }
@@ -216,7 +216,7 @@ diamondrun.Unit.prototype.canMoveToTile = function(stepNum, tile) {
                 else return 'fight';
             }
             break;
-        case 'jumper':
+        case UnitMovement.JUMPER:
             // Jump over first two tiles in attack path
             if (this.jumps-- > 0) {
                 return 'move';
@@ -229,7 +229,7 @@ diamondrun.Unit.prototype.canMoveToTile = function(stepNum, tile) {
                 else return 'fight';
             }
             break;
-        case 'sitter':
+        case UnitMovement.SITTER:
             // Shouldn't ever be called. Leaving in case we want special case actions/animations for sitters where/when their movement would be.
             return 'collide';
             break;
@@ -252,7 +252,7 @@ diamondrun.Unit.prototype.endTurn = function() {
     this.redraw();
     
     // Reset Movement variables
-    if (this.movement == 'jumper') this.jumps = 2;
+    if (this.movement == UnitMovement.JUMPER) this.jumps = 2;
 };
 
 function getShape(movement, hp, scale, r, g, b) {
@@ -261,19 +261,19 @@ function getShape(movement, hp, scale, r, g, b) {
     var w = scale / 2;
 
     switch (movement) {
-        case 'melee':
+        case UnitMovement.MELEE:
             //triangle
             poly.addPoints(0,-w, w,w, -w,w);
             break;
-        case 'sitter': 
+        case UnitMovement.SITTER: 
             //crown
             poly.addPoints(-w,-w, 0,-w*0.75, w,-w, w,w, -w,w);
             break;
-        case 'shooter':
+        case UnitMovement.SHOOTER:
             //chevron
             poly.addPoints(-w,-w*0.75, 0,-w, w,-w*0.75, w,w, 0,w*0.75, -w,w);
             break;
-        case 'jumper':
+        case UnitMovement.JUMPER:
             //diamond
             poly.addPoints(0,-w, w,-w/2, w,w/2, 0,w, -w,w/2, -w,-w/2);
             break;
@@ -292,3 +292,8 @@ function getShape(movement, hp, scale, r, g, b) {
 
     return poly;
 }
+
+
+// --------------------------------------------------------------------------------------------------------------------------- Class Seperator
+
+var UnitMovement = Object.freeze({MELEE: 'melee', SITTER: 'sitter', SHOOTER: 'shooter', JUMPER: 'jumper'});
