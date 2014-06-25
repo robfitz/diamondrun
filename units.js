@@ -3,6 +3,7 @@ goog.provide('diamondrun.Unit');
 goog.require('lime.Sprite');
 goog.require('lime.Label');
 goog.require('lime.Polygon');
+goog.require('lime.RoundedRect');
 goog.require('lime.animation.Spawn');
 goog.require('lime.animation.Sequence');
 goog.require('lime.animation.MoveTo');
@@ -22,7 +23,7 @@ diamondrun.Unit = function(owner, tile, movement, attack, hp) {
     this.hp = hp;
     this.maxHp = hp;
 
-    this.setSize(CARD_SIZE - CARD_SPACING * 1, CARD_SIZE - CARD_SPACING * 1).setFill(0,255,150);
+    this.label = new lime.Label().setSize(CARD_SIZE - CARD_SPACING * 1, CARD_SIZE - CARD_SPACING * 1);
 
     this.movement = movement;
     if (this.movement == 'jumper') this.jumps = 2;    
@@ -32,10 +33,11 @@ diamondrun.Unit = function(owner, tile, movement, attack, hp) {
     this.redraw();
     game.unitLayer.appendChild(this);
 
-    //this.setMask(getTriangle(CARD_SIZE));
+    this.appendChild(getShape(this.movement, CARD_SIZE - CARD_SPACING));
+    this.appendChild(this.label);
 };
 
-goog.inherits(diamondrun.Unit, lime.Label);
+goog.inherits(diamondrun.Unit, lime.Layer);
 
 diamondrun.Unit.prototype.heal = function() {
     this.hp = this.maxHp;
@@ -43,14 +45,15 @@ diamondrun.Unit.prototype.heal = function() {
 };
 
 diamondrun.Unit.prototype.redraw = function() {
-    var label = this.attack + '/' + this.maxHp;
+    var txt = this.attack + '/' + this.maxHp;
     if (this.hp < this.maxHp) {
         var missing = this.maxHp - this.hp;
-        label += ' - ' + missing;
+        txt += ' - ' + missing;
     }
-    if (this.isSSick) label += ' (' + this.movement + ')';
-    else label += ' ' + this.movement;
-    this.setText(label);
+    if (this.isSSick) txt += ' (' + this.movement + ')';
+    else txt += ' ' + this.movement;
+    this.label.setText(txt);
+
 };
 
 diamondrun.Unit.prototype.takeDamage = function(damage, generateRubble) {
@@ -251,19 +254,33 @@ diamondrun.Unit.prototype.endTurn = function() {
     if (this.movement == 'jumper') this.jumps = 2;
 };
 
+function getShape(movement, scale) {
 
+    var poly = new lime.Polygon();
+    var w = scale / 2;
 
-function getTriangle(scale) {
-
-    var points = [
-        new goog.math.Coordinate(0, -1),
-        new goog.math.Coordinate(-1, -1),
-        new goog.math.Coordinate(1, -1)
-    ];
-
-    for (var i = 0; i < points.length; i ++) {
-        points[i].x *= scale / 2;
-        points[i].y *= scale / 2;
+    switch (movement) {
+        case 'melee':
+            //triangle
+            poly.addPoints(0,-w, w,w, -w,w);
+            break;
+        case 'sitter': 
+            //crown
+            poly.addPoints(-w,-w, 0,-w*0.5, w,-w, w,w, -w,w);
+            break;
+        case 'shooter':
+            //chevron
+            poly.addPoints(-w,-w*0.5, 0,-w, w,-w*0.5, w,w, 0,w*0.5, -w,w);
+            break;
+        case 'jumper':
+            //diamond
+            poly.addPoints(0,-w, w,-w/2, w,w/2, 0,w, -w,w/2, -w,-w/2);
+            break;
+        default:
+            //square
+            poly.addPoints(-w,-w, w,-w, w,w, -w,w);
+            break;
     }
-    return new lime.Polygon(points).setFill(55, 55, 55);
+    poly.setStroke(1,'#f00').setFill(255, 55, 55);
+    return poly;
 }

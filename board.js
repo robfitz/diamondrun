@@ -106,8 +106,9 @@ diamondrun.TechTile = function(is_friendly) {
 goog.inherits(diamondrun.TechTile, diamondrun.Tile);
 
 diamondrun.TechTile.prototype.addUnit = function(unit) {
-    unit.setSize(0,0).setFill(255,255,255);
-    unit.setText("");
+    //unit.setSize(0,0).setFill(255,255,255);
+    //unit.setText("");
+    unit.getParent().removeChild(unit);
     this.label.setText(++this.techLevel);
     return true;
 };
