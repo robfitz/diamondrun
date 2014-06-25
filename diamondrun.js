@@ -67,7 +67,10 @@ var Phases = {
 
             case Phases.p1_draw:
                 var drawNum = 2;
-                if (game.turn == 0) drawNum = 5;
+                if (game.turn == 0) { 
+                    drawNum = 4;
+                    this.current = 3; // Probably bad practice but couldn't think of a more concise way to implement the first turn play order.
+                }
                 
                 Commands.add(new diamondrun.DrawCardCommand(game.player1, drawNum));
                 Commands.add(new diamondrun.NextPhaseCommand());
