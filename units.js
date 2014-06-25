@@ -10,6 +10,7 @@ goog.require('lime.animation.MoveTo');
 goog.require('lime.animation.RotateBy');
 goog.require('lime.animation.ScaleTo');
 goog.require('lime.animation.FadeTo');
+goog.require('lime.fill.Color');
 
 goog.require('goog.math.Coordinate');
 
@@ -33,7 +34,7 @@ diamondrun.Unit = function(owner, tile, movement, attack, hp) {
     this.redraw();
     game.unitLayer.appendChild(this);
 
-    this.appendChild(getShape(this.movement, CARD_SIZE - CARD_SPACING));
+    this.appendChild(getShape(this.movement, this.hp, CARD_SIZE - CARD_SPACING, 0, 255, 0));
     this.appendChild(this.label);
 };
 
@@ -254,7 +255,7 @@ diamondrun.Unit.prototype.endTurn = function() {
     if (this.movement == 'jumper') this.jumps = 2;
 };
 
-function getShape(movement, scale) {
+function getShape(movement, hp, scale, r, g, b) {
 
     var poly = new lime.Polygon();
     var w = scale / 2;
@@ -266,11 +267,11 @@ function getShape(movement, scale) {
             break;
         case 'sitter': 
             //crown
-            poly.addPoints(-w,-w, 0,-w*0.5, w,-w, w,w, -w,w);
+            poly.addPoints(-w,-w, 0,-w*0.75, w,-w, w,w, -w,w);
             break;
         case 'shooter':
             //chevron
-            poly.addPoints(-w,-w*0.5, 0,-w, w,-w*0.5, w,w, 0,w*0.5, -w,w);
+            poly.addPoints(-w,-w*0.75, 0,-w, w,-w*0.75, w,w, 0,w*0.75, -w,w);
             break;
         case 'jumper':
             //diamond
@@ -281,6 +282,13 @@ function getShape(movement, scale) {
             poly.addPoints(-w,-w, w,-w, w,w, -w,w);
             break;
     }
-    poly.setStroke(1,'#f00').setFill(255, 55, 55);
+    
+    poly.setStroke(0,'#000').setFill(r, g, b);
+
+    /*if (hp > 1) {
+        poly.appendChild(getShape(movement, hp-1, scale, r,g,b).setPosition(5, -5));
+    }
+    */
+
     return poly;
 }

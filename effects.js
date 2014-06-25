@@ -63,6 +63,6 @@ diamondrun.Effect.prototype.activate = function() {
         Commands.add(new diamondrun.NextPhaseCommand());
     });
 */
-    
+    this.getParent().removeChild(this);
     Commands.add(new diamondrun.NextPhaseCommand());
 };
