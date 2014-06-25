@@ -104,7 +104,7 @@ var Phases = {
 
             case Phases.p2_draw:
                 var drawNum = 2;
-                if (game.turn == 0) drawNum = 5;
+                if (game.turn == 0) drawNum = 6;
                 
                 Commands.add(new diamondrun.DrawCardCommand(game.player2, drawNum));
                 Commands.add(new diamondrun.NextPhaseCommand());

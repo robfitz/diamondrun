@@ -46,7 +46,7 @@ diamondrun.AIPlayer.prototype.beginPlayPhase = function(callback) {
     var curTar = null;
     var curCard = null;
     for (var i = 0; i < possible.length; i ++) {
-        if (curMax < possible[i][2] && (this.techLevel >= possible[i][0].castCost || possible[i][1] == this.board.techTile)) {
+        if (curMax <= possible[i][2] && (this.techLevel >= possible[i][0].castCost || possible[i][1] == this.board.techTile)) {
             curMax = possible[i][2];
             curTar = possible[i][1];
             curCard = possible[i][0];
@@ -107,9 +107,12 @@ diamondrun.AIPlayer.prototype.utility = function(card, target) {
                 }
             }
             if (needsBlocker) utility += OPEN_DEF_VALUE;
-            for (var i = 0; i < enemyUnits.length; i ++) {
-                var atkPath = enemyUnits[i].tile.getAttackPath();
-                if (enemyUnits[i].movement == 'jumper' && atkPath.length == 3 && target == this.board.getTiles()[0])  utility += OPEN_DEF_VALUE;
+            if (needsBlocker && card.movement == 'sitter') utility += OPEN_DEF_VALUE;
+            else {
+                for (var i = 0; i < enemyUnits.length; i ++) {
+                    var atkPath = enemyUnits[i].tile.getAttackPath();
+                    if (enemyUnits[i].movement == 'jumper' && atkPath.length == 3 && target == this.board.getTiles()[0])  utility += OPEN_DEF_VALUE;
+                }
             }
             
             // If you place a shooter in the open subtract RANGED_MISUSE_VALUE
