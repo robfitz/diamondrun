@@ -14,7 +14,7 @@ diamondrun.Rubble = function(tile, turnsActive) {
     this.tile = tile;
     this.turnsActive = turnsActive;
 
-    this.setSize(CARD_SIZE - CARD_SPACING * 1, CARD_SIZE - CARD_SPACING * 1).setFill(200,200,200);
+    this.setSize(CARD_SIZE + 2, CARD_SIZE + 2).setFill(80, 80, 80).setFontColor('white').setFontSize(CARD_FONT_SIZE).setPadding((CARD_SIZE - CARD_FONT_SIZE) / 2);
     this.redraw();
     
     this.type = "rubble";
@@ -25,7 +25,7 @@ diamondrun.Rubble = function(tile, turnsActive) {
 goog.inherits(diamondrun.Rubble, lime.Label);
 
 diamondrun.Rubble.prototype.redraw = function() {
-    this.setText('Rubble: ' + this.turnsActive + " turns left");
+    this.setText(this.turnsActive);
 };
 
 diamondrun.Rubble.prototype.breakdown = function() {

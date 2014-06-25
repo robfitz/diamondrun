@@ -43,13 +43,15 @@ diamondrun.Effect.prototype.activate = function() {
     this.damage(this.tile.contents);
     
     // Activate Effect animation
+    /*
     var actEffect = new lime.animation.Spawn(
         new lime.animation.ScaleTo(.1),
         new lime.animation.FadeTo(0),
         new lime.animation.RotateBy(0)
     ).setDuration(0.5);
-    
+
     this.runAction(actEffect);
+    
     
     var self = this;
     
@@ -60,4 +62,7 @@ diamondrun.Effect.prototype.activate = function() {
         
         Commands.add(new diamondrun.NextPhaseCommand());
     });
+*/
+    
+    Commands.add(new diamondrun.NextPhaseCommand());
 };

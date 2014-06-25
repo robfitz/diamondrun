@@ -163,7 +163,7 @@ diamondrun.Board.prototype.getValidTargets = function(card) {
         }
 
         targets.push(this.techTile);
-        
+
         return targets;
     }
     else if (card.type == 'burnCard') {

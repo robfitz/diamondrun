@@ -15,6 +15,7 @@ goog.require('lime.animation.ScaleTo');
 goog.require('goog.events.Event');
 
 var CARD_SIZE = 100;
+var CARD_FONT_SIZE = 60;
 var CARD_SPACING = 5;
 
 

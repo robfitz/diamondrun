@@ -2,12 +2,15 @@ goog.provide('diamondrun.Unit');
 
 goog.require('lime.Sprite');
 goog.require('lime.Label');
+goog.require('lime.Polygon');
 goog.require('lime.animation.Spawn');
 goog.require('lime.animation.Sequence');
 goog.require('lime.animation.MoveTo');
 goog.require('lime.animation.RotateBy');
 goog.require('lime.animation.ScaleTo');
 goog.require('lime.animation.FadeTo');
+
+goog.require('goog.math.Coordinate');
 
 
 diamondrun.Unit = function(owner, tile, movement, attack, hp) {
@@ -28,6 +31,8 @@ diamondrun.Unit = function(owner, tile, movement, attack, hp) {
 
     this.redraw();
     game.unitLayer.appendChild(this);
+
+    //this.setMask(getTriangle(CARD_SIZE));
 };
 
 goog.inherits(diamondrun.Unit, lime.Label);
@@ -245,3 +250,20 @@ diamondrun.Unit.prototype.endTurn = function() {
     // Reset Movement variables
     if (this.movement == 'jumper') this.jumps = 2;
 };
+
+
+
+function getTriangle(scale) {
+
+    var points = [
+        new goog.math.Coordinate(0, -1),
+        new goog.math.Coordinate(-1, -1),
+        new goog.math.Coordinate(1, -1)
+    ];
+
+    for (var i = 0; i < points.length; i ++) {
+        points[i].x *= scale / 2;
+        points[i].y *= scale / 2;
+    }
+    return new lime.Polygon(points).setFill(55, 55, 55);
+}
