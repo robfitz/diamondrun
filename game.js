@@ -65,6 +65,7 @@ diamondrun.Player.prototype.playCard = function(card, tile) {
 };
 
 diamondrun.Player.prototype.endPlayPhase = function() {
+    window.clearTimeout(this.turnTimer)
     for (var i = 0; i < this.hand.cards.length; i ++) {
     // this.hands.cards[i].disableDragging();
     }
@@ -75,7 +76,8 @@ diamondrun.Player.prototype.endPlayPhase = function() {
     }
 };
 
-diamondrun.Player.prototype.beginPlayPhase = function(callback) {    
+diamondrun.Player.prototype.beginPlayPhase = function(callback) {
+    this.turnTimer = window.setTimeout(callback, 10000);
     this.techLevel = this.board.techTile.techLevel; // Update current tech level
     
     this.canActThisPhase = true;

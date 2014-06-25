@@ -63,6 +63,7 @@ diamondrun.Effect.prototype.activate = function() {
         Commands.add(new diamondrun.NextPhaseCommand());
     });
 */
+    window.clearTimeout(this.owner.turnTimer);
     this.getParent().removeChild(this);
     Commands.add(new diamondrun.NextPhaseCommand());
 };
