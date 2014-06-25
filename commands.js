@@ -49,7 +49,7 @@ diamondrun.DrawCardCommand = function(player, numCards) {
 
 diamondrun.DrawCardCommand.prototype.execute = function() {
     for (var i = 0; i < this.numCards; i ++) {
-        this.player.draw();
+        this.player.draw(i);
     }
 };
 

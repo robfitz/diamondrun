@@ -11,8 +11,9 @@ diamondrun.Player = function(isPlayer1, board, hand, deck, graveyard) {
     this.techLevel = 1;
     this.life = 10;
     
-    if(isPlayer1) this.lifeLabel = new lime.Label(this.life).setFontSize(100).setPosition(250 * 1, 0).setAlign("center"); // Start of just UI stuff
-    else this.lifeLabel = new lime.Label(this.life).setFontSize(100).setPosition( 250 * -1, 0).setAlign("center");        // TODO: Eventually seperate into its own class
+    if(isPlayer1) this.lifeLabel = new lime.Label(this.life).setFontSize(100).setPosition(250 * 1, 0).setAlign("center").setFontColor('white'); // Start of just UI stuff
+    
+    else this.lifeLabel = new lime.Label(this.life).setFontSize(100).setPosition( 250 * -1, 0).setAlign("center").setFontColor('white');        // TODO: Eventually seperate into its own class
     
     this.board.appendChild(this.lifeLabel);
 
@@ -94,8 +95,8 @@ diamondrun.Player.prototype.getCanAct = function() {
     return this.canActThisPhase;
 };
 
-diamondrun.Player.prototype.draw = function() {
-    this.hand.drawCard();
+diamondrun.Player.prototype.draw = function(drawNum) {
+    this.hand.drawCard(drawNum);
 };
 
 diamondrun.Player.prototype.getBoard = function() {

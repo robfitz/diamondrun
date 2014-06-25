@@ -12,6 +12,9 @@ var TECH_TILE_POS = 250;
 
 diamondrun.Tile = function(row, col, is_friendly) {
     goog.base(this);
+
+    this.type = 'tile';
+
     this.defending = null;
     this.contents = null;
 
@@ -77,7 +80,11 @@ diamondrun.Tile.prototype.getAttackPath = function() {
 // --------------------------------------------------------------------------------------------------------------------------- Class Seperator
 
 diamondrun.TechTile = function(is_friendly) {
+
+
     goog.base(this);
+
+    this.type = "techtile";
     
     this.techLevel = 1;
     this.label = new lime.Label(this.techLevel).setFontSize(36).setFontColor("White");
@@ -142,7 +149,7 @@ diamondrun.Board = function(is_friendly) {
     
     // add tech tile
     this.techTile = new diamondrun.TechTile(is_friendly);
-    this.tiles.push(this.techTile);
+    
     this.appendChild(this.techTile);
 };
 
@@ -154,6 +161,9 @@ diamondrun.Board.prototype.getValidTargets = function(card) {
         for (var i = 0; i < this.tiles.length; i++) {
             if (this.tiles[i].contents == null) targets.push(this.tiles[i]);
         }
+
+        targets.push(this.techTile);
+        
         return targets;
     }
     else if (card.type == 'burnCard') {

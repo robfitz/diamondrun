@@ -29,16 +29,20 @@ diamondrun.Card = function(owner, movement, attack, hp, type, castCost) {
     this.attack = attack;
     this.hp = hp;
     this.castCost = castCost;
-    
+
+    this.r = 255;
+    this.g = 150;
+    this.b = 150;
 
     if (this.type == 'unitCard') {
         this.setText(this.attack + '/' + this.hp + ' ' + this.movement + " Cost:" + castCost);
-        this.setSize(CARD_SIZE, CARD_SIZE).setFill(255,150,150);
     }
     else if (this.type == 'burnCard') {
         this.setText("Direct Damage: " + this.attack + " Cost:" + castCost);
-        this.setSize(CARD_SIZE, CARD_SIZE).setFill(250,50,0);
+        this.g = 100;
+        this.b = 100;
     }
+    this.setSize(CARD_SIZE, CARD_SIZE).setFill(this.r, this.g, this.g, 0);
 
     //local declaration for when 'this' is clobbered by event objects
     var card = this; 
@@ -120,18 +124,27 @@ diamondrun.Hand.prototype.removeCard = function(card) {
     this.refreshCardLocations();
 };
 
-diamondrun.Hand.prototype.drawCard = function() {
+diamondrun.Hand.prototype.drawCard = function(drawNum) {
     var card = this.owner.getDeck().drawCard();
     this.cards.push(card);
     this.appendChild(card);
 
-    this.refreshCardLocations();
+    card.runAction(new lime.animation.Sequence(
+            new lime.animation.FadeTo(1).setDuration(drawNum*0.2),
+            new lime.animation.Spawn(
+                new lime.animation.ColorTo(card.r, card.g, card.b, 1),
+                new lime.animation.ScaleTo(1.2)
+            ).setDuration(0.2),
+            new lime.animation.ScaleTo(1).setDuration(0.1)
+        ));
 };
 
 diamondrun.Hand.prototype.refreshCardLocations = function() {
     var xoffset = - (this.cards.length - 1) * (CARD_SIZE + CARD_SPACING) / 2;
+
     for (var i = 0; i < this.cards.length; i ++) {
         this.cards[i].runAction(new lime.animation.MoveTo(xoffset + i * (CARD_SIZE + CARD_SPACING), 0).setDuration(0.2));
+        
     }    
 };
 

@@ -4,7 +4,13 @@ goog.provide('diamondrun');
 //get requirements
 goog.require('lime.Director');
 goog.require('lime.Scene');
+goog.require('lime.Sprite');
 goog.require('lime.Layer');
+
+goog.require('lime.animation.Spawn');
+goog.require('lime.animation.Sequence');
+goog.require('lime.animation.FadeTo');
+goog.require('lime.animation.ColorTo');
 
 goog.require('diamondrun.Tile');
 goog.require('diamondrun.Hand');
@@ -69,6 +75,7 @@ var Phases = {
 
             case Phases.p1_play1:
             case Phases.p1_play2:
+                game.player1.hand.refreshCardLocations();
                 //wait for user action
                 game.player1.beginPlayPhase(function() {
                     Commands.add(new diamondrun.NextPhaseCommand());
@@ -136,11 +143,53 @@ var Commands = {
     }
 };
 
+function style(game) {
+
+    var p1Tiles = game.player1.board.getTiles().slice(0);
+    var p2Tiles = game.player2.board.getTiles().slice(0);
+    p1Tiles.shuffle();
+    p2Tiles.shuffle();
+
+    var delay = 0;
+
+    for (var i = 0; i < p1Tiles.length; i ++) {
+
+        var t1 = p1Tiles[i];
+        var t2 = p2Tiles[i];
+
+        t1.setSize(TILE_SIZE, TILE_SIZE).setFill(255,255,255, 0.1);
+        t2.setSize(TILE_SIZE, TILE_SIZE).setFill(255,255,255, 0.1);
+
+        t1.runAction(new lime.animation.Sequence(
+            new lime.animation.FadeTo(1).setDuration(delay),
+            new lime.animation.Spawn(
+                new lime.animation.ColorTo(255, 255, 255, 1),
+                new lime.animation.RotateBy(90)
+            ).setDuration(0.3)
+        ));
+
+        t2.runAction(new lime.animation.Sequence(
+            new lime.animation.FadeTo(1).setDuration(delay),
+            new lime.animation.Spawn(
+                new lime.animation.ColorTo(255, 255, 255, 1),
+                new lime.animation.RotateBy(90)
+            ).setDuration(0.3)
+        ));
+
+        delay += 0.2;
+    }
+}
+
 // entrypoint
 diamondrun.start = function(){
 
     var director = new lime.Director(document.body,IPHONE_4_W,IPHONE_4_H),
         scene = new lime.Scene();
+
+    game.background = new lime.Sprite();
+    game.background.setSize(IPHONE_4_W, IPHONE_4_H).setFill(0, 0, 0).setAnchorPoint(0, 0);
+
+    scene.appendChild(game.background);
 
     var player = new diamondrun.Player(true);
     game.player1 = player;
@@ -173,6 +222,8 @@ diamondrun.start = function(){
 
     player.getBoard().connectAttackPaths(game.player2.getBoard());
     game.player2.getBoard().connectAttackPaths(player.getBoard());
+
+    style(game);
 };
 
 goog.exportSymbol('diamondrun.start', diamondrun.start);
