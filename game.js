@@ -8,26 +8,26 @@ diamondrun.Player = function(isPlayer1, board, hand, deck, graveyard) {
     this.deck = new diamondrun.Deck(this);
     this.activeEffects = [];
     
-    
-    this.timerBar = new lime.Sprite().setPosition(-IPHONE_4_W,-TILE_SIZE*2.5 - TILE_SPACING * 3).setSize(IPHONE_4_W, TILE_SPACING).setFill(100,100,100);
-    this.board.appendChild(this.timerBar);
-    
     this.techLevel = 1;
     this.life = 10;
-    
-    if(isPlayer1) this.lifeLabel = new lime.Label(this.life).setFontSize(100).setPosition(250 * 1, 0).setAlign("center").setFontColor('white'); // Start of just UI stuff
-    
-    else this.lifeLabel = new lime.Label(this.life).setFontSize(100).setPosition( 250 * -1, 0).setAlign("center").setFontColor('white');        // TODO: Possibly seperate into its own class
-    
-    this.board.appendChild(this.lifeLabel);
-
     this.canActThisPhase = false;
     this.actionCallback = null;
     this.isPlayer1 = isPlayer1;
+    
+    // Start of just UI stuff
+    // TODO: Possibly seperate into its own class
+    if(isPlayer1) this.lifeLabel = new lime.Label(this.life).setPosition(250 * 1, 0);
+    else this.lifeLabel = new lime.Label(this.life).setPosition( 250 * -1, 0);
+    this.lifeLabel.setFontSize(100).setAlign("center").setFontColor('white');
+    
+    this.timerBar = new lime.Sprite().setPosition(-IPHONE_4_W,-TILE_SIZE*2.5 - TILE_SPACING * 3).setSize(IPHONE_4_W, TILE_SPACING).setFill(100,100,100);
+    
+    this.board.appendChild(this.timerBar);
+    this.board.appendChild(this.lifeLabel);
 };
 
 diamondrun.Player.prototype.doAttack = function() {
-    // run through all the units on my side and tell them to figure out their attack, which will cause them to add a bunch of animations 
+    // Run through all the units on my side and tell them to figure out their attack, which will cause them to add a bunch of animations 
     // and other stuff to the animation queue. once the animations are done, we can go ahead to the next phase
     var callbacks = [];
     var units = this.board.getUnits();
@@ -64,12 +64,15 @@ diamondrun.Player.prototype.playCard = function(card, tile) {
     }
     Commands.add(cmd);
 
-    if (card.type == CardTypes.UNIT_CARD) this.endPlayPhase(); // End phase needs to wait for animation if spell. TODO: Possibly use callbacks to accomplish.
+    // End phase needs to wait for animation if spell. TODO: Possibly use callbacks to accomplish.
+    if (card.type == CardTypes.UNIT_CARD) this.endPlayPhase(); 
     
 };
 
 diamondrun.Player.prototype.endPlayPhase = function() {
-    window.clearTimeout(this.turnTimer)
+    // Remove Timer
+    window.clearTimeout(this.turnTimer);
+    
     for (var i = 0; i < this.hand.cards.length; i ++) {
     // this.hands.cards[i].disableDragging();
     }
@@ -81,13 +84,13 @@ diamondrun.Player.prototype.endPlayPhase = function() {
 };
 
 diamondrun.Player.prototype.beginPlayPhase = function(callback) {
-    // Set play timer to 
+    // Begin timer for this play phase
     this.turnTimer = window.setTimeout(callback, 10000);
     this.timerBar.setPosition(0,-TILE_SIZE*2.5 - TILE_SPACING * 3);
-    var timerAnimation = new lime.animation.MoveTo(-IPHONE_4_W,-TILE_SIZE*2.5 - TILE_SPACING * 3).setDuration(10).setEasing(lime.animation.Easing.LINEAR);
-    this.timerBar.runAction(timerAnimation);
+    this.timerBar.runAction(new lime.animation.MoveTo(-IPHONE_4_W,-TILE_SIZE*2.5 - TILE_SPACING * 3).setDuration(10).setEasing(lime.animation.Easing.LINEAR));
     
-    this.techLevel = this.board.techTile.techLevel; // Update current tech level
+    // Update current tech level
+    this.techLevel = this.board.techTile.techLevel;
     
     this.canActThisPhase = true;
     this.actionCallback = callback;
