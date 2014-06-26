@@ -85,7 +85,7 @@ diamondrun.Player.prototype.endPlayPhase = function() {
 
 diamondrun.Player.prototype.beginPlayPhase = function(callback) {
     // Begin timer for this play phase
-    this.turnTimer = window.setTimeout(callback, 10000);
+    this.turnTimer = window.setTimeout(this.timeOver, 10000);
     this.timerBar.setPosition(0,-TILE_SIZE*2.5 - TILE_SPACING * 3);
     this.timerBar.runAction(new lime.animation.MoveTo(-IPHONE_4_W,-TILE_SIZE*2.5 - TILE_SPACING * 3).setDuration(10).setEasing(lime.animation.Easing.LINEAR));
     
@@ -98,6 +98,10 @@ diamondrun.Player.prototype.beginPlayPhase = function(callback) {
     for (var i = 0; i < this.hand.cards.length; i ++) {
     // this.hand.cards[i].enableDragging();
     }
+};
+
+diamondrun.Player.prototype.timeOver = function() {
+    Commands.add(new diamondrun.TimeOutCommand());
 };
 
 diamondrun.Player.prototype.takeDamage = function(damage) {

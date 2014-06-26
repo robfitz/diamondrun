@@ -42,6 +42,25 @@ diamondrun.PlaySpellCommand.prototype.execute = function() {
 
 // --------------------------------------------------------------------------------------------------------------------------- Class Seperator
 
+diamondrun.TimeOutCommand = function() {
+    if (game.player1.canActThisPhase) this.player = game.player1;
+    else this.player = game.player2;
+    this.card = this.player.getHand().cards[0];
+    this.targetTile = this.player.board.techTile;
+};
+
+diamondrun.TimeOutCommand.prototype.execute = function() {
+    // Need to pass something into Tech Tile
+    var effect = new diamondrun.Effect(this.player, this.targetTile, this.card.type, this.card.attack);
+    this.targetTile.addEffect(effect)
+    
+    // move from hand to graveyard
+    this.player.getGraveyard().takeCard(this.card);
+    this.player.endPlayPhase();
+};
+
+// --------------------------------------------------------------------------------------------------------------------------- Class Seperator
+
 diamondrun.DrawCardCommand = function(player, numCards) {
     this.player = player;
     this.numCards = numCards;
