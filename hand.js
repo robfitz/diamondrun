@@ -5,6 +5,7 @@ goog.provide('diamondrun.Graveyard');
 goog.require('diamondrun.Unit');
 goog.require('diamondrun.PlayCardCommand');
 
+goog.require('lime.Scene');
 goog.require('lime.Sprite');
 goog.require('lime.Layer');
 goog.require('lime.Label');
@@ -19,10 +20,11 @@ var CARD_FONT_SIZE = 60;
 var CARD_SPACING = 5;
 
 
-diamondrun.Card = function(owner, movement, attack, hp, type, castCost) {
+diamondrun.Card = function(owner, movement, attack, hp, type, castCost, effects) {
     goog.base(this);
     this.owner = owner;
     this.type = type;
+
 
     // TODO: unit info should probably be in a database
     // or data file somewhere
@@ -96,7 +98,64 @@ diamondrun.Card = function(owner, movement, attack, hp, type, castCost) {
     };
 
     goog.events.listen(this,['mousedown','touchstart'],makeDraggable);
+    game.director.getCurrentScene().listenOverOut(this,function(e){ 
+        var drop_targets = card.owner.getBoard().getValidTargets(card);
+        console.log("mouseOver");
+        for (var i = 0; i < drop_targets.length; i ++) {
+            var r = drop_targets[i].getFill().r;
+            var g = drop_targets[i].getFill().g;
+            var b = drop_targets[i].getFill().b;
+            drop_targets[i].setFill(r-10,g-20,b-20);
+        } }, 
+        function(e){ 
+        var drop_targets = card.owner.getBoard().getValidTargets(card);
+        console.log("mouseOver");
+        for (var i = 0; i < drop_targets.length; i ++) {
+            var r = drop_targets[i].getFill().r;
+            var g = drop_targets[i].getFill().g;
+            var b = drop_targets[i].getFill().b;
+            drop_targets[i].setFill(r+10,g+20,b+20);
+        }; });
+    
+    // goog.events.listen(this, 'mouseover', function(e) { 
+		// var drop_targets = card.owner.getBoard().getValidTargets(card);
+        // console.log("mouseOver");
+        
+        // for (var i = 0; i < drop_targets.length; i ++) {
+            // var r = drop_targets[i].getFill().r;
+            // var g = drop_targets[i].getFill().g;
+            // var b = drop_targets[i].getFill().b;
+            // drop_targets[i].setFill(r-10,g-10,b-10);
+        // }
+//
+			// var key = goog.events.listen(this.getParent(), 'mousemove', function(e) {
+				// if (!this.hitTest(e))
+				// {
+                    // console.log("mouseOut");
+                    // var drop_targets = card.owner.getBoard().getValidTargets(card);
+                    // for (var i = 0; i < drop_targets.length; i ++) {
+                        // var r = drop_targets[i].getFill().r;
+                        // var g = drop_targets[i].getFill().g;
+                        // var b = drop_targets[i].getFill().b;
+                        // drop_targets[i].setFill(r+10,g+10,b+10); // unhighlight
+                    // }
+					// goog.events.unlistenByKey(key);
+				// }	
 
+			// },null,this);
+    //});
+    
+    // goog.events.listen(this, 'mouseout', function(e) { 
+		// var drop_targets = card.owner.getBoard().getValidTargets(card);
+        // console.log("mouseOut");
+        
+        // for (var i = 0; i < drop_targets.length; i ++) {
+            // var r = drop_targets[i].getFill().r;
+            // var g = drop_targets[i].getFill().g;
+            // var b = drop_targets[i].getFill().b;
+            // drop_targets[i].setFill(r+10,g+10,b+10);
+        // }
+    // });
 };
 
 goog.inherits(diamondrun.Card, lime.Label);
@@ -200,3 +259,44 @@ diamondrun.Graveyard.prototype.takeCard = function(card) {
         new lime.animation.ScaleTo(1).setDuration(.3)
     ));
 };
+
+// --------------------------------------------------------------------------------------------------------------------------- Class Seperator
+
+lime.Scene.prototype.listenOverOut = (function(){
+ 
+    var moveHandler = function(e){
+        for(var i in this.registeredOverOut_){
+            var item = this.registeredOverOut_[i];
+            var shape = item[0];
+            if(!shape.inTree_) continue;
+            var insideShape = shape.hitTest(e);
+            if(!shape.insideShape_ && insideShape && goog.isFunction(item[1])){
+                item[1].call(shape,e);
+            }
+            if(shape.insideShape_ && !insideShape && goog.isFunction(item[2])){
+                item[2].call(shape,e);
+            }
+            shape.insideShape_ = insideShape;
+        }
+    };
+ 
+    return function(shape,over,out){
+        if(shape==this) return; //scene itself is always full
+ 
+        if(!this.registeredOverOut_){
+             this.registeredOverOut_ = {};
+        }
+ 
+        var uuid = goog.getUid(shape);
+ 
+        if(!over && !out) //clear if empty
+            delete this.registeredOverOut_[uuid];
+ 
+        if(!this.isListeningOverOut_){
+            goog.events.listen(this,"mousemove",moveHandler,false,this);
+            this.isListeningOverOut_ = true;
+        }
+ 
+        this.registeredOverOut_[uuid] = [shape,over,out];
+    }
+})();

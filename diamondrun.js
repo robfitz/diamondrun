@@ -28,7 +28,8 @@ var game = {
     player1: null, //friendly
     player2: null, //enemy
     turn: 0,
-    unitLayer: null
+    unitLayer: null,
+    director: null
 }
 
 var Phases = {
@@ -185,14 +186,17 @@ function style(game) {
 
 // entrypoint
 diamondrun.start = function(){
-
-    var director = new lime.Director(document.body,IPHONE_4_W,IPHONE_4_H),
-        scene = new lime.Scene();
+    
+    game.director = new lime.Director(document.body,IPHONE_4_W,IPHONE_4_H);
+    var scene = new lime.Scene();
 
     game.background = new lime.Sprite();
     game.background.setSize(IPHONE_4_W, IPHONE_4_H).setFill(0, 0, 0).setAnchorPoint(0, 0);
 
     scene.appendChild(game.background);
+    
+    // set current scene active
+    game.director.replaceScene(scene);
 
     var player = new diamondrun.Player(true);
     game.player1 = player;
@@ -212,10 +216,8 @@ diamondrun.start = function(){
         phase_label.setText('P' + Phases.current);
     });
 
-    director.makeMobileWebAppCapable();
+    game.director.makeMobileWebAppCapable();
 
-    // set current scene active
-    director.replaceScene(scene);
     lime.scheduleManager.schedule(function(dt) {
         Commands.doNext();
     });
