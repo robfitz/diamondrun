@@ -80,6 +80,14 @@ diamondrun.Card = function(owner, movement, attack, hp, type, castCost, effects)
                     new lime.animation.ScaleTo(1.2).setDuration(.3),
                     new lime.animation.ScaleTo(1).setDuration(.3)
                 ));
+                
+                // Remove valid target highlighting
+                for (var i = 0; i < drop_targets.length; i ++) {
+                    var r = drop_targets[i].getFill().r;
+                    var g = drop_targets[i].getFill().g;
+                    var b = drop_targets[i].getFill().b;
+                    drop_targets[i].setFill(r+10,g+40,b+40);
+                };
 
                 //block card from automatically dropping itself onto the board
                 e.stopPropagation();
@@ -98,64 +106,29 @@ diamondrun.Card = function(owner, movement, attack, hp, type, castCost, effects)
     };
 
     goog.events.listen(this,['mousedown','touchstart'],makeDraggable);
-    game.director.getCurrentScene().listenOverOut(this,function(e){ 
-        var drop_targets = card.owner.getBoard().getValidTargets(card);
-        console.log("mouseOver");
-        for (var i = 0; i < drop_targets.length; i ++) {
-            var r = drop_targets[i].getFill().r;
-            var g = drop_targets[i].getFill().g;
-            var b = drop_targets[i].getFill().b;
-            drop_targets[i].setFill(r-10,g-20,b-20);
-        } }, 
+    
+    // Handle MouseOver and MouseOut
+    game.director.getCurrentScene().listenOverOut(this,
         function(e){ 
-        var drop_targets = card.owner.getBoard().getValidTargets(card);
-        console.log("mouseOver");
-        for (var i = 0; i < drop_targets.length; i ++) {
-            var r = drop_targets[i].getFill().r;
-            var g = drop_targets[i].getFill().g;
-            var b = drop_targets[i].getFill().b;
-            drop_targets[i].setFill(r+10,g+20,b+20);
-        }; });
-    
-    // goog.events.listen(this, 'mouseover', function(e) { 
-		// var drop_targets = card.owner.getBoard().getValidTargets(card);
-        // console.log("mouseOver");
-        
-        // for (var i = 0; i < drop_targets.length; i ++) {
-            // var r = drop_targets[i].getFill().r;
-            // var g = drop_targets[i].getFill().g;
-            // var b = drop_targets[i].getFill().b;
-            // drop_targets[i].setFill(r-10,g-10,b-10);
-        // }
-//
-			// var key = goog.events.listen(this.getParent(), 'mousemove', function(e) {
-				// if (!this.hitTest(e))
-				// {
-                    // console.log("mouseOut");
-                    // var drop_targets = card.owner.getBoard().getValidTargets(card);
-                    // for (var i = 0; i < drop_targets.length; i ++) {
-                        // var r = drop_targets[i].getFill().r;
-                        // var g = drop_targets[i].getFill().g;
-                        // var b = drop_targets[i].getFill().b;
-                        // drop_targets[i].setFill(r+10,g+10,b+10); // unhighlight
-                    // }
-					// goog.events.unlistenByKey(key);
-				// }	
-
-			// },null,this);
-    //});
-    
-    // goog.events.listen(this, 'mouseout', function(e) { 
-		// var drop_targets = card.owner.getBoard().getValidTargets(card);
-        // console.log("mouseOut");
-        
-        // for (var i = 0; i < drop_targets.length; i ++) {
-            // var r = drop_targets[i].getFill().r;
-            // var g = drop_targets[i].getFill().g;
-            // var b = drop_targets[i].getFill().b;
-            // drop_targets[i].setFill(r+10,g+10,b+10);
-        // }
-    // });
+            var drop_targets = card.owner.getBoard().getValidTargets(card);
+            console.log("mouseOver");
+            for (var i = 0; i < drop_targets.length; i ++) {
+                var r = drop_targets[i].getFill().r;
+                var g = drop_targets[i].getFill().g;
+                var b = drop_targets[i].getFill().b;
+                drop_targets[i].setFill(r-10,g-40,b-40);
+            } 
+        }, 
+        function(e){ 
+            var drop_targets = card.owner.getBoard().getValidTargets(card);
+            console.log("mouseOver");
+            for (var i = 0; i < drop_targets.length; i ++) {
+                var r = drop_targets[i].getFill().r;
+                var g = drop_targets[i].getFill().g;
+                var b = drop_targets[i].getFill().b;
+                drop_targets[i].setFill(r+10,g+40,b+40);
+            };
+        });
 };
 
 goog.inherits(diamondrun.Card, lime.Label);
