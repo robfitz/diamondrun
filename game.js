@@ -71,7 +71,7 @@ diamondrun.Player.prototype.playCard = function(card, tile) {
 
 diamondrun.Player.prototype.endPlayPhase = function() {
     // Remove Timer
-    window.clearTimeout(this.turnTimer);
+    lime.scheduleManager.unschedule(this.turnTimer, this);
     
     for (var i = 0; i < this.hand.cards.length; i ++) {
     // this.hands.cards[i].disableDragging();
@@ -85,7 +85,7 @@ diamondrun.Player.prototype.endPlayPhase = function() {
 
 diamondrun.Player.prototype.beginPlayPhase = function(callback) {
     // Begin timer for this play phase
-    this.turnTimer = window.setTimeout(this.timeOver, 10000);
+    this.turnTimer = lime.scheduleManager.callAfter(this.timeOver, this, 10000);
     this.timerBar.setPosition(0,-TILE_SIZE*2.5 - TILE_SPACING * 3);
     this.timerBar.runAction(new lime.animation.MoveTo(-IPHONE_4_W,-TILE_SIZE*2.5 - TILE_SPACING * 3).setDuration(10).setEasing(lime.animation.Easing.LINEAR));
     
