@@ -10,7 +10,7 @@ diamondrun.AIPlayer = function(isPlayer1, board, hand, deck, graveyard) {
     this.activeEffects = [];
     
     this.techLevel = 1;
-    this.life = 10;
+    this.life = 1;
     
     this.lifeLabel = new lime.Label(this.life).setFontSize(100).setPosition( 250 * -1, 0).setAlign("center").setFontColor('white');        // TODO: Eventually seperate into its own class
     

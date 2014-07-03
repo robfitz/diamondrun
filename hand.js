@@ -111,7 +111,6 @@ diamondrun.Card = function(owner, movement, attack, hp, type, castCost, effects)
     game.director.getCurrentScene().listenOverOut(this,
         function(e){ 
             var drop_targets = card.owner.getBoard().getValidTargets(card);
-            console.log("mouseOver");
             for (var i = 0; i < drop_targets.length; i ++) {
                 var r = drop_targets[i].getFill().r;
                 var g = drop_targets[i].getFill().g;
@@ -121,7 +120,6 @@ diamondrun.Card = function(owner, movement, attack, hp, type, castCost, effects)
         }, 
         function(e){ 
             var drop_targets = card.owner.getBoard().getValidTargets(card);
-            console.log("mouseOver");
             for (var i = 0; i < drop_targets.length; i ++) {
                 var r = drop_targets[i].getFill().r;
                 var g = drop_targets[i].getFill().g;
