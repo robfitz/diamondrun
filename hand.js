@@ -20,31 +20,21 @@ var CARD_FONT_SIZE = 60;
 var CARD_SPACING = 5;
 
 
-diamondrun.Card = function(owner, movement, attack, hp, type, castCost, effects) {
+diamondrun.Card = function(owner, name, targetType, targetBehaviour, castCost, units, effects, RGB) {
     goog.base(this);
     this.owner = owner;
-    this.type = type;
-
-
-    // TODO: unit info should probably be in a database
-    // or data file somewhere
-    this.movement = movement;
-    this.attack = attack;
-    this.hp = hp;
-    this.castCost = castCost;
-
-    this.r = 255;
-    this.g = 150;
-    this.b = 150;
-
-    if (this.type == CardTypes.UNIT_CARD) {
-        this.setText(this.attack + '/' + this.hp + ' ' + this.movement + " Cost:" + castCost);
-    }
-    else if (this.type == CardTypes.TARGET_SPELL_CARD) {
-        this.setText("Direct Damage: " + this.attack + " Cost:" + castCost);
-        this.g = 100;
-        this.b = 100;
-    }
+    this.name = name;
+    this.targetType = targetType;
+    this.targetBehaviour = targetBehaviour;
+    this.castCost = parseInt(castCost);
+    this.units = units;
+    this.effects = effects;
+    
+    this.r = parseInt(RGB[0]);
+    this.g = parseInt(RGB[1]);
+    this.b = parseInt(RGB[2]);
+    
+    this.setText(this.name + " Cost:" + this.castCost);
     this.setSize(CARD_SIZE, CARD_SIZE).setFill(this.r, this.g, this.g, 0);
 
     //local declaration for when 'this' is clobbered by event objects
@@ -107,6 +97,7 @@ diamondrun.Card = function(owner, movement, attack, hp, type, castCost, effects)
 
     goog.events.listen(this,['mousedown','touchstart'],makeDraggable);
     
+    
     // Handle MouseOver and MouseOut
     game.director.getCurrentScene().listenOverOut(this,
         function(e){ 
@@ -136,7 +127,8 @@ diamondrun.Card.prototype.getOwner = function() {
 };
 // --------------------------------------------------------------------------------------------------------------------------- Class Seperator
 
-var CardTypes = Object.freeze({UNIT_CARD: 'unitCard', TARGET_SPELL_CARD: 'targetCard'});
+var TargetTypes = Object.freeze({FRIENDLY_OPEN: 'friendly-open', FRIENDLY_UNIT: 'friendly-unit', FRIENDLY_RUBBLE: 'friendly-rubble', FRIENDLY_PLAYER: 'friendly-player',
+                                 ENEMY_OPEN: 'enemy-open', ENEMY_UNIT: 'enemy-unit', ENEMY_RUBBLE: 'enemy-rubble', ENEMY_PLAYER: 'enemy-player'});
 
 // --------------------------------------------------------------------------------------------------------------------------- Class Seperator
 
@@ -190,14 +182,11 @@ diamondrun.Deck = function(owner) {
 
     this.cards = [];
     for (var i = 0; i < 5; i ++) {
-        this.cards.push(new diamondrun.Card(owner, UnitMovement.MELEE, 2, 1, CardTypes.UNIT_CARD, 1));
-        this.cards.push(new diamondrun.Card(owner, UnitMovement.SITTER, 1, 2, CardTypes.UNIT_CARD, 1));
-        
-        this.cards.push(new diamondrun.Card(owner, UnitMovement.JUMPER, 2, 2, CardTypes.UNIT_CARD, 2));
-
-        this.cards.push(new diamondrun.Card(owner, UnitMovement.SHOOTER, 1, 1, CardTypes.UNIT_CARD, 2));
-        
-        this.cards.push(new diamondrun.Card(owner, 'fireball', 3, 0, CardTypes.TARGET_SPELL_CARD, 3));
+        this.cards.push(1);
+        this.cards.push(1);
+        this.cards.push(2);
+        this.cards.push(3);
+        this.cards.push(4);
 
     }
 };
@@ -205,7 +194,7 @@ diamondrun.Deck = function(owner) {
 goog.inherits(diamondrun.Deck, lime.Layer);
 
 diamondrun.Deck.prototype.drawCard = function() {
-    return this.cards.pop();
+    return game.cardFactory.makeCard(this.cards.pop(), this.owner);
 };
 
 // --------------------------------------------------------------------------------------------------------------------------- Class Seperator
@@ -232,6 +221,33 @@ diamondrun.Graveyard.prototype.takeCard = function(card) {
 };
 
 // --------------------------------------------------------------------------------------------------------------------------- Class Seperator
+
+diamondrun.CardFactory = function() {
+};
+
+//Card constructor: owner, name, targetType, targetBehaviour, castCost, units, effects, RGB
+
+diamondrun.CardFactory.prototype.makeCard = function(ID, owner) {
+    var cardData=Monk;
+
+    var units = [];
+    var effects = [];
+    
+    for (var i = 0; i < parseInt(cardData.numberOfUnits); i++) {
+        units.push(new diamondrun.Unit(owner, cardData.units[i].name, cardData.units[i].movement, cardData.units[i].attack,
+        cardData.units[i].hP, cardData.units[i].rubble_duration));
+    }
+    
+    for (var i = 0; i < parseInt(cardData.numberOfEffects); i++) {
+        effects.push(new diamondrun.Effect(owner, cardData.effects[i].name, cardData.effects[i].targetType, cardData.effects[i].damage, cardData.effects[i].atkUp,
+        cardData.effects[i].hPUp, cardData.effects[i].techUp, cardData.effects[i].kill, cardData.effects[i].rubble_duration));
+    }
+    
+    return new diamondrun.Card(owner, cardData.name, cardData.targetType, cardData.targetBehaviour, cardData.cost, units, effects, [cardData.R,cardData.G,cardData.B]);
+};
+
+// --------------------------------------------------------------------------------------------------------------------------- Class Seperator
+
 
 lime.Scene.prototype.listenOverOut = (function(){
  

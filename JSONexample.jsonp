@@ -1,0 +1,31 @@
+var Monk = {
+    "name" : "Monk",
+    "cost" : "2",
+    "targetType" : "friendly-open",
+    "targetBehaviour" : "targeted",
+    
+    "numberOfUnits" : "1",
+    "units" : [{
+        "name" : "Monk",
+        "movement" : "melee",
+        "attack" : "1",
+        "hP" : "1",
+        "rubble_duration" : "1"
+    }],
+    
+    "numberOfEffects" : "1",
+    "effects" : [{
+        "name" : "techUP",
+        "target" : "self",
+        "damage" : "0",
+        "atkUp" : "0",
+        "hPUp" : "0",
+        "techUP" : "1", 
+        "kill" : "no",
+        "rubble_duration" : "0" 
+    }],
+    
+    "R" : "100",
+    "G" : "100",
+    "B" : "100"
+}

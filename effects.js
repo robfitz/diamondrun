@@ -8,39 +8,43 @@ goog.require('lime.animation.RotateBy');
 goog.require('lime.animation.ScaleTo');
 goog.require('lime.animation.FadeTo');
 
-
-diamondrun.Effect = function(owner, tile, type, strength) {
+diamondrun.Effect = function(owner, name, targetType, damage, atkUp, hPUp, techUp, kill, rubble_duration) {
     goog.base(this);
     
     this.owner = owner;
-    this.tile = tile;
-    this.type = type;
-    this.strength = strength;
+    this.name = name;
+    this.targetType = targetType;
+    this.damage = damage;
+    this.atkUp = atkUp;
+    this.hPUp = hPUp;
+    this.techUp = techUp;
+    this.kill = kill;
+    this.rubble_duration;
 
     this.setSize(CARD_SIZE - CARD_SPACING * 1, CARD_SIZE - CARD_SPACING * 1).setFill(200,10,0);
-
-    this.type = "effect";
-
-    this.draw();
-    game.effectLayer.appendChild(this);
 };
 
 goog.inherits(diamondrun.Effect, lime.Label);
 
-diamondrun.Effect.prototype.damage = function(unit) {
+diamondrun.Effect.prototype.play = function() {
+    this.draw();
+    game.effectLayer.appendChild(this);
+};
+
+diamondrun.Effect.prototype.damageTarget = function(unit) {
     if (unit && unit.type == 'unit') {
-        unit.takeDamage(this.strength, true);
+        unit.takeDamage(this.damage, true);
     }
 };
 
 diamondrun.Effect.prototype.draw = function() {
-    var label = this.strength;
+    var label = this.damage;
     this.setText(label);
 };
 
 diamondrun.Effect.prototype.activate = function() {
     // Deal Damage
-    this.damage(this.tile.contents);
+    this.damageTarget(this.tile.contents);
     
     // Activate Effect animation
     /*

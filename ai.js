@@ -71,7 +71,7 @@ diamondrun.AIPlayer.prototype.utility = function(card, target) {
     // End of utility values
     
     var utility = 0 + card.castCost;
-    if (card.type == CardTypes.UNIT_CARD) {
+    if (card.type == TargetTypes.UNIT_CARD) {
         if (target == this.board.techTile) {
             // If sacrificing card subtract card cost * 2 to devalue sacrificing good cards.
             utility -= card.castCost * 2;
@@ -150,7 +150,7 @@ diamondrun.AIPlayer.prototype.utility = function(card, target) {
             }
         }
     }
-    else if (card.type == CardTypes.TARGET_SPELL_CARD) {
+    else if (card.type == TargetTypes.TARGET_SPELL_CARD) {
         // If a spell would kill a target add KILLSHOT_VALUE
         if (target.contents && target.contents.hP - card.attack <= 0) utility += KILLSHOT_VALUE;
     }

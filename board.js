@@ -39,6 +39,7 @@ diamondrun.Tile.prototype.addUnit = function(unit) {
     // can't add a unit if there's already something tyere
     if (this.contents) return false;
 
+    unit.play();
     this.contents = unit;
     var tilePos = this.getParent().localToScreen(this.getPosition());
     var unitPos = unit.getParent().screenToLocal(tilePos);
@@ -108,6 +109,7 @@ goog.inherits(diamondrun.TechTile, diamondrun.Tile);
 diamondrun.TechTile.prototype.addUnit = function(unit) {
     //unit.setSize(0,0).setFill(255,255,255);
     //unit.setText("");
+    unit.play();
     unit.getParent().removeChild(unit);
     this.label.setText(++this.techLevel);
     return true;
@@ -157,17 +159,17 @@ diamondrun.Board = function(is_friendly) {
 goog.inherits(diamondrun.Board, lime.Layer);
 
 diamondrun.Board.prototype.getValidTargets = function(card) {
-    if (card.type == CardTypes.UNIT_CARD) {
+    if (card.targetType == TargetTypes.FRIENDLY_OPEN) {
         var targets = [];
         for (var i = 0; i < this.tiles.length; i++) {
             if (this.tiles[i].contents == null) targets.push(this.tiles[i]);
         }
 
         targets.push(this.techTile);
-
+        
         return targets;
     }
-    else if (card.type == CardTypes.TARGET_SPELL_CARD) {
+    else if (card.targetType == TargetTypes.ENEMY_UNIT) {
         var targets = [];
         var tartiles = card.owner.getEnemyBoard().getTiles();
         for (var i = 0; i < tartiles.length; i++) {
@@ -188,12 +190,9 @@ diamondrun.Board.prototype.getUnits = function() {
     var units = [];
     for (var i = 0; i < this.tiles.length; i ++) {
         if (this.tiles[i].contents && this.tiles[i].contents.type == 'unit') {
-
-            // console.log('get units + 1'); Not sure if we still need these so I'm leaving them in commented.
             units.push(this.tiles[i].contents);
         }
     }
-    // console.log(units);
     return units;
 };
 

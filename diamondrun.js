@@ -29,7 +29,8 @@ var game = {
     player2: null, //enemy
     turn: 0,
     unitLayer: null,
-    director: null
+    director: null,
+    cardFactory: null
 }
 
 var Phases = {
@@ -197,6 +198,8 @@ diamondrun.start = function(){
     
     // set current scene active
     game.director.replaceScene(scene);
+    
+    game.cardFactory = new diamondrun.CardFactory();
 
     var player = new diamondrun.Player(true);
     game.player1 = player;

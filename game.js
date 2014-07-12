@@ -57,19 +57,13 @@ diamondrun.Player.prototype.doAttack = function() {
 
 diamondrun.Player.prototype.playCard = function(card, tile) {
     // Remove Timer
-    console.log("unschedule");
     lime.scheduleManager.unschedule(this.timeOver, this);
 
-    if (card.type == CardTypes.UNIT_CARD) var cmd = new diamondrun.PlayCardCommand(this, card, tile);
-    else if (card.type == CardTypes.TARGET_SPELL_CARD) var cmd = new diamondrun.PlaySpellCommand(this, card, tile);
-    else {
-        console.log("ERROR: Card type not recognized.");
-        this.endPlayPhase();
-    }
+    var cmd = new diamondrun.PlayCardCommand(this, card, tile);
     Commands.add(cmd);
 
     // End phase needs to wait for animation if spell. TODO: Possibly use callbacks to accomplish.
-    if (card.type == CardTypes.UNIT_CARD) this.endPlayPhase();     
+    if (card.targetType == TargetTypes.FRIENDLY_OPEN) this.endPlayPhase();     
 };
 
 diamondrun.Player.prototype.endPlayPhase = function() {    

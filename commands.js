@@ -1,5 +1,4 @@
 goog.provide('diamondrun.PlayCardCommand');
-goog.provide('diamondrun.PlaySpellCommand');
 goog.provide('diamondrun.TimeOutCommand');
 goog.provide('diamondrun.DrawCardCommand');
 goog.provide('diamondrun.NextPhaseCommand');
@@ -18,34 +17,43 @@ diamondrun.PlayCardCommand = function(player, card, targetTile) {
 };
 
 diamondrun.PlayCardCommand.prototype.execute = function() {
-    
-    // apply effect to board depending on Card type
-    var unit = new diamondrun.Unit(this.player, this.targetTile, this.card.movement, this.card.attack, this.card.hp);    
-    if (this.targetTile.addUnit(unit)) {
-        // move from hand to graveyard
-        this.player.getGraveyard().takeCard(this.card);
+    console.log(this.card.units);
+    if (this.card.units) {
+        if (this.card.targetBehaviour == 'targeted') { 
+            this.card.units[0].tile = this.targetTile;
+            this.targetTile.addUnit(this.card.units[0]);
+        }
+        else if(this.card.targetBehaviour == 'random') {
+            this.targetTile.addUnit(this.card.units[0]);
+        }
+        else if(this.card.targetBehaviour == 'all-valid') {
+            this.targetTile.addUnit(this.card.units[0]);
+        }
     }
-};
-
-// --------------------------------------------------------------------------------------------------------------------------- Class Seperator
-
-diamondrun.PlaySpellCommand = function(player, card, targetTile) {
-    this.player = player;
-    this.card = card;
-    this.targetTile = targetTile;
-};
-
-diamondrun.PlaySpellCommand.prototype.execute = function() {
     
-    // apply effect to board
-    var effect = new diamondrun.Effect(this.player, this.targetTile, this.card.type, this.card.attack);
-    this.targetTile.addEffect(effect)
+    if (this.effects) {
+        for (var i = 0; i < this.effects.length; i++) {
+            if (this.effects[i].targetType == 'self') {
+                this.targetTile.addEffect(this.card.effects[i]);
+            }
+            else if (this.effects[i].targetType == 'other') {
+                this.targetTile.addEffect(this.card.effects[i]);
+            }
+            else if (this.effects[i].targetType == 'targeted') {
+                this.targetTile.addEffect(this.card.effects[i]);
+            }
+            else if (this.effects[i].targetType == 'random') {
+                this.targetTile.addEffect(this.card.effects[i]);
+            }
+            else if (this.effects[i].targetType == 'all-valid') {
+                this.targetTile.addEffect(this.card.effects[i]);
+            }
+            this.effects[i].activate()
+        }
+    }
     
     // move from hand to graveyard
     this.player.getGraveyard().takeCard(this.card);
-    
-    // Activate effect instantly
-    effect.activate()
 };
 
 // --------------------------------------------------------------------------------------------------------------------------- Class Seperator
@@ -129,7 +137,8 @@ var newGame = function() {
         player2: null, //enemy
         turn: 0,
         unitLayer: null,
-        director: null
+        director: null,
+        cardFactory: null
     }
     game.director = oldDirector;
     
@@ -141,6 +150,8 @@ var newGame = function() {
     game.background.setSize(IPHONE_4_W, IPHONE_4_H).setFill(0, 0, 0).setAnchorPoint(0, 0);
 
     scene.appendChild(game.background);
+    
+    game.cardFactory = new diamondrun.CardFactory();
 
 
     var player = new diamondrun.Player(true);

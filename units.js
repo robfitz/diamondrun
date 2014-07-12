@@ -15,14 +15,17 @@ goog.require('lime.fill.Color');
 goog.require('goog.math.Coordinate');
 
 
-diamondrun.Unit = function(owner, tile, movement, attack, hp) {
+diamondrun.Unit = function(owner, name, movement, attack, hp, rubbleDuration) {
     goog.base(this);
     
     this.owner = owner;
-    this.tile = tile;
+    this.name = name;
+    this.tile = null;
     this.attack = attack;
     this.hp = hp;
     this.maxHp = hp;
+    this.rubbleDuration = rubbleDuration;
+    console.log(rubbleDuration);
 
     this.label = new lime.Label().setSize(CARD_SIZE - CARD_SPACING * 1, CARD_SIZE - CARD_SPACING * 1);
 
@@ -31,14 +34,16 @@ diamondrun.Unit = function(owner, tile, movement, attack, hp) {
     this.type = "unit";
     this.isSSick = true;
 
-    this.redraw();
-    game.unitLayer.appendChild(this);
-
     this.appendChild(getShape(this.movement, this.hp, CARD_SIZE - CARD_SPACING, 0, 255, 0));
     this.appendChild(this.label);
 };
 
 goog.inherits(diamondrun.Unit, lime.Layer);
+
+diamondrun.Unit.prototype.play = function() {
+    this.redraw();
+    game.unitLayer.appendChild(this);
+};
 
 diamondrun.Unit.prototype.heal = function() {
     this.hp = this.maxHp;
@@ -79,12 +84,13 @@ diamondrun.Unit.prototype.die = function(generateRubble) {
     var self = this;
     var rubbleTile = this.tile
     
-    goog.events.listen(dieEffect,lime.animation.Event.STOP,function(){
+    goog.events.listen(dieEffect,lime.animation.Event.STOP,function() {
+        console.log(self.rubbleDuration);
+        if (generateRubble) rubbleTile.addRubble(new diamondrun.Rubble(rubbleTile, self.rubbleDuration));
+        
         //remove from board
         self.tile.removeUnit(self);
         self.getParent().removeChild(self);
-        
-        if (generateRubble) rubbleTile.addRubble(new diamondrun.Rubble(rubbleTile, 1));
     });
 };
 
@@ -293,6 +299,9 @@ function getShape(movement, hp, scale, r, g, b) {
     return poly;
 }
 
+diamondrun.Unit.prototype.setTile = function(tile) {
+    this.tile = tile;
+};
 
 // --------------------------------------------------------------------------------------------------------------------------- Class Seperator
 
