@@ -20,7 +20,7 @@ var Monk = {
         "damage" : "0",
         "atkUp" : "0",
         "hPUp" : "0",
-        "techUP" : "1", 
+        "techUp" : "1", 
         "kill" : "no",
         "rubble_duration" : "0" 
     }],

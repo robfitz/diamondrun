@@ -39,7 +39,6 @@ diamondrun.Tile.prototype.addUnit = function(unit) {
     // can't add a unit if there's already something tyere
     if (this.contents) return false;
 
-    unit.play();
     this.contents = unit;
     var tilePos = this.getParent().localToScreen(this.getPosition());
     var unitPos = unit.getParent().screenToLocal(tilePos);
@@ -106,18 +105,9 @@ diamondrun.TechTile = function(is_friendly) {
 
 goog.inherits(diamondrun.TechTile, diamondrun.Tile);
 
-diamondrun.TechTile.prototype.addUnit = function(unit) {
+diamondrun.TechTile.prototype.addCard = function(card) {
     //unit.setSize(0,0).setFill(255,255,255);
     //unit.setText("");
-    unit.play();
-    unit.getParent().removeChild(unit);
-    this.label.setText(++this.techLevel);
-    return true;
-};
-
-diamondrun.TechTile.prototype.addEffect = function(effect) {
-    effect.setSize(0,0).setFill(255,255,255);
-    unit = null;
     this.label.setText(++this.techLevel);
     return true;
 };

@@ -26,7 +26,9 @@ diamondrun.Effect = function(owner, name, targetType, damage, atkUp, hPUp, techU
 
 goog.inherits(diamondrun.Effect, lime.Label);
 
-diamondrun.Effect.prototype.play = function() {
+diamondrun.Effect.prototype.play = function(targetTile) {
+    
+    this.tile = targetTile;
     this.draw();
     game.effectLayer.appendChild(this);
 };
@@ -44,7 +46,10 @@ diamondrun.Effect.prototype.draw = function() {
 
 diamondrun.Effect.prototype.activate = function() {
     // Deal Damage
-    this.damageTarget(this.tile.contents);
+    if(this.tile) this.damageTarget(this.tile.contents);
+    this.owner.techLevel += this.techUp;
+    
+    this.owner.getBoard().techTile.label.setText(++this.owner.getBoard().techTile.techLevel);
     
     // Activate Effect animation
     /*
@@ -67,7 +72,6 @@ diamondrun.Effect.prototype.activate = function() {
         Commands.add(new diamondrun.NextPhaseCommand());
     });
 */
-    window.clearTimeout(this.owner.turnTimer);
     this.getParent().removeChild(this);
-    Commands.add(new diamondrun.NextPhaseCommand());
+    window.clearTimeout(this.owner.turnTimer);
 };

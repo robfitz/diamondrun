@@ -17,41 +17,47 @@ diamondrun.PlayCardCommand = function(player, card, targetTile) {
 };
 
 diamondrun.PlayCardCommand.prototype.execute = function() {
-    console.log(this.card.units);
-    if (this.card.units) {
-        if (this.card.targetBehaviour == 'targeted') { 
-            this.card.units[0].tile = this.targetTile;
-            this.targetTile.addUnit(this.card.units[0]);
+    if (this.targetTile == this.player.getBoard().techTile) {
+        this.targetTile.addCard();
+    }
+    else {
+        if (this.card.units) {
+            if (this.card.targetBehaviour == 'targeted') { 
+                this.card.units[0].play(this.targetTile);
+                this.targetTile.addUnit(this.card.units[0]);
+            }
+            else if(this.card.targetBehaviour == 'random') {
+                this.targetTile.addUnit(this.card.units[0]);
+            }
+            else if(this.card.targetBehaviour == 'all-valid') {
+                this.targetTile.addUnit(this.card.units[0]);
+            }
         }
-        else if(this.card.targetBehaviour == 'random') {
-            this.targetTile.addUnit(this.card.units[0]);
-        }
-        else if(this.card.targetBehaviour == 'all-valid') {
-            this.targetTile.addUnit(this.card.units[0]);
+        
+        if (this.card.effects) {
+            for (var i = 0; i < this.card.effects.length; i++) {
+                if (this.card.effects[i].targetType == 'self') {
+                    this.card.effects[0].play(this.targetTile);
+                    this.targetTile.addEffect(this.card.effects[i]);
+                }
+                else if (this.card.effects[i].targetType == 'other') {
+                    this.targetTile.addEffect(this.card.effects[i]);
+                }
+                else if (this.card.effects[i].targetType == 'targeted') {
+                    this.targetTile.addEffect(this.card.effects[i]);
+                }
+                else if (this.card.effects[i].targetType == 'random') {
+                    this.targetTile.addEffect(this.card.effects[i]);
+                }
+                else if (this.card.effects[i].targetType == 'all-valid') {
+                    this.targetTile.addEffect(this.card.effects[i]);
+                }
+                
+                console.log(this.targetTile != this.player.getBoard().techTile);
+                if (this.targetTile != this.player.getBoard().techTile) this.card.effects[i].activate();
+            }
         }
     }
-    
-    if (this.effects) {
-        for (var i = 0; i < this.effects.length; i++) {
-            if (this.effects[i].targetType == 'self') {
-                this.targetTile.addEffect(this.card.effects[i]);
-            }
-            else if (this.effects[i].targetType == 'other') {
-                this.targetTile.addEffect(this.card.effects[i]);
-            }
-            else if (this.effects[i].targetType == 'targeted') {
-                this.targetTile.addEffect(this.card.effects[i]);
-            }
-            else if (this.effects[i].targetType == 'random') {
-                this.targetTile.addEffect(this.card.effects[i]);
-            }
-            else if (this.effects[i].targetType == 'all-valid') {
-                this.targetTile.addEffect(this.card.effects[i]);
-            }
-            this.effects[i].activate()
-        }
-    }
-    
     // move from hand to graveyard
     this.player.getGraveyard().takeCard(this.card);
 };

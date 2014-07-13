@@ -239,7 +239,7 @@ diamondrun.CardFactory.prototype.makeCard = function(ID, owner) {
     }
     
     for (var i = 0; i < parseInt(cardData.numberOfEffects); i++) {
-        effects.push(new diamondrun.Effect(owner, cardData.effects[i].name, cardData.effects[i].targetType, cardData.effects[i].damage, cardData.effects[i].atkUp,
+        effects.push(new diamondrun.Effect(owner, cardData.effects[i].name, cardData.effects[i].target, cardData.effects[i].damage, cardData.effects[i].atkUp,
         cardData.effects[i].hPUp, cardData.effects[i].techUp, cardData.effects[i].kill, cardData.effects[i].rubble_duration));
     }
     

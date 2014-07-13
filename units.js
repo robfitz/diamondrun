@@ -25,7 +25,6 @@ diamondrun.Unit = function(owner, name, movement, attack, hp, rubbleDuration) {
     this.hp = hp;
     this.maxHp = hp;
     this.rubbleDuration = rubbleDuration;
-    console.log(rubbleDuration);
 
     this.label = new lime.Label().setSize(CARD_SIZE - CARD_SPACING * 1, CARD_SIZE - CARD_SPACING * 1);
 
@@ -40,7 +39,9 @@ diamondrun.Unit = function(owner, name, movement, attack, hp, rubbleDuration) {
 
 goog.inherits(diamondrun.Unit, lime.Layer);
 
-diamondrun.Unit.prototype.play = function() {
+diamondrun.Unit.prototype.play = function(targetTile) {
+    console.log(targetTile);
+    this.tile = targetTile;
     this.redraw();
     game.unitLayer.appendChild(this);
 };
@@ -85,7 +86,6 @@ diamondrun.Unit.prototype.die = function(generateRubble) {
     var rubbleTile = this.tile
     
     goog.events.listen(dieEffect,lime.animation.Event.STOP,function() {
-        console.log(self.rubbleDuration);
         if (generateRubble) rubbleTile.addRubble(new diamondrun.Rubble(rubbleTile, self.rubbleDuration));
         
         //remove from board
@@ -94,8 +94,7 @@ diamondrun.Unit.prototype.die = function(generateRubble) {
     });
 };
 
-diamondrun.Unit.prototype.doAttack = function(contexts, callbacks) {
-    
+diamondrun.Unit.prototype.doAttack = function(contexts, callbacks) {    
     var path = this.tile.getAttackPath();
 
     var animations = [];
@@ -298,10 +297,6 @@ function getShape(movement, hp, scale, r, g, b) {
 
     return poly;
 }
-
-diamondrun.Unit.prototype.setTile = function(tile) {
-    this.tile = tile;
-};
 
 // --------------------------------------------------------------------------------------------------------------------------- Class Seperator
 
