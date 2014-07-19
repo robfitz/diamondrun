@@ -22,43 +22,53 @@ diamondrun.PlayCardCommand.prototype.execute = function() {
     }
     else {
         if (this.card.units) {
-            if (this.card.targetBehaviour == 'targeted') { 
-                this.card.units[0].play(this.targetTile);
-                this.targetTile.addUnit(this.card.units[0]);
-            }
-            else if(this.card.targetBehaviour == 'random') {
-                this.targetTile.addUnit(this.card.units[0]);
-            }
-            else if(this.card.targetBehaviour == 'all-valid') {
-                var tar = this.player.board.getValidTargets(this.card);
-                
-                // Remove Tech tile from valid targets
-                tar.pop()
-                for (var t = 0; t < tar.length; t ++) {
-                    console.log(tar[t]);
-                    this.card.units[t].play(tar[t]);
-                    tar[t].addUnit(this.card.units[t]);
-                }
+            switch (this.card.targetBehaviour) {
+                // Will probably be worthwhile to make enums for targetBehaviour data 
+                case 'targeted': 
+                    this.card.units[0].play(this.targetTile);
+                    this.targetTile.addUnit(this.card.units[0]);
+                    break;
+                case 'random':
+                    var tar = this.player.board.getValidTargets(this.card);
+                    tar = tar[Math.floor((Math.random() * tar.length))];
+                    
+                    this.card.units[0].play(tar);
+                    tar.addUnit(this.card.units[0]);
+                    break
+                case 'all-valid':
+                    var tar = this.player.board.getValidTargets(this.card);
+                    
+                    // Remove Tech tile from valid targets
+                    tar.pop()
+                    for (var t = 0; t < tar.length; t ++) {
+                        console.log(tar[t]);
+                        this.card.units[t].play(tar[t]);
+                        tar[t].addUnit(this.card.units[t]);
+                    }
+                    break;
             }
         }
         
         if (this.card.effects) {
             for (var i = 0; i < this.card.effects.length; i++) {
-                if (this.card.effects[i].targetType == 'self') {
-                    this.card.effects[0].play(this.targetTile);
-                    this.targetTile.addEffect(this.card.effects[i]);
-                }
-                else if (this.card.effects[i].targetType == 'other') {
-                    this.targetTile.addEffect(this.card.effects[i]);
-                }
-                else if (this.card.effects[i].targetType == 'targeted') {
-                    this.targetTile.addEffect(this.card.effects[i]);
-                }
-                else if (this.card.effects[i].targetType == 'random') {
-                    this.targetTile.addEffect(this.card.effects[i]);
-                }
-                else if (this.card.effects[i].targetType == 'all-valid') {
-                    this.targetTile.addEffect(this.card.effects[i]);
+                switch (this.card.effects[i].targetType) {
+                   case 'self':
+                        console.log(this.card.effects[i].techUp);
+                        this.card.effects[i].play(this.targetTile);
+                        this.targetTile.addEffect(this.card.effects[i]);
+                        break;
+                    case'opponent':
+                        this.targetTile.addEffect(this.card.effects[i]);
+                        break;
+                    case 'targeted':
+                        this.targetTile.addEffect(this.card.effects[i]);
+                        break;
+                    case 'random':
+                        this.targetTile.addEffect(this.card.effects[i]);
+                        break;
+                    case 'all-valid':
+                        this.targetTile.addEffect(this.card.effects[i]);
+                        break;
                 }
                 if (this.targetTile != this.player.getBoard().techTile) this.card.effects[i].activate();
             }

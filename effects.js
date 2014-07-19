@@ -17,7 +17,7 @@ diamondrun.Effect = function(owner, name, targetType, damage, atkUp, hPUp, techU
     this.damage = damage;
     this.atkUp = atkUp;
     this.hPUp = hPUp;
-    this.techUp = techUp;
+    this.techUp = parseInt(techUp);
     this.kill = kill;
     this.rubble_duration;
 
@@ -49,7 +49,7 @@ diamondrun.Effect.prototype.activate = function() {
     if(this.tile) this.damageTarget(this.tile.contents);
     this.owner.techLevel += this.techUp;
     
-    this.owner.getBoard().techTile.label.setText(++this.owner.getBoard().techTile.techLevel);
+    this.owner.getBoard().techTile.label.setText(this.owner.techLevel);
     
     // Activate Effect animation
     /*
