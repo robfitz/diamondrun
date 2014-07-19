@@ -40,7 +40,6 @@ diamondrun.Unit = function(owner, name, movement, attack, hp, rubbleDuration) {
 goog.inherits(diamondrun.Unit, lime.Layer);
 
 diamondrun.Unit.prototype.play = function(targetTile) {
-    console.log(targetTile);
     this.tile = targetTile;
     this.redraw();
     game.unitLayer.appendChild(this);

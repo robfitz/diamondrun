@@ -182,11 +182,11 @@ diamondrun.Deck = function(owner) {
 
     this.cards = [];
     for (var i = 0; i < 5; i ++) {
-        this.cards.push(1);
-        this.cards.push(1);
-        this.cards.push(2);
-        this.cards.push(3);
-        this.cards.push(4);
+        this.cards.push(0);
+        this.cards.push(0);
+        this.cards.push(0);
+        this.cards.push(0);
+        this.cards.push(100);
 
     }
 };
@@ -228,7 +228,8 @@ diamondrun.CardFactory = function() {
 //Card constructor: owner, name, targetType, targetBehaviour, castCost, units, effects, RGB
 
 diamondrun.CardFactory.prototype.makeCard = function(ID, owner) {
-    var cardData=Monk;
+    if (ID < 100) var cardData = UnitList[ID];
+    else var cardData = Spells[ID-100];
 
     var units = [];
     var effects = [];

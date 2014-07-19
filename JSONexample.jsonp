@@ -1,5 +1,6 @@
-var Monk = {
+var UnitList = [{
     "name" : "Monk",
+    "id" : "0",
     "cost" : "2",
     "targetType" : "friendly-open",
     "targetBehaviour" : "targeted",
@@ -28,4 +29,85 @@ var Monk = {
     "R" : "100",
     "G" : "100",
     "B" : "100"
-}
+}]
+
+var Spells = [{
+    "name" : "Reinforcements",
+    "id" : "100",
+    "cost" : "5",
+    "targetType" : "friendly-open",
+    "targetBehaviour" : "all-valid",
+    
+    "numberOfUnits" : "9",
+    "units" : [{
+        "name" : "soldier",
+        "movement" : "melee",
+        "attack" : "1",
+        "hP" : "1",
+        "rubble_duration" : "1"
+    }, {
+        "name" : "soldier",
+        "movement" : "melee",
+        "attack" : "1",
+        "hP" : "1",
+        "rubble_duration" : "1"
+    }, {
+        "name" : "soldier",
+        "movement" : "melee",
+        "attack" : "1",
+        "hP" : "1",
+        "rubble_duration" : "1"
+    }, {
+        "name" : "soldier",
+        "movement" : "melee",
+        "attack" : "1",
+        "hP" : "1",
+        "rubble_duration" : "1"
+    }, {
+        "name" : "soldier",
+        "movement" : "melee",
+        "attack" : "1",
+        "hP" : "1",
+        "rubble_duration" : "1"
+    }, {
+        "name" : "soldier",
+        "movement" : "melee",
+        "attack" : "1",
+        "hP" : "1",
+        "rubble_duration" : "1"
+    }, {
+        "name" : "soldier",
+        "movement" : "melee",
+        "attack" : "1",
+        "hP" : "1",
+        "rubble_duration" : "1"
+    }, {
+        "name" : "soldier",
+        "movement" : "melee",
+        "attack" : "1",
+        "hP" : "1",
+        "rubble_duration" : "1"
+    }, {
+        "name" : "soldier",
+        "movement" : "melee",
+        "attack" : "1",
+        "hP" : "1",
+        "rubble_duration" : "1"
+    }],
+    
+    "numberOfEffects" : "1",
+    "effects" : [{
+        "name" : "techDown",
+        "target" : "self",
+        "damage" : "0",
+        "atkUp" : "0",
+        "hPUp" : "0",
+        "techUp" : "-1", 
+        "kill" : "no",
+        "rubble_duration" : "0" 
+    }],
+    
+    "R" : "130",
+    "G" : "10",
+    "B" : "140"
+}]

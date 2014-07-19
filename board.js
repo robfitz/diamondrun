@@ -68,9 +68,12 @@ diamondrun.Tile.prototype.removeRubble = function(rubble) {
 };
 
 diamondrun.Tile.prototype.addEffect = function(effect) {
-    var tilePos = this.getParent().localToScreen(this.getPosition());
-    var effectPos = effect.getParent().screenToLocal(tilePos);
-    effect.setPosition(effectPos);
+    console.log(effect);
+    if (effect.getParent()) {
+        var tilePos = this.getParent().localToScreen(this.getPosition());
+        var effectPos = effect.getParent().screenToLocal(tilePos);
+        effect.setPosition(effectPos);
+    }
 };
 
 diamondrun.Tile.prototype.getAttackPath = function() {
