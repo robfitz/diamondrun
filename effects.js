@@ -19,7 +19,7 @@ diamondrun.Effect = function(owner, name, targetType, damage, atkUp, hPUp, techU
     this.hPUp = hPUp;
     this.techUp = parseInt(techUp);
     this.kill = kill;
-    this.rubble_duration;
+    this.rubble_duration = rubble_duration;
 
     this.setSize(CARD_SIZE - CARD_SPACING * 1, CARD_SIZE - CARD_SPACING * 1).setFill(200,10,0);
 };
@@ -50,6 +50,9 @@ diamondrun.Effect.prototype.activate = function() {
     this.owner.techLevel += this.techUp;
     
     this.owner.getBoard().techTile.label.setText(this.owner.techLevel);
+    
+        
+    if (this.rubble_duration > 0) this.tile.addRubble(new diamondrun.Rubble(this.tile, this.rubble_duration));
     
     // Activate Effect animation
     /*

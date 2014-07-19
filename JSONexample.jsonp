@@ -110,4 +110,29 @@ var Spells = [{
     "R" : "130",
     "G" : "10",
     "B" : "140"
+}, {
+    "name" : "Falling Stone",
+    "id" : "101",
+    "cost" : "2",
+    "targetType" : "enemy-open",
+    "targetBehaviour" : "targeted",
+    
+    "numberOfUnits" : "0",
+    "units" : [],
+    
+    "numberOfEffects" : "1",
+    "effects" : [{
+        "name" : "techDown",
+        "target" : "self",
+        "damage" : "0",
+        "atkUp" : "0",
+        "hPUp" : "0",
+        "techUp" : "0", 
+        "kill" : "no",
+        "rubble_duration" : "2" 
+    }],
+    
+    "R" : "139",
+    "G" : "69",
+    "B" : "19"
 }]

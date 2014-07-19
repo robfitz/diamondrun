@@ -63,7 +63,7 @@ diamondrun.Player.prototype.playCard = function(card, tile) {
     Commands.add(cmd);
 
     // End phase needs to wait for animation if spell. TODO: Possibly use callbacks to accomplish.
-    if (card.targetType == TargetTypes.FRIENDLY_OPEN) this.endPlayPhase();     
+    this.endPlayPhase();     
 };
 
 diamondrun.Player.prototype.endPlayPhase = function() {    

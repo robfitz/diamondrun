@@ -21,7 +21,7 @@ diamondrun.PlayCardCommand.prototype.execute = function() {
         this.targetTile.addCard();
     }
     else {
-        if (this.card.units) {
+        if (this.card.units.length > 0) {
             switch (this.card.targetBehaviour) {
                 // Will probably be worthwhile to make enums for targetBehaviour data 
                 case 'targeted': 
@@ -41,7 +41,6 @@ diamondrun.PlayCardCommand.prototype.execute = function() {
                     // Remove Tech tile from valid targets
                     tar.pop()
                     for (var t = 0; t < tar.length; t ++) {
-                        console.log(tar[t]);
                         this.card.units[t].play(tar[t]);
                         tar[t].addUnit(this.card.units[t]);
                     }
@@ -53,7 +52,6 @@ diamondrun.PlayCardCommand.prototype.execute = function() {
             for (var i = 0; i < this.card.effects.length; i++) {
                 switch (this.card.effects[i].targetType) {
                    case 'self':
-                        console.log(this.card.effects[i].techUp);
                         this.card.effects[i].play(this.targetTile);
                         this.targetTile.addEffect(this.card.effects[i]);
                         break;

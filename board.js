@@ -68,7 +68,6 @@ diamondrun.Tile.prototype.removeRubble = function(rubble) {
 };
 
 diamondrun.Tile.prototype.addEffect = function(effect) {
-    console.log(effect);
     if (effect.getParent()) {
         var tilePos = this.getParent().localToScreen(this.getPosition());
         var effectPos = effect.getParent().screenToLocal(tilePos);
@@ -169,6 +168,17 @@ diamondrun.Board.prototype.getValidTargets = function(card) {
             if (tartiles[i].contents && tartiles[i].contents.type == 'unit') targets.push(tartiles[i]);
         }
         
+        targets.push(this.techTile);
+        
+        return targets;
+    }
+    else if (card.targetType == TargetTypes.ENEMY_OPEN) {
+        var targets = [];
+        var tartiles = card.owner.getEnemyBoard().getTiles();
+        for (var i = 0; i < tartiles.length; i++) {
+            if (tartiles[i].contents == null) targets.push(tartiles[i]);
+        }
+
         targets.push(this.techTile);
         
         return targets;
