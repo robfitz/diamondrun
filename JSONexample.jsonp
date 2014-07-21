@@ -29,6 +29,94 @@ var UnitList = [{
     "R" : "100",
     "G" : "100",
     "B" : "100"
+} , {
+    "name" : "Shooter",
+    "id" : "1",
+    "cost" : "1",
+    "targetType" : "friendly-open",
+    "targetBehaviour" : "targeted",
+    
+    "numberOfUnits" : "1",
+    "units" : [{
+        "name" : "Shooter",
+        "movement" : "shooter",
+        "attack" : "2",
+        "hP" : "1",
+        "rubble_duration" : "1"
+    }],
+    
+    "numberOfEffects" : "0",
+    "effects" : [],
+    
+    "R" : "120",
+    "G" : "100",
+    "B" : "100"
+} , {
+    "name" : "Sitter",
+    "id" : "2",
+    "cost" : "2",
+    "targetType" : "friendly-open",
+    "targetBehaviour" : "targeted",
+    
+    "numberOfUnits" : "1",
+    "units" : [{
+        "name" : "Sitter",
+        "movement" : "sitter",
+        "attack" : "1",
+        "hP" : "2",
+        "rubble_duration" : "1"
+    }],
+    
+    "numberOfEffects" : "0",
+    "effects" : [],
+    
+    "R" : "100",
+    "G" : "120",
+    "B" : "100"
+} , {
+    "name" : "Jumper",
+    "id" : "3",
+    "cost" : "2",
+    "targetType" : "friendly-open",
+    "targetBehaviour" : "targeted",
+    
+    "numberOfUnits" : "1",
+    "units" : [{
+        "name" : "Jumper",
+        "movement" : "jumper",
+        "attack" : "1",
+        "hP" : "2",
+        "rubble_duration" : "1"
+    }],
+    
+    "numberOfEffects" : "0",
+    "effects" : [],
+    
+    "R" : "100",
+    "G" : "120",
+    "B" : "120"
+} , {
+    "name" : "Melee",
+    "id" : "4",
+    "cost" : "1",
+    "targetType" : "friendly-open",
+    "targetBehaviour" : "targeted",
+    
+    "numberOfUnits" : "1",
+    "units" : [{
+        "name" : "Melee",
+        "movement" : "melee",
+        "attack" : "2",
+        "hP" : "1",
+        "rubble_duration" : "1"
+    }],
+    
+    "numberOfEffects" : "0",
+    "effects" : [],
+    
+    "R" : "100",
+    "G" : "100",
+    "B" : "120"
 }]
 
 var Spells = [{
