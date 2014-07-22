@@ -127,8 +127,8 @@ diamondrun.Card.prototype.getOwner = function() {
 };
 // --------------------------------------------------------------------------------------------------------------------------- Class Seperator
 
-var TargetTypes = Object.freeze({FRIENDLY_OPEN: 'friendly-open', FRIENDLY_UNIT: 'friendly-unit', FRIENDLY_RUBBLE: 'friendly-rubble', FRIENDLY_PLAYER: 'friendly-player',
-                                 ENEMY_OPEN: 'enemy-open', ENEMY_UNIT: 'enemy-unit', ENEMY_RUBBLE: 'enemy-rubble', ENEMY_PLAYER: 'enemy-player'});
+var TargetTypes = Object.freeze({FRIENDLY_OPEN: 'friendly-open', FRIENDLY_UNIT: 'friendly-unit', FRIENDLY_RUBBLE: 'friendly-rubble', FRIENDLY_TILE: 'friendly-tile', FRIENDLY_PLAYER: 'friendly-player',
+                                 ENEMY_OPEN: 'enemy-open', ENEMY_UNIT: 'enemy-unit', ENEMY_RUBBLE: 'enemy-rubble', ENEMY_TILE: 'enemy-tile', ENEMY_PLAYER: 'enemy-player'});
 
 // --------------------------------------------------------------------------------------------------------------------------- Class Seperator
 
@@ -183,6 +183,10 @@ diamondrun.Deck = function(owner) {
     this.cards = [];
     for (var i = 0; i < 5; i ++) {
         this.cards.push(100);
+        this.cards.push(101);
+        this.cards.push(102);
+        this.cards.push(103);
+        this.cards.push(104);
         this.cards.push(1);
         this.cards.push(2);
         this.cards.push(3);

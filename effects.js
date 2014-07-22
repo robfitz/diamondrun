@@ -45,8 +45,8 @@ diamondrun.Effect.prototype.draw = function() {
 };
 
 diamondrun.Effect.prototype.activate = function() {
-    // Deal Damage
-    if(this.tile) this.damageTarget(this.tile.contents);
+    // Deal Damage if unit targeted
+    if(this.tile && this.tile.contents) this.damageTarget(this.tile.contents);
     this.owner.techLevel += this.techUp;
     
     this.owner.getBoard().techTile.label.setText(this.owner.techLevel);
@@ -75,6 +75,6 @@ diamondrun.Effect.prototype.activate = function() {
         Commands.add(new diamondrun.NextPhaseCommand());
     });
 */
-    this.getParent().removeChild(this);
+    if (this.getParent()) this.getParent().removeChild(this);
     window.clearTimeout(this.owner.turnTimer);
 };

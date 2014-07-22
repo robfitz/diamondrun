@@ -89,7 +89,7 @@ diamondrun.Unit.prototype.die = function(generateRubble) {
         
         //remove from board
         self.tile.removeUnit(self);
-        self.getParent().removeChild(self);
+        if (self.getParent()) self.getParent().removeChild(self);
     });
 };
 
@@ -124,7 +124,7 @@ diamondrun.Unit.prototype.doAttack = function(contexts, callbacks) {
         lastPosition = localPosition;
 
         var screenPosition = path[i].getParent().localToScreen(path[i].getPosition());
-        var localPosition = this.getParent().screenToLocal(screenPosition);
+        if (self.getParent()) var localPosition = this.getParent().screenToLocal(screenPosition);
 
         var action = this.canMoveToTile(i, path[i]);
 
@@ -158,7 +158,7 @@ diamondrun.Unit.prototype.doAttack = function(contexts, callbacks) {
                 break;
         }        
         if (turnBack) break;
-        else if (i==path.length-1) { // If the unit reaches the end of its attack path, deal damage to the opponent.
+        else if (i==path.length-1 && this.hp > 0) { // If the unit reaches the end of its attack path alive, deal damage to the opponent.
             var self = this;
             lime.scheduleManager.callAfter(function(dt) {                
                 if (self.owner.isPlayer1) game.player2.takeDamage(self.attack);
@@ -170,7 +170,7 @@ diamondrun.Unit.prototype.doAttack = function(contexts, callbacks) {
     //if still alive, step backwards to return to start point
     for (i = i - 1; i >= 0; i --) {
         var screenPosition = path[i].getParent().localToScreen(path[i].getPosition());
-        var localPosition = this.getParent().screenToLocal(screenPosition);
+        if (self.getParent()) var localPosition = this.getParent().screenToLocal(screenPosition);
 
         animations.push(new lime.animation.MoveTo(localPosition).setDuration(.2));
         duration += 0.2;

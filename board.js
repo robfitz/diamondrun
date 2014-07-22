@@ -17,6 +17,7 @@ diamondrun.Tile = function(row, col, is_friendly) {
 
     this.defending = null;
     this.contents = null;
+    this.row = row;
 
     var y_factor = 1;
     if (is_friendly) { y_factor = -1 };
@@ -77,6 +78,18 @@ diamondrun.Tile.prototype.addEffect = function(effect) {
 
 diamondrun.Tile.prototype.getAttackPath = function() {
     return this.path;
+};
+
+diamondrun.Tile.prototype.getRow = function() {
+    if (this.row == 0) return [this];
+    var row1 = this.defending.defendedBy;
+    if (this.row == 1) return row1;
+    var row1 = this.defending.defending.defendedBy;
+    var row2 = [];
+    for (var i = 0; i < row1.length; i++) {
+        row2 = row2.concat(row1[i].defendedBy);
+    }
+    return row2;
 };
 
 // --------------------------------------------------------------------------------------------------------------------------- Class Seperator
@@ -161,6 +174,9 @@ diamondrun.Board.prototype.getValidTargets = function(card) {
         
         return targets;
     }
+    else if (card.targetType == TargetTypes.FRIENDLY_TILE) {
+        return this.tiles;
+    }
     else if (card.targetType == TargetTypes.ENEMY_UNIT) {
         var targets = [];
         var tartiles = card.owner.getEnemyBoard().getTiles();
@@ -182,6 +198,9 @@ diamondrun.Board.prototype.getValidTargets = function(card) {
         targets.push(this.techTile);
         
         return targets;
+    }
+    else if (card.targetType == TargetTypes.ENEMY_TILE) {
+        return card.owner.getEnemyBoard().getTiles();;
     }
 }
 

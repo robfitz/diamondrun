@@ -198,7 +198,7 @@ var Spells = [{
     "R" : "130",
     "G" : "10",
     "B" : "140"
-}, {
+} , {
     "name" : "Falling Stone",
     "id" : "101",
     "cost" : "2",
@@ -210,7 +210,7 @@ var Spells = [{
     
     "numberOfEffects" : "1",
     "effects" : [{
-        "name" : "techDown",
+        "name" : "rubbleGen",
         "target" : "self",
         "damage" : "0",
         "atkUp" : "0",
@@ -221,6 +221,135 @@ var Spells = [{
     }],
     
     "R" : "139",
+    "G" : "69",
+    "B" : "19"
+} , {
+    "name" : "Scorched Earth",
+    "id" : "102",
+    "cost" : "2",
+    "targetType" : "enemy-tile",
+    "targetBehaviour" : "targeted-row",
+    
+    "numberOfUnits" : "0",
+    "units" : [],
+    
+    "numberOfEffects" : "5",
+    "effects" : [{
+        "name" : "burn",
+        "target" : "targeted-row",
+        "damage" : "2",
+        "atkUp" : "0",
+        "hPUp" : "0",
+        "techUp" : "0", 
+        "kill" : "no",
+        "rubble_duration" : "0" 
+    } , {
+        "name" : "burn",
+        "target" : "targeted-row",
+        "damage" : "2",
+        "atkUp" : "0",
+        "hPUp" : "0",
+        "techUp" : "0", 
+        "kill" : "no",
+        "rubble_duration" : "0" 
+    } , {
+        "name" : "burn",
+        "target" : "targeted-row",
+        "damage" : "2",
+        "atkUp" : "0",
+        "hPUp" : "0",
+        "techUp" : "0", 
+        "kill" : "no",
+        "rubble_duration" : "0" 
+    } , {
+        "name" : "burn",
+        "target" : "targeted-row",
+        "damage" : "2",
+        "atkUp" : "0",
+        "hPUp" : "0",
+        "techUp" : "0", 
+        "kill" : "no",
+        "rubble_duration" : "0" 
+    } , {
+        "name" : "burn",
+        "target" : "targeted-row",
+        "damage" : "2",
+        "atkUp" : "0",
+        "hPUp" : "0",
+        "techUp" : "0", 
+        "kill" : "no",
+        "rubble_duration" : "0" 
+    }],
+    
+    "R" : "200",
+    "G" : "69",
+    "B" : "19"
+} , {
+    "name" : "Dragon's Breath",
+    "id" : "103",
+    "cost" : "2",
+    "targetType" : "enemy-tile",
+    "targetBehaviour" : "targeted-path",
+    
+    "numberOfUnits" : "0",
+    "units" : [],
+    
+    "numberOfEffects" : "3",
+    "effects" : [{
+        "name" : "burn",
+        "target" : "targeted-path",
+        "damage" : "2",
+        "atkUp" : "0",
+        "hPUp" : "0",
+        "techUp" : "0", 
+        "kill" : "no",
+        "rubble_duration" : "0" 
+    } , {
+        "name" : "burn",
+        "target" : "targeted-path",
+        "damage" : "2",
+        "atkUp" : "0",
+        "hPUp" : "0",
+        "techUp" : "0", 
+        "kill" : "no",
+        "rubble_duration" : "0" 
+    } , {
+        "name" : "burn",
+        "target" : "targeted-path",
+        "damage" : "2",
+        "atkUp" : "0",
+        "hPUp" : "0",
+        "techUp" : "0", 
+        "kill" : "no",
+        "rubble_duration" : "0" 
+    }],
+    
+    "R" : "200",
+    "G" : "69",
+    "B" : "19"
+} , {
+    "name" : "Fireball",
+    "id" : "104",
+    "cost" : "2",
+    "targetType" : "enemy-tile",
+    "targetBehaviour" : "targeted-path",
+    
+    "numberOfUnits" : "0",
+    "units" : [],
+    
+    "numberOfEffects" : "1",
+    "effects" : [{
+        "name" : "burn",
+        "target" : "targeted",
+        "damage" : "2",
+        "atkUp" : "0",
+        "hPUp" : "0",
+        "techUp" : "0", 
+        "kill" : "no",
+        "rubble_duration" : "0" 
+    }],
+    
+    "R" : "200",
     "G" : "69",
     "B" : "19"
 }]

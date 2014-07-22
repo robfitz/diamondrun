@@ -9,7 +9,7 @@ diamondrun.Player = function(isPlayer1, board, hand, deck, graveyard) {
     this.activeEffects = [];
     
     this.techLevel = 1;
-    this.life = 1;
+    this.life = 10;
     this.canActThisPhase = false;
     this.actionCallback = null;
     this.isPlayer1 = isPlayer1;

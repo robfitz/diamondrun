@@ -34,7 +34,24 @@ diamondrun.PlayCardCommand.prototype.execute = function() {
                     
                     this.card.units[0].play(tar);
                     tar.addUnit(this.card.units[0]);
-                    break
+                    break;
+                case 'targeted-row':
+                    var tar = this.targetTile.getRow();
+                    
+                    for (var t = 0; t < tar.length; t ++) {
+                        this.card.units[t].play(tar[t]);
+                        tar[t].addUnit(this.card.units[t]);
+                    }
+                    break;
+                case 'targeted-path':
+                    // Retrieve this tiles and all tiles behind it (on both sides of the field)
+                    var tar = this.targetTile.getAttackPath()[0].getAttackPath();
+                    
+                    for (var t = 0; t < tar.length; t ++) {
+                        this.card.units[t].play(tar[t]);
+                        tar[t].addUnit(this.card.units[t]);
+                    }
+                    break;
                 case 'all-valid':
                     var tar = this.player.board.getValidTargets(this.card);
                     
@@ -59,7 +76,24 @@ diamondrun.PlayCardCommand.prototype.execute = function() {
                         this.targetTile.addEffect(this.card.effects[i]);
                         break;
                     case 'targeted':
+                        this.card.effects[i].play(this.targetTile);
                         this.targetTile.addEffect(this.card.effects[i]);
+                        break;
+                    case 'targeted-row':
+                        var tar = this.targetTile.getRow();
+                        if (i < tar.length) {
+                            this.card.effects[i].play(tar[i]);
+                            console.log(this.card.effects[i]);
+                            tar[i].addEffect(this.card.effects[i]);
+                        }
+                        break;
+                    case 'targeted-path':
+                        // Retrieve this tiles and all tiles behind it (on both sides of the field)
+                        var tar = this.targetTile.getAttackPath()[0].getAttackPath();
+                        if (i < tar.length) {
+                            this.card.effects[i].play(tar[i]);
+                            tar[i].addEffect(this.card.effects[i]);
+                        }
                         break;
                     case 'random':
                         this.targetTile.addEffect(this.card.effects[i]);
