@@ -182,15 +182,16 @@ diamondrun.Deck = function(owner) {
 
     this.cards = [];
     for (var i = 0; i < 5; i ++) {
-        this.cards.push(100);
-        this.cards.push(101);
-        this.cards.push(102);
-        this.cards.push(103);
-        this.cards.push(104);
-        this.cards.push(1);
-        this.cards.push(2);
-        this.cards.push(3);
-        this.cards.push(4);
+        // this.cards.push(100);
+        // this.cards.push(101);
+        // this.cards.push(102);
+        // this.cards.push(103);
+        // this.cards.push(104);
+        // this.cards.push(1);
+        // this.cards.push(2);
+        // this.cards.push(3);
+        // this.cards.push(4);
+		this.cards.push(105);
         this.cards.push(0);
 
     }
@@ -239,13 +240,15 @@ diamondrun.CardFactory.prototype.makeCard = function(ID, owner) {
     var units = [];
     var effects = [];
     
+	console.log(ID);
+	
     for (var i = 0; i < parseInt(cardData.numberOfUnits); i++) {
         units.push(new diamondrun.Unit(owner, cardData.units[i].name, cardData.units[i].movement, cardData.units[i].attack,
         cardData.units[i].hP, cardData.units[i].rubble_duration));
     }
     
     for (var i = 0; i < parseInt(cardData.numberOfEffects); i++) {
-        effects.push(new diamondrun.Effect(owner, cardData.effects[i].name, cardData.effects[i].target, cardData.effects[i].damage, cardData.effects[i].atkUp,
+        effects.push(new diamondrun.Effect(owner, cardData.effects[i].name, cardData.effects[i].turns, cardData.effects[i].target, cardData.effects[i].damage, cardData.effects[i].atkUp,
         cardData.effects[i].hPUp, cardData.effects[i].techUp, cardData.effects[i].kill, cardData.effects[i].rubble_duration));
     }
     

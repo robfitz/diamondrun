@@ -8,14 +8,15 @@ goog.require('lime.animation.RotateBy');
 goog.require('lime.animation.ScaleTo');
 goog.require('lime.animation.FadeTo');
 
-diamondrun.Effect = function(owner, name, targetType, damage, atkUp, hPUp, techUp, kill, rubble_duration) {
+diamondrun.Effect = function(owner, name, turns, targetType, damage, atkUp, hPUp, techUp, kill, rubble_duration) {
     goog.base(this);
     
     this.owner = owner;
     this.name = name;
+	this.turnsActive = turns;
     this.targetType = targetType;
     this.damage = damage;
-    this.atkUp = atkUp;
+    this.atkUp = parseInt(atkUp);
     this.hPUp = hPUp;
     this.techUp = parseInt(techUp);
     this.kill = kill;
@@ -53,6 +54,10 @@ diamondrun.Effect.prototype.activate = function() {
     
         
     if (this.rubble_duration > 0) this.tile.addRubble(new diamondrun.Rubble(this.tile, this.rubble_duration));
+	
+	if (this.atkUp > 0 && this.tile && this.tile.contents) this.tile.contents.attack += this.atkUp;
+	
+	if (this.tile.contents) this.tile.contents.redraw();
     
     // Activate Effect animation
     /*
@@ -75,6 +80,22 @@ diamondrun.Effect.prototype.activate = function() {
         Commands.add(new diamondrun.NextPhaseCommand());
     });
 */
-    if (this.getParent()) this.getParent().removeChild(this);
-    window.clearTimeout(this.owner.turnTimer);
+	if (this.turnsActive == 0) {
+		if (this.getParent()) this.getParent().removeChild(this);
+		window.clearTimeout(this.owner.turnTimer);
+	}
+	else {
+		this.owner.activeEffects.push(this);
+		this.setHidden(true);
+	}
+};
+
+diamondrun.Effect.prototype.deactivate = function() {
+	if (--this.turnsActive == 0) {
+	
+		if (this.atkUp > 0 && this.tile && this.tile.contents) this.tile.contents.attack -= this.atkUp;
+	
+		if (this.getParent()) this.getParent().removeChild(this);
+		window.clearTimeout(this.owner.turnTimer);
+	}
 };

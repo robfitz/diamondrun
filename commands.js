@@ -121,8 +121,8 @@ diamondrun.TimeOutCommand = function() {
 
 diamondrun.TimeOutCommand.prototype.execute = function() {
     // Need to pass something into Tech Tile
-    var effect = new diamondrun.Effect(this.player, this.targetTile, this.card.type, this.card.attack);
-    this.targetTile.addEffect(effect)
+    var placeholder = new diamondrun.Effect(null, null, null, null, null, null, null, null, null, null);
+    this.targetTile.addCard(placeholder);
     
     // move from hand to graveyard
     this.player.getGraveyard().takeCard(this.card);

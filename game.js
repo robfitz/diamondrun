@@ -3,6 +3,7 @@ goog.provide('diamondrun.Player');
 
 diamondrun.Player = function(isPlayer1, board, hand, deck, graveyard) {
     this.board = new diamondrun.Board(isPlayer1).setPosition(IPHONE_4_W / 2, IPHONE_4_H / 2 + 265);
+	this.board.owner = this;
     this.graveyard = new diamondrun.Graveyard().setPosition(IPHONE_4_W - 110, IPHONE_4_H - 110);
     this.hand = new diamondrun.Hand(this).setPosition(IPHONE_4_W / 2, IPHONE_4_H - 50 - 5);
     this.deck = new diamondrun.Deck(this);
@@ -88,7 +89,7 @@ diamondrun.Player.prototype.beginPlayPhase = function(callback) {
     
     this.canActThisPhase = true;
     this.actionCallback = callback;
-
+	
     for (var i = 0; i < this.hand.cards.length; i ++) {
     // this.hand.cards[i].enableDragging();
     }

@@ -21,7 +21,7 @@ diamondrun.Unit = function(owner, name, movement, attack, hp, rubbleDuration) {
     this.owner = owner;
     this.name = name;
     this.tile = null;
-    this.attack = attack;
+    this.attack = parseInt(attack);
     this.hp = hp;
     this.maxHp = hp;
     this.rubbleDuration = rubbleDuration;
@@ -70,6 +70,10 @@ diamondrun.Unit.prototype.takeDamage = function(damage, generateRubble) {
     this.redraw();
 };
 
+diamondrun.Unit.prototype.attackUp = function(amount, turns) {
+    this.attack += amount;
+};
+
 diamondrun.Unit.prototype.die = function(generateRubble) {
 
     //death effect
@@ -93,7 +97,8 @@ diamondrun.Unit.prototype.die = function(generateRubble) {
     });
 };
 
-diamondrun.Unit.prototype.doAttack = function(contexts, callbacks) {    
+diamondrun.Unit.prototype.doAttack = function(contexts, callbacks) {
+	console.log(this);
     var path = this.tile.getAttackPath();
 
     var animations = [];

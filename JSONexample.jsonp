@@ -17,6 +17,7 @@ var UnitList = [{
     "numberOfEffects" : "1",
     "effects" : [{
         "name" : "techUP",
+		"turns" : "0",
         "target" : "self",
         "damage" : "0",
         "atkUp" : "0",
@@ -129,54 +130,63 @@ var Spells = [{
     "numberOfUnits" : "9",
     "units" : [{
         "name" : "soldier",
+		"turns" : "0",
         "movement" : "melee",
         "attack" : "1",
         "hP" : "1",
         "rubble_duration" : "1"
     }, {
         "name" : "soldier",
+		"turns" : "0",
         "movement" : "melee",
         "attack" : "1",
         "hP" : "1",
         "rubble_duration" : "1"
     }, {
         "name" : "soldier",
+		"turns" : "0",
         "movement" : "melee",
         "attack" : "1",
         "hP" : "1",
         "rubble_duration" : "1"
     }, {
         "name" : "soldier",
+		"turns" : "0",
         "movement" : "melee",
         "attack" : "1",
         "hP" : "1",
         "rubble_duration" : "1"
     }, {
         "name" : "soldier",
+		"turns" : "0",
         "movement" : "melee",
         "attack" : "1",
         "hP" : "1",
         "rubble_duration" : "1"
     }, {
         "name" : "soldier",
+		"turns" : "0",
         "movement" : "melee",
         "attack" : "1",
         "hP" : "1",
         "rubble_duration" : "1"
     }, {
         "name" : "soldier",
+		"turns" : "0",
         "movement" : "melee",
         "attack" : "1",
         "hP" : "1",
         "rubble_duration" : "1"
     }, {
         "name" : "soldier",
+		"turns" : "0",
         "movement" : "melee",
         "attack" : "1",
         "hP" : "1",
         "rubble_duration" : "1"
     }, {
         "name" : "soldier",
+		"turns" : "0",
         "movement" : "melee",
         "attack" : "1",
         "hP" : "1",
@@ -186,6 +196,7 @@ var Spells = [{
     "numberOfEffects" : "1",
     "effects" : [{
         "name" : "techDown",
+		"turns" : "0",
         "target" : "self",
         "damage" : "0",
         "atkUp" : "0",
@@ -211,6 +222,7 @@ var Spells = [{
     "numberOfEffects" : "1",
     "effects" : [{
         "name" : "rubbleGen",
+		"turns" : "0",
         "target" : "self",
         "damage" : "0",
         "atkUp" : "0",
@@ -236,6 +248,7 @@ var Spells = [{
     "numberOfEffects" : "5",
     "effects" : [{
         "name" : "burn",
+		"turns" : "0",
         "target" : "targeted-row",
         "damage" : "2",
         "atkUp" : "0",
@@ -245,6 +258,7 @@ var Spells = [{
         "rubble_duration" : "0" 
     } , {
         "name" : "burn",
+		"turns" : "0",
         "target" : "targeted-row",
         "damage" : "2",
         "atkUp" : "0",
@@ -254,6 +268,7 @@ var Spells = [{
         "rubble_duration" : "0" 
     } , {
         "name" : "burn",
+		"turns" : "0",
         "target" : "targeted-row",
         "damage" : "2",
         "atkUp" : "0",
@@ -263,6 +278,7 @@ var Spells = [{
         "rubble_duration" : "0" 
     } , {
         "name" : "burn",
+		"turns" : "0",
         "target" : "targeted-row",
         "damage" : "2",
         "atkUp" : "0",
@@ -272,6 +288,7 @@ var Spells = [{
         "rubble_duration" : "0" 
     } , {
         "name" : "burn",
+		"turns" : "0",
         "target" : "targeted-row",
         "damage" : "2",
         "atkUp" : "0",
@@ -297,6 +314,7 @@ var Spells = [{
     "numberOfEffects" : "3",
     "effects" : [{
         "name" : "burn",
+		"turns" : "0",
         "target" : "targeted-path",
         "damage" : "2",
         "atkUp" : "0",
@@ -306,6 +324,7 @@ var Spells = [{
         "rubble_duration" : "0" 
     } , {
         "name" : "burn",
+		"turns" : "0",
         "target" : "targeted-path",
         "damage" : "2",
         "atkUp" : "0",
@@ -315,6 +334,7 @@ var Spells = [{
         "rubble_duration" : "0" 
     } , {
         "name" : "burn",
+		"turns" : "0",
         "target" : "targeted-path",
         "damage" : "2",
         "atkUp" : "0",
@@ -340,9 +360,36 @@ var Spells = [{
     "numberOfEffects" : "1",
     "effects" : [{
         "name" : "burn",
+		"turns" : "0",
         "target" : "targeted",
         "damage" : "2",
         "atkUp" : "0",
+        "hPUp" : "0",
+        "techUp" : "0", 
+        "kill" : "no",
+        "rubble_duration" : "0" 
+    }],
+    
+    "R" : "200",
+    "G" : "69",
+    "B" : "19"
+} , {
+    "name" : "Brittle Sword",
+    "id" : "105",
+    "cost" : "2",
+    "targetType" : "friendly-unit",
+    "targetBehaviour" : "targeted",
+    
+    "numberOfUnits" : "0",
+    "units" : [],
+    
+    "numberOfEffects" : "1",
+    "effects" : [{
+        "name" : "atkUp",
+		"turns" : "1",
+        "target" : "targeted",
+        "damage" : "0",
+        "atkUp" : "3",
         "hPUp" : "0",
         "techUp" : "0", 
         "kill" : "no",
