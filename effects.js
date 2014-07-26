@@ -17,7 +17,7 @@ diamondrun.Effect = function(owner, name, turns, targetType, damage, atkUp, hPUp
     this.targetType = targetType;
     this.damage = damage;
     this.atkUp = parseInt(atkUp);
-    this.hPUp = hPUp;
+    this.hPUp = parseInt(hPUp);
     this.techUp = parseInt(techUp);
     this.kill = kill;
     this.rubble_duration = rubble_duration;
@@ -57,6 +57,8 @@ diamondrun.Effect.prototype.activate = function() {
 	
 	if (this.atkUp > 0 && this.tile && this.tile.contents) this.tile.contents.attack += this.atkUp;
 	
+	if (this.hPUp > 0 && this.tile && this.tile.contents) this.tile.contents.hp += this.hPUp;
+	
 	if (this.tile.contents) this.tile.contents.redraw();
     
     // Activate Effect animation
@@ -94,6 +96,7 @@ diamondrun.Effect.prototype.deactivate = function() {
 	if (--this.turnsActive == 0) {
 	
 		if (this.atkUp > 0 && this.tile && this.tile.contents) this.tile.contents.attack -= this.atkUp;
+		if (this.hPUp > 0 && this.tile && this.tile.contents) this.tile.contents.hp -= this.hPUp;
 	
 		if (this.getParent()) this.getParent().removeChild(this);
 		window.clearTimeout(this.owner.turnTimer);

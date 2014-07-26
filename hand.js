@@ -182,15 +182,16 @@ diamondrun.Deck = function(owner) {
 
     this.cards = [];
     for (var i = 0; i < 5; i ++) {
-        // this.cards.push(100);
-        // this.cards.push(101);
-        // this.cards.push(102);
-        // this.cards.push(103);
-        // this.cards.push(104);
-        // this.cards.push(1);
-        // this.cards.push(2);
-        // this.cards.push(3);
-        // this.cards.push(4);
+        this.cards.push(100);
+        this.cards.push(101);
+        this.cards.push(102);
+        this.cards.push(103);
+        this.cards.push(104);
+        this.cards.push(1);
+        this.cards.push(2);
+        this.cards.push(3);
+        this.cards.push(4);
+		this.cards.push(106);
 		this.cards.push(105);
         this.cards.push(0);
 

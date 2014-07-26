@@ -22,7 +22,7 @@ diamondrun.Unit = function(owner, name, movement, attack, hp, rubbleDuration) {
     this.name = name;
     this.tile = null;
     this.attack = parseInt(attack);
-    this.hp = hp;
+    this.hp = parseInt(hp);
     this.maxHp = hp;
     this.rubbleDuration = rubbleDuration;
 
@@ -51,7 +51,7 @@ diamondrun.Unit.prototype.heal = function() {
 };
 
 diamondrun.Unit.prototype.redraw = function() {
-    var txt = this.attack + '/' + this.maxHp;
+    var txt = this.attack + '/' + this.hp;
     if (this.hp < this.maxHp) {
         var missing = this.maxHp - this.hp;
         txt += ' - ' + missing;

@@ -396,7 +396,33 @@ var Spells = [{
         "rubble_duration" : "0" 
     }],
     
-    "R" : "200",
+    "R" : "20",
     "G" : "69",
+    "B" : "200"
+}  , {
+    "name" : "Stim-pack",
+    "id" : "106",
+    "cost" : "2",
+    "targetType" : "friendly-unit",
+    "targetBehaviour" : "targeted",
+    
+    "numberOfUnits" : "0",
+    "units" : [],
+    
+    "numberOfEffects" : "1",
+    "effects" : [{
+        "name" : "HpUp",
+		"turns" : "1",
+        "target" : "targeted",
+        "damage" : "0",
+        "atkUp" : "0",
+        "hPUp" : "3",
+        "techUp" : "0", 
+        "kill" : "no",
+        "rubble_duration" : "0" 
+    }],
+    
+    "R" : "20",
+    "G" : "100",
     "B" : "19"
 }]
