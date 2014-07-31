@@ -22,9 +22,27 @@ diamondrun.Player = function(isPlayer1, board, hand, deck, graveyard) {
     this.lifeLabel.setFontSize(100).setAlign("center").setFontColor('white');
     
     this.timerBar = new lime.Sprite().setPosition(-IPHONE_4_W,-TILE_SIZE*2.5 - TILE_SPACING * 3).setSize(IPHONE_4_W, TILE_SPACING).setFill(100,100,100);
+    var button4 = new lime.GlossyButton("Menu").setPosition(IPHONE_4_W /12, 40).setSize(IPHONE_4_W/6, 38).setRenderer(lime.Renderer.CANVAS);
+    var self = this;
+    
+    goog.events.listen(button4, 'click', function() {
+        // TODO: fix bug that calls this twice.
+        Commands.add(new diamondrun.MenuToggleCommand(self));
+    });
     
     this.board.appendChild(this.timerBar);
     this.board.appendChild(this.lifeLabel);
+    
+    // Player settings
+    this.soundOn = true;
+    this.sideBar = new lime.Sprite().setSize(IPHONE_4_W/6, IPHONE_4_H).setFill(200, 200, 200).setAnchorPoint(0, 0);  
+    var button = new lime.GlossyButton("Sound").setPosition(IPHONE_4_W /12, IPHONE_4_H - 126).setSize(IPHONE_4_W/6, 38).setRenderer(lime.Renderer.CANVAS);
+    var button2 = new lime.GlossyButton("Options").setPosition(IPHONE_4_W /12, IPHONE_4_H - 88).setSize(IPHONE_4_W/6, 38).setRenderer(lime.Renderer.CANVAS);
+    var button3 = new lime.GlossyButton("Surrender").setPosition(IPHONE_4_W /12, IPHONE_4_H - 50).setSize(IPHONE_4_W/6, 38).setRenderer(lime.Renderer.CANVAS);
+    
+    this.sideBar.runAction(new lime.animation.MoveTo(-IPHONE_4_W/6, 0).setDuration(0));
+    
+    game.UILayer.appendChild(this.sideBar.appendChild(button).appendChild(button2).appendChild(button3)).appendChild(button4);
 };
 
 diamondrun.Player.prototype.doAttack = function() {

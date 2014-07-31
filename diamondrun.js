@@ -201,17 +201,18 @@ diamondrun.start = function(){
     
     game.cardFactory = new diamondrun.CardFactory();
 
+    game.effectLayer = new lime.Layer();
+    game.unitLayer = new lime.Layer();
+    game.rubbleLayer = new lime.Layer();
+    game.UILayer = new lime.Layer();
+
     var player = new diamondrun.Player(true);
     game.player1 = player;
     
     game.player2 = new diamondrun.AIPlayer(false);
     game.player2.getBoard().setPosition(IPHONE_4_W / 2, IPHONE_4_H / 2 - 265);
 
-    game.effectLayer = new lime.Layer();
-    game.unitLayer = new lime.Layer();
-    game.rubbleLayer = new lime.Layer();
-
-    scene.appendChild(player.getBoard()).appendChild(game.player2.getBoard()).appendChild(player.getHand()).appendChild(game.rubbleLayer).appendChild(game.unitLayer).appendChild(game.effectLayer);
+    scene.appendChild(player.getBoard()).appendChild(game.player2.getBoard()).appendChild(player.getHand()).appendChild(game.rubbleLayer).appendChild(game.unitLayer).appendChild(game.effectLayer).appendChild(game.UILayer);
 
     var phase_label = new lime.Label().setText('P').setPosition(50, 50).setFontColor("White");
     scene.appendChild(phase_label);

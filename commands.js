@@ -184,6 +184,18 @@ diamondrun.EndGameCommand.prototype.execute = function() {
 
 // --------------------------------------------------------------------------------------------------------------------------- Class Seperator
 
+diamondrun.MenuToggleCommand = function(player) {
+    this.sideBar = player.sideBar;
+};
+
+diamondrun.MenuToggleCommand.prototype.execute = function() {
+    // TODO: figure out why this code is being called twice per click so we don't need the ugly boolean statement below.
+    if (this.sideBar.position_.x < -IPHONE_4_W/6 +.1) this.sideBar.runAction(new lime.animation.MoveTo(0, 0).setDuration(.3));
+    else this.sideBar.runAction(new lime.animation.MoveTo(-IPHONE_4_W/6, 0).setDuration(.3));
+};
+
+// --------------------------------------------------------------------------------------------------------------------------- Class Seperator
+
 var newGame = function() {
     var oldDirector = game.director; 
     game = {
