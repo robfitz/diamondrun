@@ -214,7 +214,7 @@ diamondrun.start = function(){
 
     scene.appendChild(player.getBoard()).appendChild(game.player2.getBoard()).appendChild(player.getHand()).appendChild(game.rubbleLayer).appendChild(game.unitLayer).appendChild(game.effectLayer).appendChild(game.UILayer);
 
-    var phase_label = new lime.Label().setText('P').setPosition(50, 50).setFontColor("White");
+    var phase_label = new lime.Label().setText('P').setPosition(500, 50).setFontColor("White");
     scene.appendChild(phase_label);
     lime.scheduleManager.schedule(function(dt) {
         phase_label.setText('P' + Phases.current);

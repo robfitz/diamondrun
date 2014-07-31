@@ -302,6 +302,6 @@ function getShape(movement, hp, scale, r, g, b) {
     return poly;
 }
 
-// --------------------------------------------------------------------------------------------------------------------------- Class Seperator
+// --------------------------------------------------------------------------------------------------------------------------- Enumeration of Unit Movement Types
 
 var UnitMovement = Object.freeze({MELEE: 'melee', SITTER: 'sitter', SHOOTER: 'shooter', JUMPER: 'jumper'});

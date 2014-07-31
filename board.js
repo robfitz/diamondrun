@@ -92,7 +92,7 @@ diamondrun.Tile.prototype.getRow = function() {
     return row2;
 };
 
-// --------------------------------------------------------------------------------------------------------------------------- Class Seperator
+// --------------------------------------------------------------------------------------------------------------------------- Tech Tile sub-class
 
 diamondrun.TechTile = function(is_friendly) {
 
@@ -127,7 +127,7 @@ diamondrun.TechTile.prototype.addCard = function(card) {
     return true;
 };
 
-// --------------------------------------------------------------------------------------------------------------------------- Class Seperator
+// --------------------------------------------------------------------------------------------------------------------------- Board class
 
 diamondrun.Board = function(is_friendly) {
     goog.base(this);
@@ -310,7 +310,7 @@ diamondrun.Board.prototype.connectAttackPaths = function(enemyBoard) {
 diamondrun.Board.prototype.startTurn = function() {
 	// Notify active effects a new turn has begun
 	for (var i = 0; i < this.owner.activeEffects.length; i ++) {
-		this.owner.activeEffects[i].deactivate();
+		this.owner.activeEffects[i].startTurn();
 	}
 
     for (var i = 0; i < this.tiles.length; i ++) {

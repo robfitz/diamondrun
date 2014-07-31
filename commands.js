@@ -3,6 +3,7 @@ goog.provide('diamondrun.TimeOutCommand');
 goog.provide('diamondrun.DrawCardCommand');
 goog.provide('diamondrun.NextPhaseCommand');
 goog.provide('diamondrun.EndGameCommand');
+goog.provide('diamondrun.MenuToggleCommand');
 
 goog.require('lime.transitions.SlideInRight');
 goog.require('lime.transitions.SlideInLeft');
@@ -15,6 +16,8 @@ diamondrun.PlayCardCommand = function(player, card, targetTile) {
     this.card = card;
     this.targetTile = targetTile;
 };
+
+// TODO: make enum for the card target behaviours.
 
 diamondrun.PlayCardCommand.prototype.execute = function() {
     if (this.targetTile == this.player.getBoard().techTile) {
@@ -110,7 +113,7 @@ diamondrun.PlayCardCommand.prototype.execute = function() {
     this.player.getGraveyard().takeCard(this.card);
 };
 
-// --------------------------------------------------------------------------------------------------------------------------- Class Seperator
+// --------------------------------------------------------------------------------------------------------------------------- Time Out Command
 
 diamondrun.TimeOutCommand = function() {
     if (game.player1.canActThisPhase) this.player = game.player1;
@@ -129,7 +132,7 @@ diamondrun.TimeOutCommand.prototype.execute = function() {
     this.player.endPlayPhase();
 };
 
-// --------------------------------------------------------------------------------------------------------------------------- Class Seperator
+// --------------------------------------------------------------------------------------------------------------------------- Draw Card Command
 
 diamondrun.DrawCardCommand = function(player, numCards) {
     this.player = player;
@@ -142,7 +145,7 @@ diamondrun.DrawCardCommand.prototype.execute = function() {
     }
 };
 
-// --------------------------------------------------------------------------------------------------------------------------- Class Seperator
+// --------------------------------------------------------------------------------------------------------------------------- Next Phase Command
 
 diamondrun.NextPhaseCommand = function() {
 };
@@ -151,7 +154,7 @@ diamondrun.NextPhaseCommand.prototype.execute = function() {
     Phases.next();
 };
 
-// --------------------------------------------------------------------------------------------------------------------------- Class Seperator
+// --------------------------------------------------------------------------------------------------------------------------- End Game Command
 
 diamondrun.EndGameCommand = function(loser) {
     this.loser = loser;
@@ -182,7 +185,7 @@ diamondrun.EndGameCommand.prototype.execute = function() {
     game.director.replaceScene(gameOverScene, transition);
 };
 
-// --------------------------------------------------------------------------------------------------------------------------- Class Seperator
+// --------------------------------------------------------------------------------------------------------------------------- Menu Toggle Command
 
 diamondrun.MenuToggleCommand = function(player) {
     this.sideBar = player.sideBar;
@@ -194,7 +197,7 @@ diamondrun.MenuToggleCommand.prototype.execute = function() {
     else this.sideBar.runAction(new lime.animation.MoveTo(-IPHONE_4_W/6, 0).setDuration(.3));
 };
 
-// --------------------------------------------------------------------------------------------------------------------------- Class Seperator
+// --------------------------------------------------------------------------------------------------------------------------- Function to create new game
 
 var newGame = function() {
     var oldDirector = game.director; 
@@ -219,18 +222,18 @@ var newGame = function() {
     
     game.cardFactory = new diamondrun.CardFactory();
 
-
+    game.effectLayer = new lime.Layer();
+    game.unitLayer = new lime.Layer();
+    game.rubbleLayer = new lime.Layer();
+    game.UILayer = new lime.Layer();
+    
     var player = new diamondrun.Player(true);
     game.player1 = player;
     
     game.player2 = new diamondrun.AIPlayer(false);
     game.player2.getBoard().setPosition(IPHONE_4_W / 2, IPHONE_4_H / 2 - 265);
 
-    game.effectLayer = new lime.Layer();
-    game.unitLayer = new lime.Layer();
-    game.rubbleLayer = new lime.Layer();
-
-    scene.appendChild(player.getBoard()).appendChild(game.player2.getBoard()).appendChild(player.getHand()).appendChild(game.rubbleLayer).appendChild(game.unitLayer).appendChild(game.effectLayer);
+    scene.appendChild(player.getBoard()).appendChild(game.player2.getBoard()).appendChild(player.getHand()).appendChild(game.rubbleLayer).appendChild(game.unitLayer).appendChild(game.effectLayer).appendChild(game.UILayer);
 
     // set current scene active
     game.director.replaceScene(scene, lime.transitions.SlideInUp);

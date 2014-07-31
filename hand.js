@@ -125,12 +125,12 @@ goog.inherits(diamondrun.Card, lime.Label);
 diamondrun.Card.prototype.getOwner = function() {
     return this.owner;
 };
-// --------------------------------------------------------------------------------------------------------------------------- Class Seperator
+// --------------------------------------------------------------------------------------------------------------------------- Enumeration of Target Types
 
 var TargetTypes = Object.freeze({FRIENDLY_OPEN: 'friendly-open', FRIENDLY_UNIT: 'friendly-unit', FRIENDLY_RUBBLE: 'friendly-rubble', FRIENDLY_TILE: 'friendly-tile', FRIENDLY_PLAYER: 'friendly-player',
                                  ENEMY_OPEN: 'enemy-open', ENEMY_UNIT: 'enemy-unit', ENEMY_RUBBLE: 'enemy-rubble', ENEMY_TILE: 'enemy-tile', ENEMY_PLAYER: 'enemy-player'});
 
-// --------------------------------------------------------------------------------------------------------------------------- Class Seperator
+// --------------------------------------------------------------------------------------------------------------------------- Hand Class
 
 diamondrun.Hand = function(owner) {
     goog.base(this);
@@ -174,7 +174,7 @@ diamondrun.Hand.prototype.refreshCardLocations = function() {
     }    
 };
 
-// --------------------------------------------------------------------------------------------------------------------------- Class Seperator
+// --------------------------------------------------------------------------------------------------------------------------- Deck Class
 
 diamondrun.Deck = function(owner) {
     goog.base(this);
@@ -204,7 +204,7 @@ diamondrun.Deck.prototype.drawCard = function() {
     return game.cardFactory.makeCard(this.cards.pop(), this.owner);
 };
 
-// --------------------------------------------------------------------------------------------------------------------------- Class Seperator
+// --------------------------------------------------------------------------------------------------------------------------- Graveyard Class
 
 diamondrun.Graveyard = function() {
     goog.base(this);
@@ -227,7 +227,7 @@ diamondrun.Graveyard.prototype.takeCard = function(card) {
     ));
 };
 
-// --------------------------------------------------------------------------------------------------------------------------- Class Seperator
+// --------------------------------------------------------------------------------------------------------------------------- Card Factory - creates cards from JSON data
 
 diamondrun.CardFactory = function() {
 };
@@ -256,7 +256,7 @@ diamondrun.CardFactory.prototype.makeCard = function(ID, owner) {
     return new diamondrun.Card(owner, cardData.name, cardData.targetType, cardData.targetBehaviour, cardData.cost, units, effects, [cardData.R,cardData.G,cardData.B]);
 };
 
-// --------------------------------------------------------------------------------------------------------------------------- Class Seperator
+// --------------------------------------------------------------------------------------------------------------------------- MouseOver hack - source: https://gist.github.com/tonistiigi/1153666
 
 
 lime.Scene.prototype.listenOverOut = (function(){
