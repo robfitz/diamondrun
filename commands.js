@@ -24,6 +24,7 @@ diamondrun.PlayCardCommand.prototype.execute = function() {
         this.targetTile.addCard();
     }
     else {
+        // Play card on selected target
         if (this.card.units.length > 0) {
             switch (this.card.targetBehaviour) {
                 // Will probably be worthwhile to make enums for targetBehaviour data 
@@ -126,6 +127,17 @@ diamondrun.TimeOutCommand.prototype.execute = function() {
     // Need to pass something into Tech Tile
     var placeholder = new diamondrun.Effect(null, null, null, null, null, null, null, null, null, null);
     this.targetTile.addCard(placeholder);
+    
+    // Clear any highlightin left from card hover
+    if (this.card.isOver) {
+        var drop_targets = this.player.getBoard().getValidTargets(this.card);
+                for (var i = 0; i < drop_targets.length; i ++) {
+                    var r = drop_targets[i].getFill().r;
+                    var g = drop_targets[i].getFill().g;
+                    var b = drop_targets[i].getFill().b;
+                    drop_targets[i].setFill(r+10,g+40,b+40);
+                };
+    }
     
     // move from hand to graveyard
     this.player.getGraveyard().takeCard(this.card);
