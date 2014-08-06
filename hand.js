@@ -36,7 +36,7 @@ diamondrun.Card = function(owner, name, targetType, targetBehaviour, castCost, u
     
     this.setText(this.name + " Cost:" + this.castCost);
     this.setSize(CARD_SIZE, CARD_SIZE).setFill(this.r, this.g, this.g, 0);
-    this.isOver = false;
+    this.mouseIsOver = false;
 
     //local declaration for when 'this' is clobbered by event objects
     var card = this; 
@@ -98,11 +98,12 @@ diamondrun.Card = function(owner, name, targetType, targetBehaviour, castCost, u
 
     goog.events.listen(this,['mousedown','touchstart'],makeDraggable);
     
+    var self = this;
     
     // Handle MouseOver and MouseOut
     game.director.getCurrentScene().listenOverOut(this,
         function(e){ 
-            this.isOver = true;
+            self.mouseIsOver = true;
             var drop_targets = card.owner.getBoard().getValidTargets(card);
             for (var i = 0; i < drop_targets.length; i ++) {
                 var r = drop_targets[i].getFill().r;
@@ -112,7 +113,7 @@ diamondrun.Card = function(owner, name, targetType, targetBehaviour, castCost, u
             } 
         }, 
         function(e){ 
-            this.isOver = false;
+            self.mouseIsOver = false;
             var drop_targets = card.owner.getBoard().getValidTargets(card);
             for (var i = 0; i < drop_targets.length; i ++) {
                 var r = drop_targets[i].getFill().r;
@@ -243,8 +244,6 @@ diamondrun.CardFactory.prototype.makeCard = function(ID, owner) {
 
     var units = [];
     var effects = [];
-    
-	console.log(ID);
 	
     for (var i = 0; i < parseInt(cardData.numberOfUnits); i++) {
         units.push(new diamondrun.Unit(owner, cardData.units[i].name, cardData.units[i].movement, cardData.units[i].attack,

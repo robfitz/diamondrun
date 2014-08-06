@@ -323,7 +323,6 @@ diamondrun.Board.prototype.endTurn = function() {
     for (var i = 0; i < this.tiles.length; i ++) {
         // Tell contents that turn is ending
         if (this.tiles[i].contents) {
-			console.log(this.tiles[i]);
 			this.tiles[i].contents.endTurn();
 		}
     }

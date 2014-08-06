@@ -87,7 +87,6 @@ diamondrun.PlayCardCommand.prototype.execute = function() {
                         var tar = this.targetTile.getRow();
                         if (i < tar.length) {
                             this.card.effects[i].play(tar[i]);
-                            console.log(this.card.effects[i]);
                             tar[i].addEffect(this.card.effects[i]);
                         }
                         break;
@@ -129,14 +128,14 @@ diamondrun.TimeOutCommand.prototype.execute = function() {
     this.targetTile.addCard(placeholder);
     
     // Clear any highlightin left from card hover
-    if (this.card.isOver) {
+    if (this.card.mouseIsOver) {
         var drop_targets = this.player.getBoard().getValidTargets(this.card);
-                for (var i = 0; i < drop_targets.length; i ++) {
-                    var r = drop_targets[i].getFill().r;
-                    var g = drop_targets[i].getFill().g;
-                    var b = drop_targets[i].getFill().b;
-                    drop_targets[i].setFill(r+10,g+40,b+40);
-                };
+        for (var i = 0; i < drop_targets.length; i ++) {
+            var r = drop_targets[i].getFill().r;
+            var g = drop_targets[i].getFill().g;
+            var b = drop_targets[i].getFill().b;
+            drop_targets[i].setFill(r+10,g+40,b+40);
+        };
     }
     
     // move from hand to graveyard

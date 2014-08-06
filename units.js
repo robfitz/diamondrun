@@ -32,6 +32,7 @@ diamondrun.Unit = function(owner, name, movement, attack, hp, rubbleDuration) {
     if (this.movement == UnitMovement.JUMPER) this.jumps = 2;    
     this.type = "unit";
     this.isSSick = true;
+    this.mouseIsOver = false;
 
     this.appendChild(getShape(this.movement, this.hp, CARD_SIZE - CARD_SPACING, 0, 255, 0));
     this.appendChild(this.label);
@@ -49,6 +50,7 @@ diamondrun.Unit.prototype.play = function(targetTile) {
     game.director.getCurrentScene().listenOverOut(self.label,
         function(e){ 
             // Mouse Over
+            self.mouseIsOver = true;
             var path_targets = self.tile.getAttackPath();
             for (var i = 0; i < path_targets.length; i ++) {
                 var r = path_targets[i].getFill().r;
@@ -59,6 +61,7 @@ diamondrun.Unit.prototype.play = function(targetTile) {
         }, 
         function(e){
             // Mouse Out
+            self.mouseIsOver = false;
             var path_targets = self.tile.getAttackPath();
             for (var i = 0; i < path_targets.length; i ++) {
                 var r = path_targets[i].getFill().r;
@@ -108,6 +111,17 @@ diamondrun.Unit.prototype.die = function(generateRubble) {
     ).setDuration(0.4);
     
     this.runAction(dieEffect);
+    
+    // Remove Highlights cause by this unit on board
+    if (this.mouseIsOver) {
+        var path_targets = self.tile.getAttackPath();
+        for (var i = 0; i < path_targets.length; i ++) {
+            var r = path_targets[i].getFill().r;
+            var g = path_targets[i].getFill().g;
+            var b = path_targets[i].getFill().b;
+            path_targets[i].setFill(r+40,g+10,b+10);
+        };
+    }
     
     var self = this;
     var rubbleTile = this.tile
