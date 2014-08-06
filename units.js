@@ -43,6 +43,30 @@ diamondrun.Unit.prototype.play = function(targetTile) {
     this.tile = targetTile;
     this.redraw();
     game.unitLayer.appendChild(this);
+    
+    // Handle Mouseover
+    var self = this;
+    game.director.getCurrentScene().listenOverOut(self.label,
+        function(e){ 
+            // Mouse Over
+            var path_targets = self.tile.getAttackPath();
+            for (var i = 0; i < path_targets.length; i ++) {
+                var r = path_targets[i].getFill().r;
+                var g = path_targets[i].getFill().g;
+                var b = path_targets[i].getFill().b;
+                path_targets[i].setFill(r-40,g-10,b-10);
+            } 
+        }, 
+        function(e){
+            // Mouse Out
+            var path_targets = self.tile.getAttackPath();
+            for (var i = 0; i < path_targets.length; i ++) {
+                var r = path_targets[i].getFill().r;
+                var g = path_targets[i].getFill().g;
+                var b = path_targets[i].getFill().b;
+                path_targets[i].setFill(r+40,g+10,b+10);
+            };
+        });
 };
 
 diamondrun.Unit.prototype.heal = function() {
