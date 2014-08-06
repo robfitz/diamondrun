@@ -86,9 +86,6 @@ diamondrun.Unit.prototype.heal = function() {
 
 diamondrun.Unit.prototype.redraw = function() {
     var center = new diamondrun.Util().lerp([255, 255, 255], [this.r, this.g, this.b], this.hp / 6);
-    console.log(center[0]);
-    console.log(center[1]);
-    console.log(center[2]);
     this.poly.setFill(Math.ceil(center[0]), Math.ceil(center[1]), Math.ceil(center[2]));
     
     var txt = this.attack + '/' + this.hp;
@@ -127,7 +124,7 @@ diamondrun.Unit.prototype.die = function(generateRubble) {
     
     // Remove Highlights cause by this unit on board
     if (this.mouseIsOver) {
-        var path_targets = self.tile.getAttackPath();
+        var path_targets = this.tile.getAttackPath();
         for (var i = 0; i < path_targets.length; i ++) {
             var r = path_targets[i].getFill().r;
             var g = path_targets[i].getFill().g;
@@ -149,7 +146,6 @@ diamondrun.Unit.prototype.die = function(generateRubble) {
 };
 
 diamondrun.Unit.prototype.doAttack = function(contexts, callbacks) {
-	console.log(this);
     var path = this.tile.getAttackPath();
 
     var animations = [];
