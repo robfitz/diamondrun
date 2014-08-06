@@ -1,5 +1,7 @@
 goog.provide('diamondrun.Unit');
 
+goog.require('diamondrun.Util');
+
 goog.require('lime.Sprite');
 goog.require('lime.Label');
 goog.require('lime.Polygon');
@@ -33,8 +35,13 @@ diamondrun.Unit = function(owner, name, movement, attack, hp, rubbleDuration) {
     this.type = "unit";
     this.isSSick = true;
     this.mouseIsOver = false;
+    
+    this.r = 0;
+    this.g = 255;
+    this.b = 0;
+    this.poly = getShape(this.movement, this.hp, CARD_SIZE - CARD_SPACING, 0, 255, 0);
 
-    this.appendChild(getShape(this.movement, this.hp, CARD_SIZE - CARD_SPACING, 0, 255, 0));
+    this.appendChild(this.poly);
     this.appendChild(this.label);
 };
 
@@ -78,6 +85,12 @@ diamondrun.Unit.prototype.heal = function() {
 };
 
 diamondrun.Unit.prototype.redraw = function() {
+    var center = new diamondrun.Util().lerp([255, 255, 255], [this.r, this.g, this.b], this.hp / 6);
+    console.log(center[0]);
+    console.log(center[1]);
+    console.log(center[2]);
+    this.poly.setFill(Math.ceil(center[0]), Math.ceil(center[1]), Math.ceil(center[2]));
+    
     var txt = this.attack + '/' + this.hp;
     if (this.hp < this.maxHp) {
         var missing = this.maxHp - this.hp;
