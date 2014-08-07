@@ -86,7 +86,8 @@ diamondrun.Unit.prototype.heal = function() {
 
 diamondrun.Unit.prototype.redraw = function() {
     var center = new diamondrun.Util().lerp([255, 255, 255], [this.r, this.g, this.b], this.hp / 6);
-    this.poly.setFill(Math.ceil(center[0]), Math.ceil(center[1]), Math.ceil(center[2]));
+    var stroke = new diamondrun.Util().lerp([255, 255, 255], [this.r, this.g, this.b], this.maxHp / 6);
+    this.poly.setFill(Math.ceil(center[0]), Math.ceil(center[1]), Math.ceil(center[2])).setStroke(5, Math.ceil(stroke[0]), Math.ceil(stroke[1]), Math.ceil(stroke[2]));
     
     var txt = this.attack + '/' + this.hp;
     if (this.hp < this.maxHp) {
