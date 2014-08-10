@@ -13,6 +13,11 @@ goog.require('lime.animation.RotateBy');
 goog.require('lime.animation.ScaleTo');
 goog.require('lime.animation.FadeTo');
 goog.require('lime.fill.Color');
+goog.require('lime.fill.Frame');
+goog.require('lime.animation.KeyframeAnimation');
+goog.require('lime.SpriteSheet');
+goog.require('lime.parser.JSON');
+goog.require('lime.ASSETS.facesheet.json');
 
 goog.require('goog.math.Coordinate');
 
@@ -28,20 +33,26 @@ diamondrun.Unit = function(owner, name, movement, attack, hp, rubbleDuration) {
     this.maxHp = hp;
     this.rubbleDuration = rubbleDuration;
 
-    this.label = new lime.Label().setSize(CARD_SIZE - CARD_SPACING * 1, CARD_SIZE - CARD_SPACING * 1);
-
     this.movement = movement;
     if (this.movement == UnitMovement.JUMPER) this.jumps = 2;    
     this.type = "unit";
     this.isSSick = true;
     this.mouseIsOver = false;
     
+    console.log(lime.ASSETS.facesheet.json);
+    
+    this.faces = new lime.SpriteSheet('Sprites\\export.png', lime.ASSETS.facesheet.json, lime.parser.JSON);
+    this.face = new lime.Sprite().setSize(100,100).setFill(this.faces.getFrame(this.attack - 1))
+
+    this.label = new lime.Label().setSize(CARD_SIZE - CARD_SPACING * 1, CARD_SIZE - CARD_SPACING * 1);
+    
     this.r = 0;
     this.g = 255;
     this.b = 0;
     this.poly = getShape(this.movement, this.hp, CARD_SIZE - CARD_SPACING, 0, 255, 0);
-
+    
     this.appendChild(this.poly);
+    this.appendChild(this.face);
     this.appendChild(this.label);
 };
 

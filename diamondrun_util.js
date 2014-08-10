@@ -1,6 +1,6 @@
 goog.provide('diamondrun.Util');
-// Utility functions for diamondrun
 
+// Utility functions for diamondrun
 diamondrun.Util = function() {
     goog.base(this);
 };
