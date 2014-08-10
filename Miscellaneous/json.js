@@ -59,6 +59,5 @@ lime.parser.JSON = function(data){
         }
     }
 
-    console.log(dict);
     return dict;
 };

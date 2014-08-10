@@ -39,10 +39,8 @@ diamondrun.Unit = function(owner, name, movement, attack, hp, rubbleDuration) {
     this.isSSick = true;
     this.mouseIsOver = false;
     
-    console.log(lime.ASSETS.facesheet.json);
-    
     this.faces = new lime.SpriteSheet('Sprites\\export.png', lime.ASSETS.facesheet.json, lime.parser.JSON);
-    this.face = new lime.Sprite().setSize(100,100).setFill(this.faces.getFrame(this.attack - 1))
+    this.face = new lime.Sprite().setSize(100,100).setFill(this.faces.getFrame(this.attack - 1)); // Frame naming is handled by JSON parser TODO: clean that up
 
     this.label = new lime.Label().setSize(CARD_SIZE - CARD_SPACING * 1, CARD_SIZE - CARD_SPACING * 1);
     
@@ -99,6 +97,8 @@ diamondrun.Unit.prototype.redraw = function() {
     var center = new diamondrun.Util().lerp([255, 255, 255], [this.r, this.g, this.b], this.hp / 6);
     var stroke = new diamondrun.Util().lerp([255, 255, 255], [this.r, this.g, this.b], this.maxHp / 6);
     this.poly.setFill(Math.ceil(center[0]), Math.ceil(center[1]), Math.ceil(center[2])).setStroke(5, Math.ceil(stroke[0]), Math.ceil(stroke[1]), Math.ceil(stroke[2]));
+    
+    this.face.setFill(this.faces.getFrame(this.attack - 1));
     
     var txt = this.attack + '/' + this.hp;
     if (this.hp < this.maxHp) {
