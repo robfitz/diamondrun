@@ -20,3 +20,13 @@ diamondrun
 
 Setup Notes for Windows Users:
 	-Make sure python 2.6+ is installed and in your PATH variables
+	
+	
+Fix a bug in lime around spritesheets:
+
+limejs/lime/src/helper/parser/json.js
+
+Change line 41: `for(var i in root){`
+
+To: `for (var i = 0; i < root.length; i ++) {`
+    
