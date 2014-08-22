@@ -46,25 +46,7 @@ diamondrun.Effect.prototype.draw = function() {
 };
 
 diamondrun.Effect.prototype.activate = function() {
-    // Deal Damage to target
-    if(this.tile && this.tile.contents) this.damageTarget(this.tile.contents);
-    
-    // Change tech level of player
-    this.owner.techLevel += this.techUp;
-    this.owner.getBoard().techTile.label.setText(this.owner.techLevel);
-    
-    // Add rubble to target tile
-    if (this.rubble_duration > 0) this.tile.addRubble(new diamondrun.Rubble(this.tile, this.rubble_duration));
-	
-    // Increase target's attack
-	if (this.atkUp > 0 && this.tile && this.tile.contents) this.tile.contents.attack += this.atkUp;
-	
-    // Increase HP of target unit
-	if (this.hPUp > 0 && this.tile && this.tile.contents) this.tile.contents.hp += this.hPUp;
-	if (this.tile.contents) this.tile.contents.redraw();
-    
     // Activate Effect animation
-    /*
     var actEffect = new lime.animation.Spawn(
         new lime.animation.ScaleTo(.1),
         new lime.animation.FadeTo(0),
@@ -72,31 +54,42 @@ diamondrun.Effect.prototype.activate = function() {
     ).setDuration(0.5);
 
     this.runAction(actEffect);
-    
-    
     var self = this;
     
     // once the animation is complete.
     goog.events.listen(actEffect,lime.animation.Event.STOP,function(){
-        // remove from board
-        self.getParent().removeChild(self);
+        // Deal Damage to target
+        if(self.tile && self.tile.contents) self.damageTarget(self.tile.contents);
         
-        Commands.add(new diamondrun.NextPhaseCommand());
-    });
-*/
-    // If this effect lasts for one turn destroy it now.
-	if (this.turnsActive == 0) {
-		if (this.getParent()) this.getParent().removeChild(this);
-		window.clearTimeout(this.owner.turnTimer);
-	}
-	else {
-		this.owner.activeEffects.push(this);
-		this.setHidden(true);
-	}
+        // Change tech level of player
+        self.owner.techLevel += self.techUp;
+        self.owner.getBoard().techTile.label.setText(self.owner.techLevel);
+        
+        // Add rubble to target tile
+        if (self.rubble_duration > 0) self.tile.addRubble(new diamondrun.Rubble(self.tile, self.rubble_duration));
+        
+        // Increase target's attack
+        if (self.atkUp > 0 && self.tile && self.tile.contents) self.tile.contents.attack += self.atkUp;
+        
+        // Increase HP of target unit
+        if (self.hPUp > 0 && self.tile && self.tile.contents) self.tile.contents.hp += self.hPUp;
+        if (self.tile.contents) self.tile.contents.redraw();
+        
+          
+        // If this effect lasts for one turn destroy it now.
+        if (self.turnsActive == 0) {
+            if (self.getParent()) self.getParent().removeChild(self);
+            window.clearTimeout(self.owner.turnTimer);
+        }
+        else {
+            self.owner.activeEffects.push(self);
+            self.setHidden(self);
+        }
+    });   
 };
 
 diamondrun.Effect.prototype.startTurn = function() {
-	if (--this.turnsActive == 0) {
+	if (--this.turnsActive <= 0) {
 	
 		if (this.atkUp > 0 && this.tile && this.tile.contents) this.tile.contents.attack -= this.atkUp;
 		if (this.hPUp > 0 && this.tile && this.tile.contents) this.tile.contents.hp -= this.hPUp;
