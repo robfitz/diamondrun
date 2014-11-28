@@ -98,7 +98,8 @@ diamondrun.Unit.prototype.redraw = function() {
     var stroke = new diamondrun.Util().lerp([255, 255, 255], [this.r, this.g, this.b], this.maxHp / 6);
     this.poly.setFill(Math.ceil(center[0]), Math.ceil(center[1]), Math.ceil(center[2])).setStroke(5, Math.ceil(stroke[0]), Math.ceil(stroke[1]), Math.ceil(stroke[2]));
     
-    this.face.setFill(this.faces.getFrame(this.attack - 1));
+    // Set sprite to correct power, constrained to 6. Might need to add lower constraint if nerf cards are added
+    this.face.setFill(this.faces.getFrame(Math.min(this.attack - 1, 5)));
     
     var txt = this.attack + '/' + this.hp;
     if (this.hp < this.maxHp) {

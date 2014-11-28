@@ -9,7 +9,7 @@ var UnitList = [{
     "units" : [{
         "name" : "Monk",
         "movement" : "melee",
-        "attack" : "1",
+        "attack" : "4",
         "hP" : "1",
         "rubble_duration" : "1"
     }],
@@ -108,7 +108,7 @@ var UnitList = [{
         "name" : "Melee",
         "movement" : "melee",
         "attack" : "2",
-        "hP" : "1",
+        "hP" : "5",
         "rubble_duration" : "1"
     }],
     
