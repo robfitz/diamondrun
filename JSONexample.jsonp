@@ -9,15 +9,15 @@ var UnitList = [{
     "units" : [{
         "name" : "Monk",
         "movement" : "melee",
-        "attack" : "4",
-        "hP" : "1",
+        "attack" : "0",
+        "hP" : "2",
         "rubble_duration" : "1"
     }],
     
     "numberOfEffects" : "1",
     "effects" : [{
         "name" : "techUP",
-		"turns" : "0",
+        "turns" : "0",
         "target" : "self",
         "damage" : "0",
         "atkUp" : "0",
@@ -31,7 +31,7 @@ var UnitList = [{
     "G" : "100",
     "B" : "100"
 } , {
-    "name" : "Shooter",
+    "name" : "Bowman",
     "id" : "1",
     "cost" : "1",
     "targetType" : "friendly-open",
@@ -39,7 +39,29 @@ var UnitList = [{
     
     "numberOfUnits" : "1",
     "units" : [{
-        "name" : "Shooter",
+        "name" : "Bowman",
+        "movement" : "shooter",
+        "attack" : "1",
+        "hP" : "1",
+        "rubble_duration" : "1"
+    }],
+    
+    "numberOfEffects" : "0",
+    "effects" : [],
+    
+    "R" : "120",
+    "G" : "100",
+    "B" : "100"
+} , {
+    "name" : "Longbowman",
+    "id" : "11",
+    "cost" : "3",
+    "targetType" : "friendly-open",
+    "targetBehaviour" : "targeted",
+    
+    "numberOfUnits" : "1",
+    "units" : [{
+        "name" : "Longbowman",
         "movement" : "shooter",
         "attack" : "2",
         "hP" : "1",
@@ -52,7 +74,33 @@ var UnitList = [{
     "R" : "120",
     "G" : "100",
     "B" : "100"
-} , {
+} ,
+
+{
+    "name" : "Sniper",
+    "id" : "12",
+    "cost" : "5",
+    "targetType" : "friendly-open",
+    "targetBehaviour" : "targeted",
+    
+    "numberOfUnits" : "1",
+    "units" : [{
+        "name" : "Sniper",
+        "movement" : "shooter",
+        "attack" : "3",
+        "hP" : "1",
+        "rubble_duration" : "1"
+    }],
+    
+    "numberOfEffects" : "0",
+    "effects" : [],
+    
+    "R" : "120",
+    "G" : "100",
+    "B" : "100"
+} ,
+
+{
     "name" : "Sitter",
     "id" : "2",
     "cost" : "2",
@@ -74,7 +122,35 @@ var UnitList = [{
     "R" : "100",
     "G" : "120",
     "B" : "100"
-} , {
+} , 
+
+
+{
+    "name" : "Trapper",
+    "id" : "21",
+    "cost" : "4",
+    "targetType" : "friendly-open",
+    "targetBehaviour" : "targeted",
+    
+    "numberOfUnits" : "1",
+
+    "units" : [{
+        "name" : "Trapper",
+        "movement" : "sitter",
+        "attack" : "2",
+        "hP" : "4",
+        "rubble_duration" : "1"
+    }],
+    
+    "numberOfEffects" : "0",
+    "effects" : [],
+    
+    "R" : "100",
+    "G" : "120",
+    "B" : "100"
+} ,
+
+{
     "name" : "Jumper",
     "id" : "3",
     "cost" : "2",
@@ -97,7 +173,7 @@ var UnitList = [{
     "G" : "120",
     "B" : "120"
 } , {
-    "name" : "Melee",
+    "name" : "Footsoldier",
     "id" : "4",
     "cost" : "1",
     "targetType" : "friendly-open",
@@ -105,10 +181,54 @@ var UnitList = [{
     
     "numberOfUnits" : "1",
     "units" : [{
-        "name" : "Melee",
+        "name" : "Footsoldier",
+        "movement" : "melee",
+        "attack" : "1",
+        "hP" : "2",
+        "rubble_duration" : "1"
+    }],
+    
+    "numberOfEffects" : "0",
+    "effects" : [],
+    
+    "R" : "100",
+    "G" : "100",
+    "B" : "120"
+} , {
+    "name" : "Soldier",
+    "id" : "41",
+    "cost" : "3",
+    "targetType" : "friendly-open",
+    "targetBehaviour" : "targeted",
+    
+    "numberOfUnits" : "1",
+    "units" : [{
+        "name" : "Soldier",
         "movement" : "melee",
         "attack" : "2",
-        "hP" : "5",
+        "hP" : "3",
+        "rubble_duration" : "1"
+    }],
+    
+    "numberOfEffects" : "0",
+    "effects" : [],
+    
+    "R" : "100",
+    "G" : "100",
+    "B" : "120"
+} , {
+    "name" : "Gladiator",
+    "id" : "42",
+    "cost" : "1",
+    "targetType" : "friendly-open",
+    "targetBehaviour" : "targeted",
+    
+    "numberOfUnits" : "1",
+    "units" : [{
+        "name" : "Gladiator",
+        "movement" : "melee",
+        "attack" : "3",
+        "hP" : "4",
         "rubble_duration" : "1"
     }],
     
@@ -130,63 +250,63 @@ var Spells = [{
     "numberOfUnits" : "9",
     "units" : [{
         "name" : "soldier",
-		"turns" : "0",
+        "turns" : "0",
         "movement" : "melee",
         "attack" : "1",
         "hP" : "1",
         "rubble_duration" : "1"
     }, {
         "name" : "soldier",
-		"turns" : "0",
+        "turns" : "0",
         "movement" : "melee",
         "attack" : "1",
         "hP" : "1",
         "rubble_duration" : "1"
     }, {
         "name" : "soldier",
-		"turns" : "0",
+        "turns" : "0",
         "movement" : "melee",
         "attack" : "1",
         "hP" : "1",
         "rubble_duration" : "1"
     }, {
         "name" : "soldier",
-		"turns" : "0",
+        "turns" : "0",
         "movement" : "melee",
         "attack" : "1",
         "hP" : "1",
         "rubble_duration" : "1"
     }, {
         "name" : "soldier",
-		"turns" : "0",
+        "turns" : "0",
         "movement" : "melee",
         "attack" : "1",
         "hP" : "1",
         "rubble_duration" : "1"
     }, {
         "name" : "soldier",
-		"turns" : "0",
+        "turns" : "0",
         "movement" : "melee",
         "attack" : "1",
         "hP" : "1",
         "rubble_duration" : "1"
     }, {
         "name" : "soldier",
-		"turns" : "0",
+        "turns" : "0",
         "movement" : "melee",
         "attack" : "1",
         "hP" : "1",
         "rubble_duration" : "1"
     }, {
         "name" : "soldier",
-		"turns" : "0",
+        "turns" : "0",
         "movement" : "melee",
         "attack" : "1",
         "hP" : "1",
         "rubble_duration" : "1"
     }, {
         "name" : "soldier",
-		"turns" : "0",
+        "turns" : "0",
         "movement" : "melee",
         "attack" : "1",
         "hP" : "1",
@@ -196,7 +316,7 @@ var Spells = [{
     "numberOfEffects" : "1",
     "effects" : [{
         "name" : "techDown",
-		"turns" : "0",
+        "turns" : "0",
         "target" : "self",
         "damage" : "0",
         "atkUp" : "0",
@@ -222,7 +342,7 @@ var Spells = [{
     "numberOfEffects" : "1",
     "effects" : [{
         "name" : "rubbleGen",
-		"turns" : "0",
+        "turns" : "0",
         "target" : "self",
         "damage" : "0",
         "atkUp" : "0",
@@ -248,7 +368,7 @@ var Spells = [{
     "numberOfEffects" : "5",
     "effects" : [{
         "name" : "burn",
-		"turns" : "0",
+        "turns" : "0",
         "target" : "targeted-row",
         "damage" : "2",
         "atkUp" : "0",
@@ -258,7 +378,7 @@ var Spells = [{
         "rubble_duration" : "0" 
     } , {
         "name" : "burn",
-		"turns" : "0",
+        "turns" : "0",
         "target" : "targeted-row",
         "damage" : "2",
         "atkUp" : "0",
@@ -268,7 +388,7 @@ var Spells = [{
         "rubble_duration" : "0" 
     } , {
         "name" : "burn",
-		"turns" : "0",
+        "turns" : "0",
         "target" : "targeted-row",
         "damage" : "2",
         "atkUp" : "0",
@@ -278,7 +398,7 @@ var Spells = [{
         "rubble_duration" : "0" 
     } , {
         "name" : "burn",
-		"turns" : "0",
+        "turns" : "0",
         "target" : "targeted-row",
         "damage" : "2",
         "atkUp" : "0",
@@ -288,7 +408,7 @@ var Spells = [{
         "rubble_duration" : "0" 
     } , {
         "name" : "burn",
-		"turns" : "0",
+        "turns" : "0",
         "target" : "targeted-row",
         "damage" : "2",
         "atkUp" : "0",
@@ -314,7 +434,7 @@ var Spells = [{
     "numberOfEffects" : "3",
     "effects" : [{
         "name" : "burn",
-		"turns" : "0",
+        "turns" : "0",
         "target" : "targeted-path",
         "damage" : "2",
         "atkUp" : "0",
@@ -324,7 +444,7 @@ var Spells = [{
         "rubble_duration" : "0" 
     } , {
         "name" : "burn",
-		"turns" : "0",
+        "turns" : "0",
         "target" : "targeted-path",
         "damage" : "2",
         "atkUp" : "0",
@@ -334,7 +454,7 @@ var Spells = [{
         "rubble_duration" : "0" 
     } , {
         "name" : "burn",
-		"turns" : "0",
+        "turns" : "0",
         "target" : "targeted-path",
         "damage" : "2",
         "atkUp" : "0",
@@ -360,7 +480,7 @@ var Spells = [{
     "numberOfEffects" : "1",
     "effects" : [{
         "name" : "burn",
-		"turns" : "0",
+        "turns" : "0",
         "target" : "targeted",
         "damage" : "2",
         "atkUp" : "0",
@@ -386,7 +506,7 @@ var Spells = [{
     "numberOfEffects" : "1",
     "effects" : [{
         "name" : "atkUp",
-		"turns" : "1",
+        "turns" : "1",
         "target" : "targeted",
         "damage" : "0",
         "atkUp" : "3",
@@ -412,7 +532,7 @@ var Spells = [{
     "numberOfEffects" : "1",
     "effects" : [{
         "name" : "HpUp",
-		"turns" : "1",
+        "turns" : "1",
         "target" : "targeted",
         "damage" : "0",
         "atkUp" : "0",
