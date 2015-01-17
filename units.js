@@ -40,7 +40,12 @@ diamondrun.Unit = function(owner, name, movement, attack, hp, rubbleDuration) {
     this.mouseIsOver = false;
     
     this.faces = new lime.SpriteSheet('Sprites\\export.png', lime.ASSETS.facesheet.json, lime.parser.JSON);
-    this.face = new lime.Sprite().setSize(100,100).setFill(this.faces.getFrame(this.attack - 1)); // Frame naming is handled by JSON parser TODO: clean that up
+    
+    
+    var faceFrame = Math.max(0, this.attack - 1);
+    console.log('face frame: ' + faceFrame);
+    this.face = new lime.Sprite().setSize(100,100).setFill(this.faces.getFrame(faceFrame)); // Frame naming is handled by JSON parser TODO: clean that up
+    
 
     this.label = new lime.Label().setSize(CARD_SIZE - CARD_SPACING * 1, CARD_SIZE - CARD_SPACING * 1);
     
@@ -99,7 +104,8 @@ diamondrun.Unit.prototype.redraw = function() {
     this.poly.setFill(Math.ceil(center[0]), Math.ceil(center[1]), Math.ceil(center[2])).setStroke(5, Math.ceil(stroke[0]), Math.ceil(stroke[1]), Math.ceil(stroke[2]));
     
     // Set sprite to correct power, constrained to 6. Might need to add lower constraint if nerf cards are added
-    this.face.setFill(this.faces.getFrame(Math.min(this.attack - 1, 5)));
+    var faceFrame = Math.max(0, Math.min(this.attack - 1, 5));
+    this.face.setFill(this.faces.getFrame(faceFrame));
     
     var txt = this.attack + '/' + this.hp;
     if (this.hp < this.maxHp) {

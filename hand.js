@@ -40,8 +40,11 @@ diamondrun.Card = function(owner, name, targetType, targetBehaviour, castCost, u
 
     //local declaration for when 'this' is clobbered by event objects
     var card = this; 
+    console.log('card');
 
     var makeDraggable = function(e){
+
+        console.log('make drag');
 
         //prepare to return to original position
         var start_loc = card.getPosition();
@@ -97,6 +100,7 @@ diamondrun.Card = function(owner, name, targetType, targetBehaviour, castCost, u
     };
 
     goog.events.listen(this,['mousedown','touchstart'],makeDraggable);
+    console.log('listen to make drag');
     
     var self = this;
     
@@ -186,20 +190,41 @@ diamondrun.Deck = function(owner) {
 
     this.cards = [];
     for (var i = 0; i < 5; i ++) {
-        this.cards.push(100);
-        this.cards.push(101);
-        this.cards.push(102);
-        this.cards.push(103);
-        this.cards.push(104);
+        
+        //+tech
+        this.cards.push(0);
+        
+        //ranged
         this.cards.push(1);
+        this.cards.push(11);
+        this.cards.push(12);
+
+
         this.cards.push(2);
+        this.cards.push(21);
+
         this.cards.push(3);
         this.cards.push(4);
-		this.cards.push(106);
-		this.cards.push(105);
-        this.cards.push(0);
-
     }
+
+    for (i = 0; i < 3; i ++) {
+
+    //    this.cards.push(100); // reinforcements
+    }
+
+    /*
+    for (i = 0; i < 2; i ++) {
+        this.cards.push(101); // falling stone
+        this.cards.push(102); // burn row (?) 2 'targeted-row'
+        this.cards.push(103); // burn path (?) 2
+        this.cards.push(104); // burn path (?) 2        
+    }
+
+    for (i = 0; i < 1; i ++) {
+        this.cards.push(106); // +3 hp
+        this.cards.push(105); // +3 atk
+    }
+    */
 };
 
 goog.inherits(diamondrun.Deck, lime.Layer);
@@ -239,15 +264,36 @@ diamondrun.CardFactory = function() {
 //Card constructor: owner, name, targetType, targetBehaviour, castCost, units, effects, RGB
 
 diamondrun.CardFactory.prototype.makeCard = function(ID, owner) {
-    if (ID < 100) var cardData = UnitList[ID];
-    else var cardData = Spells[ID-100];
+    //if (ID < 100) var cardData = UnitList[ID];
+    //else var cardData = Spells[ID-100];
+
+    var cardData = null;
+
+    if (ID < 100) cards = UnitList;
+    else cards = Spells;
+
+    for (var i in cards) {
+        var c = cards[i];
+        console.log(c);
+        console.log('c.id: ' + c.id)
+        if (parseInt(c.id) == ID) {
+            cardData = c;
+            break;
+        }
+    }
 
     var units = [];
     var effects = [];
+
+    console.log(ID);
 	
-    for (var i = 0; i < parseInt(cardData.numberOfUnits); i++) {
-        units.push(new diamondrun.Unit(owner, cardData.units[i].name, cardData.units[i].movement, cardData.units[i].attack,
-        cardData.units[i].hP, cardData.units[i].rubble_duration));
+    //for (var i = 0; i < parseInt(cardData.numberOfUnits); i++) {
+    var numUnits = cardData.units.length;
+
+    for (var i = 0; i < numUnits; i ++) {
+        var u = new diamondrun.Unit(owner, cardData.units[i].name, cardData.units[i].movement, 
+            cardData.units[i].attack, cardData.units[i].hP, cardData.units[i].rubble_duration);
+        units.push(u);
     }
     
     for (var i = 0; i < parseInt(cardData.numberOfEffects); i++) {
