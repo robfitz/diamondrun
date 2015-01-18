@@ -212,7 +212,7 @@ diamondrun.Deck = function(owner) {
     //    this.cards.push(100); // reinforcements
     }
 
-    /*
+    
     for (i = 0; i < 2; i ++) {
         this.cards.push(101); // falling stone
         this.cards.push(102); // burn row (?) 2 'targeted-row'
@@ -224,7 +224,8 @@ diamondrun.Deck = function(owner) {
         this.cards.push(106); // +3 hp
         this.cards.push(105); // +3 atk
     }
-    */
+  
+    this.cards.shuffle();  
 };
 
 goog.inherits(diamondrun.Deck, lime.Layer);
