@@ -322,9 +322,10 @@ diamondrun.Board.prototype.startTurn = function() {
 
 diamondrun.Board.prototype.endTurn = function() {
     for (var i = 0; i < this.tiles.length; i ++) {
-        // Tell contents that turn is ending
+        // Tell contents that turn is ending as well as to redraw after EOT calculations
         if (this.tiles[i].contents) {
 			this.tiles[i].contents.endTurn();
+            this.tiles[i].contents.redraw();
 		}
     }
 };

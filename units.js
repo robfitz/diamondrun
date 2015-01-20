@@ -105,7 +105,7 @@ diamondrun.Unit.prototype.redraw = function() {
     
     // Set sprite to correct power, constrained to 6. Might need to add lower constraint if nerf cards are added
     var faceFrame = Math.max(0, Math.min(this.attack - 1, 5));
-    this.face.setFill(this.faces.getFrame(faceFrame));
+    this.face.setFill(this.faces.getFrame(Math.max(Math.min(this.attack - 1, 5),0)));
     
     var txt = this.attack + '/' + this.hp;
     if (this.hp < this.maxHp) {
