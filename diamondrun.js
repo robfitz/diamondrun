@@ -134,15 +134,24 @@ var Phases = {
 };
 
 var Commands = {
+    
     history: [],
     queue: [],
+    delay: 0,
+
     add: function(command) {
         this.queue.push(command);
     },
-    doNext: function() {
+    doNext: function(dt) {
+        // respect a delay set by previous commands
+        if (this.delay > 0) {
+            console.log('delay: ' + this.delay);
+            this.delay -= dt;
+            return;
+        }
         if (this.queue.length > 0) {
             var cmd = this.queue.shift();
-            cmd.execute();
+            this.delay = cmd.execute();
             this.history.push(cmd);    
         }
     }
@@ -223,10 +232,9 @@ diamondrun.start = function(){
     game.director.makeMobileWebAppCapable();
 
     lime.scheduleManager.schedule(function(dt) {
-        Commands.doNext();
+        Commands.doNext(dt);
     });
 
-    //Commands.add(new diamondrun.NextPhaseCommand());
     Phases.next();
 
     player.getBoard().connectAttackPaths(game.player2.getBoard());

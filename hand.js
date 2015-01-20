@@ -199,21 +199,23 @@ diamondrun.Deck = function(owner) {
         this.cards.push(11);
         this.cards.push(12);
 
-
-        this.cards.push(2);
-        this.cards.push(21);
-
         this.cards.push(3);
+        this.cards.push(31);
+
         this.cards.push(4);
+        this.cards.push(41);
+        this.cards.push(42);
     }
 
     for (i = 0; i < 3; i ++) {
+        this.cards.push(100); // reinforcements
 
-    //    this.cards.push(100); // reinforcements
+        //counterattack
+        this.cards.push(2);
+        this.cards.push(21);
     }
 
-    
-    for (i = 0; i < 2; i ++) {
+    for (i = 0; i < 5; i ++) {
         this.cards.push(101); // falling stone
         this.cards.push(102); // burn row (?) 2 'targeted-row'
         this.cards.push(103); // burn path (?) 2

@@ -46,12 +46,18 @@ diamondrun.Effect.prototype.draw = function() {
 };
 
 diamondrun.Effect.prototype.activate = function() {
+
+    var duration = 0.5;
+    //convert into seconds and add 100ms for effects to be applied
+    //to board before beginning next step
+    var delay = duration * 1000.0 + 100;
+
     // Activate Effect animation
     var actEffect = new lime.animation.Spawn(
         new lime.animation.ScaleTo(.1),
         new lime.animation.FadeTo(0),
         new lime.animation.RotateBy(0)
-    ).setDuration(0.5);
+    ).setDuration(duration);
 
     this.runAction(actEffect);
     var self = this;
@@ -85,7 +91,9 @@ diamondrun.Effect.prototype.activate = function() {
             self.owner.activeEffects.push(self);
             self.setHidden(self);
         }
-    });   
+    });
+
+    return delay;
 };
 
 diamondrun.Effect.prototype.startTurn = function() {

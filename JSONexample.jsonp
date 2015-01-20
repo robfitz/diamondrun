@@ -148,9 +148,7 @@ var UnitList = [{
     "R" : "100",
     "G" : "120",
     "B" : "100"
-} ,
-
-{
+} , {
     "name" : "Jumper",
     "id" : "3",
     "cost" : "2",
@@ -162,6 +160,28 @@ var UnitList = [{
         "name" : "Jumper",
         "movement" : "jumper",
         "attack" : "1",
+        "hP" : "2",
+        "rubble_duration" : "1"
+    }],
+    
+    "numberOfEffects" : "0",
+    "effects" : [],
+    
+    "R" : "100",
+    "G" : "120",
+    "B" : "120"
+} , {
+    "name" : "War Jumper",
+    "id" : "31",
+    "cost" : "4",
+    "targetType" : "friendly-open",
+    "targetBehaviour" : "targeted",
+    
+    "numberOfUnits" : "1",
+    "units" : [{
+        "name" : "War Jumper",
+        "movement" : "jumper",
+        "attack" : "2",
         "hP" : "2",
         "rubble_duration" : "1"
     }],
@@ -219,7 +239,7 @@ var UnitList = [{
 } , {
     "name" : "Gladiator",
     "id" : "42",
-    "cost" : "1",
+    "cost" : "5",
     "targetType" : "friendly-open",
     "targetBehaviour" : "targeted",
     

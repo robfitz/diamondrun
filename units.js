@@ -132,14 +132,11 @@ diamondrun.Unit.prototype.attackUp = function(amount, turns) {
 
 diamondrun.Unit.prototype.die = function(generateRubble) {
 
-    //death effect
-    var dieEffect = new lime.animation.Spawn(
-        new lime.animation.ScaleTo(5),
-        new lime.animation.FadeTo(0),
-        new lime.animation.RotateBy(90)
-    ).setDuration(0.4);
-    
-    this.runAction(dieEffect);
+    var self = this;
+    var rubbleTile = this.tile
+
+    self.tile.removeUnit(self);
+    if (generateRubble) rubbleTile.addRubble(new diamondrun.Rubble(rubbleTile, self.rubbleDuration));
     
     // Remove Highlights cause by this unit on board
     if (this.mouseIsOver) {
@@ -152,14 +149,17 @@ diamondrun.Unit.prototype.die = function(generateRubble) {
         };
     }
     
-    var self = this;
-    var rubbleTile = this.tile
+    //death effect
+    var dieEffect = new lime.animation.Spawn(
+        new lime.animation.ScaleTo(5),
+        new lime.animation.FadeTo(0),
+        new lime.animation.RotateBy(90)
+    ).setDuration(0.4);
+    
+    this.runAction(dieEffect);
     
     goog.events.listen(dieEffect,lime.animation.Event.STOP,function() {
-        if (generateRubble) rubbleTile.addRubble(new diamondrun.Rubble(rubbleTile, self.rubbleDuration));
-        
         //remove from board
-        self.tile.removeUnit(self);
         if (self.getParent()) self.getParent().removeChild(self);
     });
 };
@@ -186,8 +186,7 @@ diamondrun.Unit.prototype.doAttack = function(contexts, callbacks) {
         }
         return;
     }
-
-        
+    
     //step through path looking for obstruction)
     var turnBack = false;
     for (var i = 0; i < path.length; i ++) {

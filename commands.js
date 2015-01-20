@@ -20,6 +20,9 @@ diamondrun.PlayCardCommand = function(player, card, targetTile) {
 // TODO: make enum for the card target behaviours.
 
 diamondrun.PlayCardCommand.prototype.execute = function() {
+
+    var delay = 0;
+
     if (this.targetTile == this.player.getBoard().techTile) {
         this.targetTile.addCard();
     }
@@ -105,12 +108,16 @@ diamondrun.PlayCardCommand.prototype.execute = function() {
                         this.targetTile.addEffect(this.card.effects[i]);
                         break;
                 }
-                if (this.targetTile != this.player.getBoard().techTile) this.card.effects[i].activate();
+                if (this.targetTile != this.player.getBoard().techTile) {
+                    delay = this.card.effects[i].activate();
+                }
             }
         }
     }
     // move from hand to graveyard
     this.player.getGraveyard().takeCard(this.card);
+
+    return delay;
 };
 
 // --------------------------------------------------------------------------------------------------------------------------- Time Out Command
@@ -162,6 +169,7 @@ diamondrun.NextPhaseCommand = function() {
 };
 
 diamondrun.NextPhaseCommand.prototype.execute = function() {
+    //lime.scheduleManager.callAfter(function() { Phases.next(); }, this, 1000);
     Phases.next();
 };
 
@@ -169,8 +177,6 @@ diamondrun.NextPhaseCommand.prototype.execute = function() {
 
 diamondrun.EndGameCommand = function(loser) {
     this.loser = loser;
-    //if (this.loser == game.player1) this.winner = game.player1; // Unnecassary now, might be useful later.
-    //else this.winner = game.player2;
 };
 
 diamondrun.EndGameCommand.prototype.execute = function() {
