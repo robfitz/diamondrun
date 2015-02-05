@@ -40,11 +40,9 @@ diamondrun.Card = function(owner, name, targetType, targetBehaviour, castCost, u
 
     //local declaration for when 'this' is clobbered by event objects
     var card = this; 
-    console.log('card');
 
-    var makeDraggable = function(e){
 
-        console.log('make drag');
+    var makeDraggable = function(e) {
 
         //prepare to return to original position
         var start_loc = card.getPosition();
@@ -99,8 +97,7 @@ diamondrun.Card = function(owner, name, targetType, targetBehaviour, castCost, u
         });
     };
 
-    goog.events.listen(this,['mousedown','touchstart'],makeDraggable);
-    console.log('listen to make drag');
+    goog.events.listen(this,['mousedown','touchstart'], makeDraggable);
     
     var self = this;
     
@@ -277,8 +274,7 @@ diamondrun.CardFactory.prototype.makeCard = function(ID, owner) {
 
     for (var i in cards) {
         var c = cards[i];
-        console.log(c);
-        console.log('c.id: ' + c.id)
+        
         if (parseInt(c.id) == ID) {
             cardData = c;
             break;
@@ -287,8 +283,6 @@ diamondrun.CardFactory.prototype.makeCard = function(ID, owner) {
 
     var units = [];
     var effects = [];
-
-    console.log(ID);
 	
     //for (var i = 0; i < parseInt(cardData.numberOfUnits); i++) {
     var numUnits = cardData.units.length;

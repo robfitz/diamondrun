@@ -57,7 +57,12 @@ diamondrun.Unit = function(owner, name, movement, attack, hp, rubbleDuration) {
     this.appendChild(this.poly);
     this.appendChild(this.face);
     this.appendChild(this.label);
-};
+
+    goog.events.listen(this, 'click', function(e) {
+        game.cardView.show(this);
+    });
+
+}
 
 goog.inherits(diamondrun.Unit, lime.Layer);
 

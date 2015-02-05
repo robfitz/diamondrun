@@ -20,6 +20,7 @@ goog.require('diamondrun.Player');
 goog.require('diamondrun.AIPlayer');
 goog.require('diamondrun.Rubble');
 goog.require('diamondrun.Effect');
+goog.require('diamondrun.CardView');
 
 var IPHONE_4_W = 640;
 var IPHONE_4_H = 960;
@@ -30,7 +31,10 @@ var game = {
     turn: 0,
     unitLayer: null,
     director: null,
-    cardFactory: null
+    cardFactory: null,
+
+    cardView: null
+
 }
 
 var Phases = {
@@ -241,6 +245,13 @@ diamondrun.start = function(){
     game.player2.getBoard().connectAttackPaths(player.getBoard());
 
     style(game);
+
+    console.log('bout to init');
+
+    game.cardView = new diamondrun.CardView();
+    scene.appendChild(game.cardView);
+
+    console.log('init cardview: ' + game.cardView);
 };
 
 goog.exportSymbol('diamondrun.start', diamondrun.start);
