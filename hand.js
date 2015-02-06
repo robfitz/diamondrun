@@ -137,7 +137,12 @@ diamondrun.Card.prototype.description = function() {
     if (this.overrideDescription) 
         return this.overrideDescription;
     
-    return "card";
+    if (this.units && this.units[0]) {
+        var u = this.units[0];
+        return u.description();
+    }
+
+    return "Card";
 }
 
 diamondrun.Card.prototype.getOwner = function() {

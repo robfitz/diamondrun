@@ -30,7 +30,7 @@ var UnitList = [{
     "R" : "100",
     "G" : "100",
     "B" : "100"
-    
+
 } , {
     "name" : "Bowman",
     "id" : "1",
@@ -263,10 +263,13 @@ var UnitList = [{
 
 var Spells = [{
     "name" : "Reinforcements",
+    "description" : "Puts a 1/1 Soldier on each open space on your side",
+
     "id" : "100",
     "cost" : "5",
     "targetType" : "friendly-open",
     "targetBehaviour" : "all-valid",
+
     
     "numberOfUnits" : "9",
     "units" : [{
@@ -352,6 +355,7 @@ var Spells = [{
     "B" : "140"
 } , {
     "name" : "Falling Stone",
+    "description": "Blocks an empty enemy tile with rubble for 2 turns",
     "id" : "101",
     "cost" : "2",
     "targetType" : "enemy-open",
@@ -378,6 +382,7 @@ var Spells = [{
     "B" : "19"
 } , {
     "name" : "Scorched Earth",
+    "description": "Deal 2 damage to each enemy unit in a horizontal row",
     "id" : "102",
     "cost" : "2",
     "targetType" : "enemy-tile",
@@ -444,6 +449,7 @@ var Spells = [{
     "B" : "19"
 } , {
     "name" : "Dragon's Breath",
+    "description": "Deals 2 damage to each enemy unit along the attack path to their back tile",
     "id" : "103",
     "cost" : "2",
     "targetType" : "enemy-tile",
@@ -516,6 +522,7 @@ var Spells = [{
     "B" : "19"
 } , {
     "name" : "Brittle Sword",
+    "description": "Increases a friendly unit's attack by 2 until end of turn",
     "id" : "105",
     "cost" : "2",
     "targetType" : "friendly-unit",
@@ -530,7 +537,7 @@ var Spells = [{
         "turns" : "1",
         "target" : "targeted",
         "damage" : "0",
-        "atkUp" : "3",
+        "atkUp" : "2",
         "hPUp" : "0",
         "techUp" : "0", 
         "kill" : "no",
@@ -542,6 +549,7 @@ var Spells = [{
     "B" : "200"
 }  , {
     "name" : "Stim-pack",
+    "description": "Increases a friendly unit's health by 3 until the start of your next turn",
     "id" : "106",
     "cost" : "2",
     "targetType" : "friendly-unit",
