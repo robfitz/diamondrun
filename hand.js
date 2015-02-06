@@ -20,7 +20,7 @@ var CARD_FONT_SIZE = 60;
 var CARD_SPACING = 5;
 
 
-diamondrun.Card = function(owner, name, targetType, targetBehaviour, castCost, units, effects, RGB) {
+diamondrun.Card = function(owner, name, targetType, targetBehaviour, castCost, units, effects, RGB, description) {
     goog.base(this);
     this.owner = owner;
     this.name = name;
@@ -29,6 +29,7 @@ diamondrun.Card = function(owner, name, targetType, targetBehaviour, castCost, u
     this.castCost = parseInt(castCost);
     this.units = units;
     this.effects = effects;
+    this.overrideDescription = description;
     
     this.r = parseInt(RGB[0]);
     this.g = parseInt(RGB[1]);
@@ -41,6 +42,9 @@ diamondrun.Card = function(owner, name, targetType, targetBehaviour, castCost, u
     //local declaration for when 'this' is clobbered by event objects
     var card = this; 
 
+    goog.events.listen(this, 'click', function(e) {
+        game.cardView.show(this);
+    });
 
     var makeDraggable = function(e) {
 
@@ -126,6 +130,11 @@ diamondrun.Card = function(owner, name, targetType, targetBehaviour, castCost, u
 };
 
 goog.inherits(diamondrun.Card, lime.Label);
+
+
+diamondrun.Card.prototype.description = function() {
+    return "card";
+}
 
 diamondrun.Card.prototype.getOwner = function() {
     return this.owner;
@@ -298,7 +307,7 @@ diamondrun.CardFactory.prototype.makeCard = function(ID, owner) {
         cardData.effects[i].hPUp, cardData.effects[i].techUp, cardData.effects[i].kill, cardData.effects[i].rubble_duration));
     }
     
-    return new diamondrun.Card(owner, cardData.name, cardData.targetType, cardData.targetBehaviour, cardData.cost, units, effects, [cardData.R,cardData.G,cardData.B]);
+    return new diamondrun.Card(owner, cardData.name, cardData.targetType, cardData.targetBehaviour, cardData.cost, units, effects, [cardData.R,cardData.G,cardData.B], cardData.description);
 };
 
 // --------------------------------------------------------------------------------------------------------------------------- MouseOver hack - source: https://gist.github.com/tonistiigi/1153666

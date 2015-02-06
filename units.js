@@ -66,6 +66,11 @@ diamondrun.Unit = function(owner, name, movement, attack, hp, rubbleDuration) {
 
 goog.inherits(diamondrun.Unit, lime.Layer);
 
+diamondrun.Unit.prototype.description = function() {
+    return "Unit: " + this.movement + "\n" +
+        this.attack + "/" + this.maxHp;
+}
+
 diamondrun.Unit.prototype.play = function(targetTile) {
     this.tile = targetTile;
     this.redraw();
