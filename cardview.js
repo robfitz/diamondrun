@@ -35,7 +35,6 @@ diamondrun.CardView = function() {
 goog.inherits(diamondrun.CardView, lime.Layer);
 
 diamondrun.CardView.prototype.show = function(card) {
-	console.log('show cardview');
 
 	this.name.setText(card.name);
 	

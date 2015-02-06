@@ -50,13 +50,11 @@ diamondrun.Tile.prototype.addUnit = function(unit) {
 
 diamondrun.Tile.prototype.removeUnit = function(unit) {
     if (this.contents == unit) {
-        console.log('removeUnit');
         this.contents = null;
     }
 };
 
 diamondrun.Tile.prototype.addRubble = function(rubble) {
-    console.log('addRubble');
     this.contents = rubble;
     var tilePos = this.getParent().localToScreen(this.getPosition());
     var rubblePos = rubble.getParent().screenToLocal(tilePos);

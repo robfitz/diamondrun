@@ -149,7 +149,6 @@ var Commands = {
     doNext: function(dt) {
         // respect a delay set by previous commands
         if (this.delay > 0) {
-            console.log('delay: ' + this.delay);
             this.delay -= dt;
             return;
         }
@@ -246,12 +245,9 @@ diamondrun.start = function(){
 
     style(game);
 
-    console.log('bout to init');
-
     game.cardView = new diamondrun.CardView();
     scene.appendChild(game.cardView);
 
-    console.log('init cardview: ' + game.cardView);
 };
 
 goog.exportSymbol('diamondrun.start', diamondrun.start);

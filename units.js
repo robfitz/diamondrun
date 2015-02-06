@@ -43,7 +43,6 @@ diamondrun.Unit = function(owner, name, movement, attack, hp, rubbleDuration) {
     
     
     var faceFrame = Math.max(0, this.attack - 1);
-    console.log('face frame: ' + faceFrame);
     this.face = new lime.Sprite().setSize(100,100).setFill(this.faces.getFrame(faceFrame)); // Frame naming is handled by JSON parser TODO: clean that up
     
 
