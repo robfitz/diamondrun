@@ -204,6 +204,7 @@ diamondrun.Deck = function(owner) {
     this.owner = owner;
 
     this.cards = [];
+
     for (var i = 0; i < 5; i ++) {
         
         //+tech

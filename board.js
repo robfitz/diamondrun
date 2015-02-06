@@ -164,6 +164,7 @@ goog.inherits(diamondrun.Board, lime.Layer);
 
 diamondrun.Board.prototype.getValidTargets = function(card) {
     if (card.targetType == TargetTypes.FRIENDLY_OPEN) {
+
         var targets = [];
         for (var i = 0; i < this.tiles.length; i++) {
             if (this.tiles[i].contents == null) targets.push(this.tiles[i]);
@@ -184,7 +185,8 @@ diamondrun.Board.prototype.getValidTargets = function(card) {
         return targets;
     }
     else if (card.targetType == TargetTypes.FRIENDLY_TILE) {
-        return this.tiles;
+        
+        var targets = this.tiles;
     }
     else if (card.targetType == TargetTypes.ENEMY_UNIT) {
         var targets = [];
@@ -209,7 +211,14 @@ diamondrun.Board.prototype.getValidTargets = function(card) {
         return targets;
     }
     else if (card.targetType == TargetTypes.ENEMY_TILE) {
-        return card.owner.getEnemyBoard().getTiles();;
+        var targets = [];
+        var tartiles = card.owner.getEnemyBoard().getTiles();
+        for (var i = 0; i < tartiles.length; i++) {
+            targets.push(tartiles[i]);
+        }
+        
+        targets.push(this.techTile);
+        return targets;
     }
 }
 
