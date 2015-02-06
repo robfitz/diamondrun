@@ -496,6 +496,7 @@ var Spells = [{
     "B" : "19"
 } , {
     "name" : "Fireball",
+    "description": "Deals 2 damage to an enemy unit",
     "id" : "104",
     "cost" : "2",
     "targetType" : "enemy-tile",

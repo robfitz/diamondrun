@@ -7,6 +7,7 @@ goog.require('lime.Label');
 goog.require('lime.fill.Stroke');
 goog.require('lime.fill.Color');
 
+var LABEL_W = IPHONE_4_W - 200;
 
 diamondrun.CardView = function() {
 
@@ -18,10 +19,11 @@ diamondrun.CardView = function() {
     //.setStroke(new lime.fill.Stroke(20, new lime.fill.Color(0, 0, 0)));
 
     this.name = new lime.Label().setPosition(IPHONE_4_W/2, IPHONE_4_H/3).setFontSize(72);
-    this.description = new lime.Label().setPosition(IPHONE_4_W/2, 2*IPHONE_4_H/3).setFontSize(24);
-
+    this.description = new lime.Label().setPosition(IPHONE_4_W/2, 2*IPHONE_4_H/3).setFontSize(24).setSize(LABEL_W, 200).setAlign('left');
+	
     this.appendChild(this.bg).appendChild(this.cardbg).appendChild(this.name);
     this.appendChild(this.description);
+
 
     goog.events.listen(this, ['click'], function(e) {
    		this.setPosition(-IPHONE_4_W, 0);
@@ -36,7 +38,9 @@ diamondrun.CardView.prototype.show = function(card) {
 	console.log('show cardview');
 
 	this.name.setText(card.name);
+	
 	this.description.setText(card.description());
+	
 	this.setPosition(0, 0);
 
 };
