@@ -133,6 +133,10 @@ goog.inherits(diamondrun.Card, lime.Label);
 
 
 diamondrun.Card.prototype.description = function() {
+
+    if (this.overrideDescription) 
+        return this.overrideDescription;
+    
     return "card";
 }
 
